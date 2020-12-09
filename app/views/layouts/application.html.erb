@@ -10,6 +10,13 @@
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <span><%= current_user.name %></span>
+      <%= link_to :로그아웃, destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to :로그인, new_user_session_path %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
