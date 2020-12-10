@@ -12,6 +12,8 @@ class Ability
       end
     
       can :manage, Post, user_id: user.id
+      can :like, Post
+
       can :update, User, id: user.id
       
     end

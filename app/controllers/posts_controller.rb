@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :destroy, :like]
 
   before_action :authenticate_user!
 
@@ -63,6 +63,12 @@ class PostsController < ApplicationController
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # POST /posts/:id/like
+  def like
+    @post.toggle_like(current_user)
+    redirect_back(fallback_location: root_path)
   end
 
   private

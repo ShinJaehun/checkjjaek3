@@ -5,4 +5,16 @@ class Post < ApplicationRecord
   # belongs_to :user, :counter_cache => :posts_count
   belongs_to :user
 
+  has_many :likes, dependent: :destroy
+  has_many :like_users, through: :likes, source: :user
+
+  def toggle_like(user)
+    if self.like_users.include?(user)
+      self.like_users.delete(user)
+    else
+      self.like_users.push(user)
+    end
+  end
+
+
 end

@@ -10,6 +10,18 @@
   <%= @post.content %>
 </p>
 
+<p>
+  <strong>Likes:</strong>
+    <%= @post.like_users.count %>
+</p>
+
+<p>
+  <%= link_to 'Like', like_post_path, method: :post %>
+</p>
+
+<%= @post.like_users.ids %>
+
+
 <% if can? :manage, @post %>
   <%= link_to 'Edit', edit_post_path(@post) %> |
 <% end %>
