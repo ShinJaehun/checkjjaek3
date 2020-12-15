@@ -8,7 +8,8 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    #@posts = Post.all
+    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id))
   end
 
   # GET /posts/1

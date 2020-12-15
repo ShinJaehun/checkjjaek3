@@ -15,6 +15,9 @@ class Ability
       can :like, Post
 
       can :update, User, id: user.id
+      can :follow, User do |u|
+        u != user
+      end
       
     end
     # Define abilities for the passed in user here. For example:
