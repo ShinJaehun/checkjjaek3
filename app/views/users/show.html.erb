@@ -1,12 +1,12 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Posts</h1>
+<h1><%= @user.name %> Posts</h1>
 
 <table>
   <thead>
     <tr>
-      <th>내용</th>
-      <th>사용자</th>
+      <th>User</th>
+      <th>Content</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,10 +14,11 @@
   <tbody>
     <% @posts.each do |post| %>
       <tr>
-        <td><%= post.content %></td>
         <td><%= link_to post.user.name, post.user %></td>
+        <td><%= post.content %></td>
         <td><%= link_to 'Show', post %></td>
-
+        
+        <%# if post.user == current_user %>
         <% if can? :manage, post %>
           <td><%= link_to 'Edit', edit_post_path(post) %></td>
           <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -29,4 +30,6 @@
 
 <br>
 
-<%= link_to 'New Post', new_post_path %>
+<% if can? :update, @user %>
+<%= link_to 'Edit User', edit_user_registration_path %>
+<% end %>
