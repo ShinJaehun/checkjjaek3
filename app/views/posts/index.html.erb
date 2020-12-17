@@ -1,5 +1,15 @@
 <p id="notice"><%= notice %></p>
 
+<div class="book-search-form">
+  <%= form_tag book_search_path, method: :get, class: "input-group mt-4" do %>
+    <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+    <div class="input-group-btn">
+      <%= submit_tag '책 찾기', class: "btn btn-outline-secondary" %>
+    </div>
+  <% end %>
+</div>
+
+
 <h1>Posts</h1>
 
 <table>
