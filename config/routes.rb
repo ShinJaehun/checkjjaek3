@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     post 'like', to: 'posts#like', as: :like, on: :member
   end
 
+  resources :books do
+    resources :posts, module: :books
+  end
+
   resources :users, only:[:show] do
     post 'follow', to: 'users#follow', as: :follow, on: :member
   end

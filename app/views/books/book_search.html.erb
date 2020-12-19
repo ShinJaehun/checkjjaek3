@@ -18,12 +18,15 @@
   
           <div class="info media-body">
             <div class="title">
-              <%= item['title'].html_safe %>
+              <%= link_to item['title'].html_safe, 
+                new_book_path(
+                  title: strip_tags(item['title']),
+                  contents:  strip_tags(item['contents']),
+                  isbn: strip_tags(item['isbn']),
+                  publisher: strip_tags(item['publisher']),
+                  thumbnail: strip_tags(item['thumbnail'])) %>
             </div>
             <div class="writers text-muted">
-              <%# if item['category'].present? %>
-                <%#= item['category'].html_safe %> | 
-              <%# end %>
               
               <% if item['publisher'].present? %>
                 <%= item['publisher'].html_safe %> | 

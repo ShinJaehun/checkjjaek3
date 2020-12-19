@@ -1,12 +1,12 @@
 class BooksController < ApplicationController
-#   before_action :set_book, only: [:show]
+  before_action :set_book, only: [:show]
   before_action :authenticate_user!
   load_and_authorize_resource
 
-#   def show
-#     # @posts = Post.where(book_id: @book.id).order(created_at: :desc)
-#     @posts = Post.where(postable_id: @book.id).order(created_at: :desc)
-#   end
+  def show
+    @posts = Post.where(book_id: @book.id).order(created_at: :desc)
+    #@posts = Post.where(postable_id: @book.id).order(created_at: :desc)
+  end
   
   def book_search
     # keyword_book으로 검색한 경우(책 검색 결과에 포스팅하기)
@@ -69,7 +69,7 @@ class BooksController < ApplicationController
             @end_index = 5
           end
         end
-        
+      
         # puts "현재 페이지 : " + @current_page.to_s + " 마지막 페이지 : " + @max_index.to_s
         # puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
         
@@ -83,47 +83,53 @@ class BooksController < ApplicationController
     
   end
   
-#   def new
-
-#     @book = Book.new
-#     @book.posts.new
-
-#   end
+  def new
+    @book = Book.new
+    @book.posts.new
+  end
   
-#   def create
-    
-#     unless @book = Book.find_by(isbn: book_params[:isbn])
+  def create
+    unless @book = Book.find_by(isbn: book_params[:isbn])
 
-#       thumbnail_url = book_params[:thumbnail]
-      
-#       unless thumbnail_url.to_s.empty?
-#         thumbnail_path = URI.unescape(thumbnail_url.match(/^http.+?(http.+?)%3F/)[1].to_s)
-#       else
-#         thumbnail_path = nil
-#       end
+      thumbnail_url = book_params[:thumbnail]
+      unless thumbnail_url.to_s.empty?
+        thumbnail_path = URI.unescape(thumbnail_url.match(/^http.+?(http.+?)%3F/)[1].to_s)
+      else
+        thumbnail_path = nil
+      end
   
-#       @book = Book.create(
-#         title: CGI.unescapeHTML(book_params[:title]),
-#         isbn:  book_params[:isbn],
-#         authors:  book_params[:authors],
-#         thumbnail:  thumbnail_path,
-#         publisher: book_params[:publisher],
-#         contents: CGI.unescapeHTML(book_params[:contents]),
-#         url: book_params[:url],
-#         date_time: book_params[:date_time],
-#         translators: book_params[:translators],
-#       )
-      
-#     end
+      @book = Book.create(
+        title: CGI.unescapeHTML(book_params[:title]),
+        contents: CGI.unescapeHTML(book_params[:contents]),
+        isbn:  book_params[:isbn],
+        publisher: book_params[:publisher],
+        thumbnail:  thumbnail_path
+      )
+    end
 
-#     # post = Post.new(content: book_params[:posts_attributes]['0'][:content])
-#     post = @book.posts.new(content: book_params[:posts_attributes]['0'][:content])
-#     post.user_id = book_params[:posts_attributes]['0'][:user_id]
-#     post.save
+    puts "-----------------------book_params-----------------------"
+    puts book_params
+    puts "-----------------------book_params-----------------------"
 
-#     redirect_to root_path
-    
-#   end
+    puts "-----------------------book_params[:posts_attributes]-----------------------"
+    puts book_params[:posts_attributes]
+    puts "-----------------------book_params[:posts_attributes]-----------------------"
+
+    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
+    puts book_params[:posts_attributes]['0']
+    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
+
+    #post = @book.posts.new book_params.first.content, book_params.first.user_id
+    # post.content = book_params.first.content
+    # post.user_id = book_params.first.user_id
+    #post.save
+
+    post = @book.posts.new(content: book_params[:posts_attributes]['0'][:content])
+    post.user_id = book_params[:posts_attributes]['0'][:user_id]
+    post.save
+
+    redirect_to root_path
+  end
 
   private
   
@@ -133,10 +139,7 @@ class BooksController < ApplicationController
   
   def book_params
     # params.require(:book).permit(:title, :isbn, :authors, :thumbnail, :publisher, :contents, :url, :date_time, :translators, posts_attributes: [:user_id, :content])
-    params.require(:book).permit(:title, :contents, :isbn, :publisher, :thumbnail)
+    params.require(:book).permit(:title, :contents, :isbn, :publisher, :thumbnail, posts_attributes: [:user_id, :content])
   end
-  
-  # def post_params
-  #   params.require(:book).permit(:user_id, :content)
-  # end
+
 end
