@@ -1,12 +1,14 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.2'
+ruby '2.7.0'
 
 
 # bootstrap
 #em 'bootstrap', '~>4.5.3'
 #gem 'jquery-rails', '~>4.4.0'
+
+gem "bootstrap_flash_messages"
 
 # RESTful API 처리
 gem 'rest-client'

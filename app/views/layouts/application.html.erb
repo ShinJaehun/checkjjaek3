@@ -10,6 +10,7 @@
   </head>
 
   <body>
+    <div id="flash_messages"><%= flash_messages(:close) %></div>
     <%= link_to '사용자 정보수정', edit_user_registration_path %>
 
     <% if user_signed_in? %>
