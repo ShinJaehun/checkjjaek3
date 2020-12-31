@@ -1,0 +1,10 @@
+  <%= form_for([commentable, Comment.new]) do | f | %>
+    <%= f.hidden_field :parent_id, value: local_assigns[:parent_id]  %>
+
+    <div >
+      <p>
+        <%= f.text_field :content %>
+        <%= f.submit %>
+      </p>
+    </div>
+  <% end %>

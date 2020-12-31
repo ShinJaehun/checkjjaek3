@@ -19,6 +19,9 @@ class Ability
         u != user
       end
 
+      can :create, Comment
+      can :destroy, Comment, user_id: user.id
+
       can :book_search, Book
       can :manage, Book
       

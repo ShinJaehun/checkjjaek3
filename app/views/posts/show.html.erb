@@ -21,6 +21,10 @@
 
 <%= @post.like_users.ids %>
 
+<p>
+  <%= render "comments/comments" %>
+</p>
+
 
 <% if can? :manage, @post %>
   <%= link_to 'Edit', edit_post_path(@post) %> |

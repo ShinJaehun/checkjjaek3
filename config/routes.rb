@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :posts do
     post 'like', to: 'posts#like', as: :like, on: :member
+    resources :comments, only: [:create, :destroy]
   end
 
   resources :books do
