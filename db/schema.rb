@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_01_054827) do
+ActiveRecord::Schema.define(version: 2021_01_01_115800) do
 
   create_table "books", force: :cascade do |t|
     t.string "title"
@@ -58,8 +58,9 @@ ActiveRecord::Schema.define(version: 2021_01_01_054827) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
-    t.integer "book_id"
-    t.index ["book_id"], name: "index_posts_on_book_id"
+    t.integer "postable_id"
+    t.string "postable_type"
+    t.index ["postable_id", "postable_type"], name: "index_posts_on_postable_id_and_postable_type"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

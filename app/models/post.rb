@@ -5,7 +5,8 @@ class Post < ApplicationRecord
   # belongs_to :user, :counter_cache => :posts_count
   belongs_to :user
 
-  belongs_to :book
+  # belongs_to :book
+  belongs_to :postable, polymorphic: true
 
   has_many :likes, dependent: :destroy
   has_many :like_users, through: :likes, source: :user

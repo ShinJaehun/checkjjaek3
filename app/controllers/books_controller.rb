@@ -4,8 +4,8 @@ class BooksController < ApplicationController
   load_and_authorize_resource
 
   def show
-    @posts = Post.where(book_id: @book.id).order(created_at: :desc)
-    #@posts = Post.where(postable_id: @book.id).order(created_at: :desc)
+    #@posts = Post.where(book_id: @book.id).order(created_at: :desc)
+    @posts = Post.where(postable_id: @book.id).order(created_at: :desc)
   end
   
   def book_search
@@ -46,9 +46,10 @@ class BooksController < ApplicationController
         # @items = hash['items']
         @total_count = hash['meta']['total_count']
         
-        # puts "############################################################"
-        # puts @total_count
-        # puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s 
+#        puts "############################################################"
+#        puts "total_count : " + @total_count.to_s
+#        puts hash['meta']['is_end']
+#        puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s 
         
         # 마지막 페이지
         @max_index = @total_count / @size + 1
@@ -57,7 +58,7 @@ class BooksController < ApplicationController
         if @current_page > 2
           @start_index = @current_page - 2
           if @current_page <= @max_index - 2
-            @end_index = @current_page + 2 
+            @end_index = @current_page + 2
           else
             @end_index = @max_index
           end
@@ -70,8 +71,8 @@ class BooksController < ApplicationController
           end
         end
       
-        # puts "현재 페이지 : " + @current_page.to_s + " 마지막 페이지 : " + @max_index.to_s
-        # puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
+#        puts "현재 페이지 : " + @current_page.to_s + " 마지막 페이지 : " + @max_index.to_s
+#        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
         
         @items = hash['documents']
 
@@ -107,17 +108,17 @@ class BooksController < ApplicationController
       )
     end
 
-    puts "-----------------------book_params-----------------------"
-    puts book_params
-    puts "-----------------------book_params-----------------------"
-
-    puts "-----------------------book_params[:posts_attributes]-----------------------"
-    puts book_params[:posts_attributes]
-    puts "-----------------------book_params[:posts_attributes]-----------------------"
-
-    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
-    puts book_params[:posts_attributes]['0']
-    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
+#    puts "-----------------------book_params-----------------------"
+#    puts book_params
+#    puts "-----------------------book_params-----------------------"
+#
+#    puts "-----------------------book_params[:posts_attributes]-----------------------"
+#    puts book_params[:posts_attributes]
+#    puts "-----------------------book_params[:posts_attributes]-----------------------"
+#
+#    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
+#    puts book_params[:posts_attributes]['0']
+#    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
 
     #post = @book.posts.new book_params.first.content, book_params.first.user_id
     # post.content = book_params.first.content
