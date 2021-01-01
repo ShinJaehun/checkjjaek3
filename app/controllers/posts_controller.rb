@@ -15,6 +15,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+#    아직 이럴 필요까진 없는 듯...
 #    @comments = if params[:comment]
 #                  @post.comments.where(id: params[:comment])
 #                else
@@ -76,6 +77,11 @@ class PostsController < ApplicationController
   def like
     @post.toggle_like(current_user)
     redirect_back(fallback_location: root_path)
+  end
+
+  def hashtags
+    @tag = Tag.find_by(name: params[:name])
+    @posts = @tag.posts.order(created_at: :desc)
   end
 
   private

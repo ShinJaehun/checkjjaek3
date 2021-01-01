@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_31_013803) do
+ActiveRecord::Schema.define(version: 2021_01_01_054827) do
 
   create_table "books", force: :cascade do |t|
     t.string "title"
@@ -63,6 +63,13 @@ ActiveRecord::Schema.define(version: 2020_12_31_013803) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "posts_tags", id: false, force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.integer "tag_id", null: false
+    t.index ["post_id"], name: "index_posts_tags_on_post_id"
+    t.index ["tag_id"], name: "index_posts_tags_on_tag_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
@@ -72,6 +79,12 @@ ActiveRecord::Schema.define(version: 2020_12_31_013803) do
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -96,4 +109,6 @@ ActiveRecord::Schema.define(version: 2020_12_31_013803) do
   end
 
   add_foreign_key "comments", "users"
+  add_foreign_key "posts_tags", "posts"
+  add_foreign_key "posts_tags", "tags"
 end
