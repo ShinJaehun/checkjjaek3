@@ -20,4 +20,6 @@ Rails.application.routes.draw do
 
   get '/posts/hashtag/:name', to: 'posts#hashtags'
 
+  get 'search', to: 'posts#search'
+
 end

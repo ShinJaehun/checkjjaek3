@@ -5,23 +5,20 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%# javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <div id="flash_messages"><%= flash_messages(:close) %></div>
-    <%= link_to '사용자 정보수정', edit_user_registration_path %>
 
-    <% if user_signed_in? %>
-      <%= link_to current_user.name, current_user %>
-      <%= link_to :로그아웃, destroy_user_session_path, method: :delete %>
-    <% else %>
-      <%= link_to :로그인, new_user_session_path %>
-    <% end %>
+    <%= render 'layouts/navbar' %>
+    <div class="container">
+      <%= yield %>
+    </div>
 
-    <%= yield %>
-
-    <%= debug(params) if Rails.env.development? %>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

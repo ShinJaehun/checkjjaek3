@@ -1,0 +1,514 @@
+/* color */
+
+.orange {
+  background: #ff9f1a; }
+
+.green {
+  background: #85ad00; }
+
+.blue {
+  background: #0076ad; }
+
+$gray-medium-light: #eaeaea;
+$gray-light: #777;
+$gray: 	#808080;
+$gray-darker: #A9A9A9;
+
+$gray-medium-light: #eaeaea;
+
+
+/* universal */
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+body, html {
+    height: 100%;
+    background-repeat: no-repeat;
+    // background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+}
+
+.btn {
+    font-weight: 700;
+    height: 36px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+a {
+  color: black;
+  font-weight: bold;
+
+  &:hover {
+    color: red;
+    text-decoration: none;
+  }
+}
+
+.small-font {
+  font-size: 12px;
+}
+
+#textarea {
+  height: 150px;
+  width: 95%;
+
+  font-size: 14px;
+  
+  word-break: break-all; 
+  word-wrap: break-word;
+}
+
+#textfield {
+  word-break: break-all; 
+  word-wrap: break-word;
+}
+
+/* header */
+
+
+/* devise sign in, edit, log in */
+
+
+.card-container {
+    max-width: 350px;
+    padding: 40px 40px;
+    // background-color: #F7F7F7;
+    /* just in case there no content*/
+    margin: 0 auto 25px;
+    margin-top: 10px;
+    /* shadows and rounded borders */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.user-info-logo-img {
+    width: 150px;
+    // height: 100px;
+    margin: 20px auto 20px;
+    display: block;
+}
+
+/*
+ * Form styles
+ */
+// .profile-name-card {
+//     font-size: 16px;
+//     font-weight: bold;
+//     text-align: center;
+//     margin: 10px 0 0;
+//     min-height: 1em;
+// }
+
+// .reauth-email {
+//     display: block;
+//     color: #404040;
+//     line-height: 2;
+//     margin-bottom: 10px;
+//     font-size: 14px;
+//     text-align: center;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     white-space: nowrap;
+//     -moz-box-sizing: border-box;
+//     -webkit-box-sizing: border-box;
+//     box-sizing: border-box;
+// }
+
+.form-user-info label {
+  margin-bottom: 0.2rem;
+}
+
+.form-user-info #inputName,
+.form-user-info #inputEmail,
+.form-user-info #inputPassword,
+.form-user-info #inputPasswordConfirmation,
+.form-user-info #inputCurrentPassword {
+    direction: ltr;
+    height: 44px;
+    font-size: 16px;
+    
+    margin-bottom: 20px;
+    border-radius: 0.25rem;
+}
+
+.form-user-info input[type=email],
+.form-user-info input[type=password],
+.form-user-info input[type=text],
+.form-user-info button {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    z-index: 1;
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.form-user-info .form-control:focus {
+    border-color: rgb(104, 145, 162);
+    outline: 0;
+    -webkit-box-sborhadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+}
+
+.btn.btn-signin {
+    /*background-color: #4d90fe; */
+    // background-color: rgb(104, 145, 162);
+    /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+    padding: 0px;
+    font-weight: 700;
+    font-size: 14px;
+    height: 36px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    // border: none;
+    -o-transition: all 0.218s;
+    -moz-transition: all 0.218s;
+    -webkit-transition: all 0.218s;
+    transition: all 0.218s;
+}
+
+// .btn.btn-signin:hover,
+// .btn.btn-signin:active,
+// .btn.btn-signin:focus {
+//     // background-color: rgb(12, 97, 33);
+// }
+
+// .forgot-password {
+//     color: rgb(104, 145, 162);
+// }
+
+// .forgot-password:hover,
+// .forgot-password:active,
+// .forgot-password:focus{
+//     color: rgb(12, 97, 33);
+// }
+
+
+/* navbar */
+
+.navbar-custom {
+  background-color: #FF8000; // height:80px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
+  .navbar-brand img {
+    width: 60px;
+  }
+  
+  /* change the brand and text color */
+  .navbar-brand, .navbar-text {
+    color: rgba(255, 255, 255, .8);
+  }
+
+  .navbar-collapse {
+    .user-photo {
+      padding: 0px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  /* change the link color */
+  .navbar-nav {
+    color: rgba(255, 255, 255, .5);
+
+    /* change the color of active or hovered links */
+    .nav-item.active .nav-link, .nav-item:hover .nav-link {
+      color: #ffffff;
+    }
+  }
+}
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $gray-medium-light;
+  color: $gray-light;
+  a {
+    color: $gray;
+    &:hover {
+      color: $gray-darker;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 15px;
+    }
+  }
+}
+
+/* posts index list */
+
+.additional-information {
+  .title {
+    font-size: 1rem;
+    padding-bottom: 10px;
+  }
+  .info-list{
+    font-size: 14px;
+    text-align: left;
+    
+    .row {
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      
+      .user-photo {
+        padding: 0px;
+        width: 30px;
+        height: 30px;
+      }
+      
+      .info {
+        margin: 5px 0;
+        max-width: 200px;
+        
+        .overflowed-content {
+          overflow: hidden; 
+          text-overflow: ellipsis;
+          white-space: nowrap; 
+          width: 170px;
+        }
+      }
+    }
+  }
+}
+
+.book-search-form .input-group .search-book-input {
+  border-radius: 0.25rem;
+}
+
+.post-list {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.post-content {
+  padding-top: 15px;
+  padding-bottom: 5px;
+  font-size:14px;
+
+  .media-body {
+    .card-title {
+      font-weight: bold;
+    }
+    padding-right: 10px;
+  }
+  
+  .information {
+    padding-bottom: 10px;
+  }
+
+}
+
+/* posts index list comment */
+  
+.user-photo {
+  padding: 0px;
+  width: 30px;
+  height: 30px;
+}
+
+.post-comment {
+  padding-top: 5px;
+  padding-bottom: 15px;
+  font-size: 14px;
+  margin: 0 10px; //상하 좌우
+
+  .media {
+    padding: 5px 0;
+    .media-body {
+      padding: 0 10px;
+    }
+  }
+  .comment-input {
+    padding: 5px 0;
+    .row {
+      padding: 0 15px;
+      .input-group .form-control {
+        border-radius: 0.25rem;
+      }
+    }
+  }
+}
+
+.col-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  padding: 0 5px;
+}
+  
+/* book show */
+
+.book-info{
+  font-size:14px;
+
+  .book-image {
+    padding-top: 15px;
+  }
+  .book-detail{
+    text-align: left;
+    font-size: 12px;
+    margin: 1rem 1rem;
+    padding: 0 10px;
+  }
+  
+}
+
+.book-reader {
+  .title {
+    font-size: 1rem;
+    padding-bottom: 10px;
+  }
+  .reader-list{
+    text-align: left;
+    line-height: 200%;
+    .user-photo {
+      padding: 0px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+/* book-search */
+
+.book-search-title {
+  margin: 30px 0 30px 30px;
+}
+
+.book-search-result {
+  font-size: 14px;
+  
+  // overflow: hidden;
+  
+  .item {
+    border-bottom: 2px dotted #666; 
+    padding: 20px 0;
+    margin: 0 30px;  
+    
+    .item-thumbnail {
+      // position: relative;
+      float: left;
+      // margin: 20px 0 0 20px;
+      width: 80px;
+    }
+  
+    .info{
+      padding: 0 20px;
+      
+      .contents{
+        margin-top: 5px;
+      }
+    }
+  }
+  .item:last-child {
+    border-bottom: 0px; 
+    padding: 20px 0;
+    margin: 0 30px;  
+    
+  }
+}
+
+.book-search-result-pagination {
+  margin: 30px 0;
+}
+
+/* search */
+
+
+.search-title {
+  margin: 30px 0 30px 30px;
+}
+
+.search-result {
+  font-size: 14px;
+  
+  // overflow: hidden;
+  
+  .title {
+    margin: 20px 50px ;
+    font-size: 20px;
+  }
+  
+  .item {
+    border-bottom: 2px dotted #666; 
+    padding: 20px 0;
+    margin: 0 50px;  
+    
+    .item-thumbnail {
+      // position: relative;
+      float: left;
+      // margin: 20px 0 0 20px;
+      width: 80px;
+    }
+  
+    .info{
+      padding: 0 20px;
+      
+      .contents{
+        margin-top: 5px;
+      }
+    }
+  }
+  .item:last-child {
+    border-bottom: 0px; 
+    padding: 20px 0;
+    margin: 0 50px;  
+  }
+      
+
+}
+
+
+
+/* new post */
+
+.new-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  // background: #eee;
+  padding: 1em;
+  line-height: 1.5em;
+}
+
+.content-input {
+  padding: 5px 0;
+  margin: 20px 15px 20px;
+ 
+  .content-panel {
+    margin-left: 15px;
+    width: 90%;
+  }
+
+}
+
+/* miscellaneous */
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
+

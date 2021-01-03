@@ -87,6 +87,20 @@ class PostsController < ApplicationController
     @posts = @tag.posts.order(created_at: :desc)
   end
 
+  def search
+    if params.has_key?(:keyword)
+      @keyword = params[:keyword]
+
+      if @keyword.present?
+        @searched_users = User.where('name like ?', "%#{@keyword}%").order(created_at: :desc)
+        @searched_books = Book.where('title like ?', "%#{@keyword}%").order(created_at: :desc)
+        @searched_posts = Post.where('content like ?', "%#{@keyword}%").order(created_at: :desc)
+      end
+
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
