@@ -32,6 +32,10 @@
                 <%= item['publisher'].html_safe %> | 
               <% end %>
               
+              <% if item['datetime'].present? %>
+                <%= item['datetime'][0..9] %>
+              <% end %>
+
             </div>
             <div class="contents">
               <%= item['contents'].html_safe %>
@@ -54,6 +58,7 @@
           <li class="page-item"><%= link_to 1, book_search_path(keyword_book: @keyword_book, page: 1), class: "page-link" %></li>
           <li class="page-item"><%= link_to '...', book_search_path(keyword_book: @keyword_book, page: @start_index - 1), class: "page-link" %></li>
         <% end %>
+
         <% @start_index.upto(@end_index) do |p| %>
           <% if p == @current_page %>
             <li class="page-item active"><%= link_to "#{p}", book_search_path(keyword_book: @keyword_book, page: p), class: "page-link" %></li>
@@ -62,11 +67,16 @@
           <% end %>
         <% end %>
         
-        <% if @current_page < @max_index - 2 %>
+        <% if @max_index > 5 && @current_page < @max_index - 2 %>
           <li class="page-item"><%= link_to '...', book_search_path(keyword_book: @keyword_book, page: @end_index + 1), class: "page-link" %></li>
           <li class="page-item"><%= link_to @max_index, book_search_path(keyword_book: @keyword_book, page: @max_index), class: "page-link" %></li>
         <% end %>
       </ul>
+      <div>
+        <% if @is_end == 'true' %>
+          마지막 페이지입니다
+        <% end %>
+      </div>
     </nav>
   </div>
 

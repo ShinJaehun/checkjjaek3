@@ -22,42 +22,50 @@ class BooksController < ApplicationController
           # 시작 위치가 정해져 있지 않으면 기본적으로 첫 페이지 보여주기
           @current_page = 1
         else
-          
+
           # 시작 위치가 설정되어 있으면 해당 페이지로
           @current_page = params[:page].to_i
 
         end
-        
+
         # url = "https://dapi.kakao.com/v2/search/book?query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s 
         # url = "https://dapi.kakao.com/v2/search/book?target=title&query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s 
-        url = "https://dapi.kakao.com/v3/search/book?query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s
+        url = "https://dapi.kakao.com/v3/search/book?target=title&query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s
 
         uri = URI.encode(url)
         res = RestClient.get(uri, headers={
           'Authorization' => Rails.application.credentials.kakao[:authorization_key]})
-          
         unitokor = eval(res)
-          
-        # puts unitokor
-          
         json_g = JSON.generate(unitokor)
         hash = JSON.parse(json_g)
-          
-        # @items = hash['items']
-        @total_count = hash['meta']['total_count']
-        
-#        puts "############################################################"
-#        puts "total_count : " + @total_count.to_s
-#        puts hash['meta']['is_end']
-#        puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s 
-        
+
+        # API의 total_count 값은 믿을 수 없음
+        # 대신 pageable_count를 사용함(근데 이 값도 자꾸 변함)
+        # @total_count = hash['meta']['total_count']
+        @total_count = hash['meta']['pageable_count']
+
+        # 마지막 페이지임을 알려주기 위해서 필요
+        @is_end = hash['meta']['is_end'].to_s
+
+        puts "############################################################"
+        puts "total_count : " + @total_count.to_s
+#        puts hash['meta']['pageable_count']
+#        puts "마지막 페이지인가요: " + hash['meta']['is_end'].to_s
+#        puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s
+
         # 마지막 페이지
         @max_index = @total_count / @size + 1
+
+        # 삼국지처럼 처음 검색했을 때는 pageable_count가 970에서
+        # 마지막 페이지를 클릭하면 갑자기 483이 되는 경우
+        if @max_index < @current_page
+          @current_page = @max_index
+        end
         
         # start_index와 end_index 값 지정하기
         if @current_page > 2
           @start_index = @current_page - 2
-          if @current_page <= @max_index - 2
+          if @current_page < @max_index - 2
             @end_index = @current_page + 2
           else
             @end_index = @max_index
@@ -71,9 +79,10 @@ class BooksController < ApplicationController
           end
         end
       
-#        puts "현재 페이지 : " + @current_page.to_s + " 마지막 페이지 : " + @max_index.to_s
-#        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
-        
+        puts "current_page : " + @current_page.to_s + " max_index : " + @max_index.to_s
+        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
+        puts "############################################################"
+
         @items = hash['documents']
 
       end
