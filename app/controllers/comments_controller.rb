@@ -51,10 +51,10 @@ class CommentsController < ApplicationController
 
   def set_commentable
     resource, id = request.path.split('/')[1,2]
-    puts("===================================")
-    puts("resource : " + resource)
-    puts("id : " + id.to_s)
-    puts("===================================")
+#    puts("===================================")
+#    puts("resource : " + resource)
+#    puts("id : " + id.to_s)
+#    puts("===================================")
     @commentable = resource.singularize.classify.constantize.find(id)
   end
 
