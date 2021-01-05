@@ -1,43 +1,91 @@
-<p id="notice"><%= notice %></p>
-
-<h1><%= @user.name %> Posts</h1>
-
-<% if can? :follow, @user %>
-  <%= link_to 'Follow', follow_user_path(@user), method: :post %>
-<% end %>
-
-Followees : <%= @user.followees.count %>
-Followers : <%= @user.followers.count %>
-
-
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Content</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= link_to post.user.name, post.user %></td>
-        <td><%= post.content %></td>
-        <td><%= link_to 'Show', post %></td>
+<div class="row py-2">
+  <div class="col-md-4 order-md-2 md-4 text-center">
+    <div class="card my-4" style="width: 18rem;">
+      <div class="profile-image">
+        <!--gravatar image를 profile 이미지로 사용하기-->
+        <%= image_tag avatar_url(@user), class: "rounded-circle", style: "padding: 30px;" %>  
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><strong><%= @user.name %></strong>님</h5>
+        <div class="row follow-counter">
+          <div class="col-md-4", style="text-align: center; padding: 0 5px;">
+            <div>책짹</div> 
+            <div><strong><%= @user.posts_count %></strong></div>
+          </div>  
+          <div class="col-md-4", style="text-align: center; padding: 0 5px;">
+            <div>팔로잉</div>
+            <div><strong><%= @user.followees.count %></strong></div>
+          </div>
+          <div class="col-md-4", style="text-align: center; <padding></padding>: 0 5px;">
+            <div>팔로워</div>
+            <div><strong><%= @user.followers.count %></strong></div>
+          </div>
+        </div>
         
-        <%# if post.user == current_user %>
-        <% if can? :manage, post %>
-          <td><%= link_to 'Edit', edit_post_path(post) %></td>
-          <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      </tr>
+        <div class="follow-button", style="margin-top: 15px;">
+          <!-- 준우 샘이 도와주신 follow/unfollow 버튼 처리 -->
+          <% if can? :follow, @user %>
+            <% if @user.followers.include?(current_user) %>
+              <%= link_to '언팔로우', follow_user_path(@user), method: :post, class: "btn btn-danger" %>
+            <% else %>
+              <%= link_to '팔로우', follow_user_path(@user), method: :post, class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="card my-4 book-reader" style="width: 18rem;">
+      <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
+      <div class="card-body">
+        <div class="title"><strong><%= @user.name %></strong>님의 정보</div>
+        <div style="text-align: left; padding: 0 5px; font-size: 12px;">
+          <div style="margin: 5px 0"><strong class="text-muted">메일주소</strong>&nbsp;&nbsp;<%= @user.email %></div>
+          <div style="margin: 5px 0"><strong class="text-muted">가입</strong>&nbsp;&nbsp;<%= @user.created_at.to_date %></div>
+          <div style="margin: 5px 0"><strong class="text-muted">마지막 로그인</strong>&nbsp;&nbsp;<%= @user.last_sign_in_at&.to_date || '-' %></div>
+          <div style="margin: 5px 0"><strong class="text-muted">마지막 책짹</strong>&nbsp;&nbsp;<%= @user.posts.last&.created_at&.to_date || '-' %></div>
+        </div>
+      </div>
+    </div>
+  
+    <% if @user.followees.count > 0 %>
+    
+      <div class="card my-4 book-reader" style="width: 18rem;">
+        <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
+        <div class="card-body">
+          <div class="title"><%= @user.name %>님이 구독하는 책짹</div>
+          <div class="reader-list">
+            <% @user.followees.each do |f| %>
+              <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
+              <%= link_to image_tag(avatar_url(f), class: "rounded-circle user-photo", title: f.name), f %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    
     <% end %>
-  </tbody>
-</table>
+    
+    <% if @user.followers.count > 0 %>
+    
+      <div class="card my-4 book-reader" style="width: 18rem;">
+        <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
+        <div class="card-body">
+          <div class="title"><%= @user.name %>님의 책짹을 구독하는 분들</div>
+          <div class="reader-list">
+            <% @user.followers.each do |f| %>
+              <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
+              <%= link_to image_tag(avatar_url(f), class: "rounded-circle user-photo", title: f.name), f %>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
-<br>
+    <% end %>
 
-<% if can? :update, @user %>
-<%= link_to 'Edit User', edit_user_registration_path %>
-<% end %>
+  </div>
+  
+  <div class="col-md-8 order-md-1">
+    <%= render 'posts/list' %>
+  </div>
+</div>

@@ -1,42 +1,157 @@
-<p id="notice"><%= notice %></p>
+<div class="row py-2">
 
-<div class="book-search-form">
-  <%= form_tag book_search_path, method: :get, class: "input-group mt-4" do %>
-    <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
-    <div class="input-group-btn">
-      <%= submit_tag '책 찾기', class: "btn btn-outline-secondary" %>
+  <div class="col-md-4 order-md-2 md-4 text-center">
+    <div class="card my-4" style="width: 18rem;">
+      <div class="profile-image">
+        <%= image_tag avatar_url(current_user), class: "rounded-circle", style: "padding: 30px;" %>  
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><strong><%= current_user.name %></strong>님</h5>
+        <div class="row follow-counter">
+          <div class="col-md-4", style="text-align: center; padding: 0 5px;">
+            <div>책짹</div> 
+            <div><strong><%= current_user.posts_count %></strong></div>
+          </div>  
+          <div class="col-md-4", style="text-align: center; padding: 0 5px;">
+            <div>팔로잉</div>
+            <div><strong><%= current_user.followees.count %></strong></div>
+          </div>
+          <div class="col-md-4", style="text-align: center; <padding></padding>: 0 5px;">
+            <div>팔로워</div>
+            <div><strong><%= current_user.followers.count %></strong></div>
+          </div>
+        </div>
+      </div>
     </div>
-  <% end %>
+
+    <div class="card my-4 additional-information" style="width: 18rem;">
+      <div class="card-body">
+        <div class="title">팔로우 추천</div>
+          <div class="info-list">
+          
+            <% @suggested_friends_by_followers.each do |u| %>
+              <div class="row">
+                <div class="col-md-2">
+                <%= link_to image_tag(avatar_url(u), class: "rounded-circle user-photo", title: u.name), u %>
+                </div>
+                <div class="col-md-10 info">
+                  <strong><%= link_to u.name, u%></strong><span class="small-font">님 팔로워</span> <strong><%= u.followers.count %></strong><span class="small-font"> 책짹</span> <strong><%= u.posts_count %></strong>
+                </div>
+              </div>  
+            <% end %>
+          </div>
+
+      </div>
+    </div>
+    
+    <div class="card my-4 additional-information" style="width: 18rem;">
+      <div class="card-body">
+        <div class="title">최근 책짹</div>
+          <div class="info-list">
+          
+            <% @recent_posts.each do |p| %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= link_to image_tag(avatar_url(p.user), class: "rounded-circle user-photo", title: p.user.name), p.user %>
+                </div>
+                <div class="col-md-10 info">
+                  <div>
+                    <strong><%= link_to p.user.name, p.user %></strong><span class="small-font">님 <%= "#{time_ago_in_words(p.created_at)} 전" %></span>
+                  </div>
+                  <div class="overflowed-content">
+                    <span class="small-font"><%= link_to p.content, p %></span>
+                  </div>
+                </div>
+              </div>  
+            <% end %>
+          </div>
+
+      </div>
+    </div>
+    
+    <div class="card my-4 additional-information" style="width: 18rem;">
+      <div class="card-body">
+        <div class="title">가장 많은 좋아요를 받은 책짹</div>
+          <div class="info-list">
+          
+            <% @favorite_posts.each do |p| %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= link_to image_tag(avatar_url(p.user), class: "rounded-circle user-photo", title: p.user.name), p.user %>
+                </div>
+                <div class="col-md-10 info">
+                  <div>
+                    <strong><%= link_to p.user.name, p.user %></strong>
+                    <span class="small-font">님 
+                      <% if !p.like_users.include?(current_user)%>
+                        <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(p), method: :post )%>
+                      <% else %>
+                        <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(p), method: :post )%>
+                      <% end %>
+                      <% if p.like_users.count > 0 %>
+                        <span class="badge badge-primary badge-pill"><%= p.like_users.count %></span>
+                      <% end %>
+                    </span>
+                  </div>
+                  <div class="overflowed-content">
+                    <span class="small-font"><%= link_to p.content, p %></span>
+                  </div>
+                </div>
+              </div>  
+            <% end %>
+          </div>
+
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="col-md-8 order-md-1">
+    <div class="book-search-form">
+      <%= form_tag book_search_path, method: :get, class: "input-group mt-4" do %>
+        <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+        <div class="input-group-btn">
+          <%= submit_tag '책 찾기', class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="book-search-form">
+      <!--
+      <%#= link_to '글 남기기', new_message_path  %>
+
+      <%#= link_to '글 남기기', new_message_path, remote: true, data: { target: '#modal-window', toggle: 'modal' }, class: 'btn btn-primary' %>
+      <div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          </div>
+        </div>
+      </div>
+
+      <%#= form_tag message_path, method: :post, class: "input-grpup mt-4" do %>
+        <%#= text_field_tag :message_content, params[:message_content], require: true,  class: "form-control search-book-input", placeholder: "어떤 이야기를 나눌까요?" %>
+          <%#= submit_tag '글 남기기', class: "btn btn-outline-secondary" %>
+      <%# end %>
+      -->
+
+      <%# message = Message.new %>
+      <%# message.posts.new %>
+
+      <%#= form_for message do |form| %>
+        <%#= form.hidden_field :sender_id, :value => current_user.id %>
+        <%#= form.hidden_field :receiver_id, :value => current_user.id %>
+
+        <%#= form.fields_for :posts do |posts_field| %>
+          <%#= posts_field.hidden_field :user_id, :value => current_user.id %>
+          <%#= posts_field.text_area :content, id: "textarea", require: true, placeholder: "어떤 이야기를 나눌까요?" %>
+        <%# end %>
+
+        <%#= form.submit '글 남기기', class: "btn btn-outline-secondary" %>
+
+      <%# end %>
+    </div>
+
+    <%= render 'list' %>
+  </div>
+
 </div>
-
-
-<h1>Posts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>내용</th>
-      <th>사용자</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= render_with_hashtags(post.content) %></td>
-        <td><%= link_to post.user.name, post.user %></td>
-        <td><%= link_to 'Show', post %></td>
-
-        <% if can? :manage, post %>
-          <td><%= link_to 'Edit', edit_post_path(post) %></td>
-          <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Post', new_post_path %>

@@ -1,33 +1,36 @@
-<p id="notice"><%= notice %></p>
+<div class="row py-2">
 
-<p>
-  <strong>User:</strong>
-  <%= @post.user.name %>
-</p>
+  <div class="col-md-4 order-md-2 md-4 text-center">
+    <div class="card my-4" style="width: 18rem;">
+      <div class="profile-image">
+        <%= link_to image_tag(avatar_url(@post.user), class: "rounded-circle", style: "padding: 30px;"), @post.user %>  
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><strong><%= link_to @post.user.name, @post.user %></strong>님의 책짹</h5>
+      </div>
+    </div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @post.content %>
-</p>
-
-<p>
-  <strong>Likes:</strong>
-    <%= @post.like_users.count %>
-</p>
-
-<p>
-  <%= link_to 'Like', like_post_path, method: :post %>
-</p>
-
-<%= @post.like_users.ids %>
-
-<p>
-  <%= render "comments/comments" %>
-</p>
+  
+    <% if @post.like_users.count > 0 %>
+      
+      <div class="card my-4 book-reader" style="width: 18rem;">
+        <div class="card-body">
+          <div class="title">이 책짹을 좋아하는 분들</div>
+          <div class="reader-list">
+            <% @post.like_users.each do |u| %>
+              <%= link_to image_tag(avatar_url(u), class: "rounded-circle user-photo", title: u.name), u %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+        
+    <% end %>
+  
+  </div>
 
 
-<% if can? :manage, @post %>
-  <%= link_to 'Edit', edit_post_path(@post) %> |
-<% end %>
+  <div class="col-md-8 order-md-1">
+    <%= render 'item' %>
+  </div>
 
-<%= link_to 'Back', posts_path %>
+</div>

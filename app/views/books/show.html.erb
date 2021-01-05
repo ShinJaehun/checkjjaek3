@@ -4,20 +4,49 @@
     <div class="card my-4 book-info" style="width: 18rem;">
       <div class="book-image">
         <!--book image-->
-        <%= link_to image_tag(book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px'), @book.url, target: "_blank" %>  
+        <%#= link_to image_tag(book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px'), @book.url, target: "_blank" %>
+        <%= image_tag book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px' %>
       </div>
-      
+
       <div class="book-detail">
-        
-        <h4 class="card-title mb-2"><%= link_to @book.title, @book.url, target: "_blank" %></h4>
+
+        <h4 class="card-title mb-2">
+          <%#= link_to @book.title, @book.url, target: "_blank" %>
+          <%= @book.title %>
+        </h4>
         <div class="card-subtitle my-3 ml-2">
-  
+  			  <%# if @book.category.present? %>
+          <!--
+            <div>
+  				    <strong class="text-muted">분류</strong>&nbsp;&nbsp;<%#= @book.category.html_safe %>
+  				  </div>
+  				-->
+          <%# end %>
+
+          <%# if @book.authors.present? %>
+            <div>
+  				    <strong class="text-muted">저자</strong>&nbsp;&nbsp;<%#= @book.authors.html_safe %>
+  				  </div>
+          <%# end %>
+
+          <%# if @book.translators.present? %>
+            <div>
+              <strong class="text-muted">역자</strong>&nbsp;&nbsp;<%#= @book.translators.html_safe %>
+            </div>
+          <%# end %>
+
           <% if @book.publisher.present? %>
             <div>
               <strong class="text-muted">출판사</strong>&nbsp;&nbsp;<%= @book.publisher.html_safe %>
             </div>
           <% end %>
-          
+
+          <%#= if @book.date_time.present? %>
+            <div>
+              <strong class="text-muted">출판일</strong>&nbsp;&nbsp;<%#= @book.date_time.html_safe %>
+            </div>
+          <%#= end %>
+
 	  	  </div>
 
   			<div class="description">
@@ -29,8 +58,32 @@
       </div>
     </div>
 
+    <div class="card my-4 additional-information" style="width: 18rem;">
+      <div class="card-body">
+        <div class="title">관련 책짹 <strong><%= @posts.count %></strong>개</div>
+        <div class="info-list">
+          <% @posts.each do |p| %>
+            <div class="row">
+              <div class="col-md-2">
+                <%= link_to image_tag(avatar_url(p.user), class: "rounded-circle user-photo", title: p.user.name), p.user %>
+              </div>
+              <div class="col-md-10 info">
+                <div>
+                  <strong><%= link_to p.user.name, p.user %></strong><span class="small-font">님 <%= "#{time_ago_in_words(p.created_at)} 전" %></span>
+                </div>
+                <div class="overflowed-content">
+                  <span class="small-font"><%= link_to p.content, p %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-8 order-md-1">
-    <%# render 'post_list' %>
+    <%= render 'post_list' %>
   </div>
 
 </div>
