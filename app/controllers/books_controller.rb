@@ -111,8 +111,12 @@ class BooksController < ApplicationController
       @book = Book.create(
         title: CGI.unescapeHTML(book_params[:title]),
         contents: CGI.unescapeHTML(book_params[:contents]),
+        url: book_params[:url],
         isbn:  book_params[:isbn],
+        datetime: book_params[:datetime],
+        authors: book_params[:authors],
         publisher: book_params[:publisher],
+        translators: book_params[:transaltors],
         thumbnail:  thumbnail_path
       )
     end
@@ -149,7 +153,7 @@ class BooksController < ApplicationController
   
   def book_params
     # params.require(:book).permit(:title, :isbn, :authors, :thumbnail, :publisher, :contents, :url, :date_time, :translators, posts_attributes: [:user_id, :content])
-    params.require(:book).permit(:title, :contents, :isbn, :publisher, :thumbnail, posts_attributes: [:user_id, :content])
+    params.require(:book).permit(:title, :contents, :url, :isbn, :datetime, :authors, :publisher, :translators, :thumbnail, posts_attributes: [:user_id, :content])
   end
 
 end

@@ -21,13 +21,26 @@
               <%= link_to item['title'].html_safe, 
                 new_book_path(
                   title: strip_tags(item['title']),
-                  contents:  strip_tags(item['contents']),
+                  contents: strip_tags(item['contents']),
+                  url: strip_tags(item['url']),
                   isbn: strip_tags(item['isbn']),
+                  datetime: strip_tags(item['datetime'][0..9]),
+                  authors: strip_tags(item['authors'].join(",")),
                   publisher: strip_tags(item['publisher']),
+                  translators: strip_tags(item['translators'].join(",")),
                   thumbnail: strip_tags(item['thumbnail'])) %>
             </div>
+          
             <div class="writers text-muted">
-              
+
+              <% if item['authors'].present? %>
+                <%= item['authors'].join(",").html_safe %><span>저</span> | 
+              <% end %>
+
+              <% if item['translators'].present? %>
+                <%= item['translators'].join(",").html_safe %><span>역</span> | 
+              <% end %>
+
               <% if item['publisher'].present? %>
                 <%= item['publisher'].html_safe %> | 
               <% end %>
@@ -37,13 +50,13 @@
               <% end %>
 
             </div>
+          
             <div class="contents">
               <%= item['contents'].html_safe %>
-        </div>
             </div>
-          </div>
-            
           
+          </div>
+        </div>
       <% end %>
 
     </div>

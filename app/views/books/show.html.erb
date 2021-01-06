@@ -4,15 +4,15 @@
     <div class="card my-4 book-info" style="width: 18rem;">
       <div class="book-image">
         <!--book image-->
-        <%#= link_to image_tag(book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px'), @book.url, target: "_blank" %>
-        <%= image_tag book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px' %>
+        <%= link_to image_tag(book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px'), @book.url, target: "_blank" %>
+        <%#= image_tag book_thumbnail250(@book.thumbnail), class: "border mx-3", width: '250px' %>
       </div>
 
       <div class="book-detail">
 
         <h4 class="card-title mb-2">
-          <%#= link_to @book.title, @book.url, target: "_blank" %>
-          <%= @book.title %>
+          <%= link_to @book.title, @book.url, target: "_blank" %>
+          <%#= @book.title %>
         </h4>
         <div class="card-subtitle my-3 ml-2">
   			  <%# if @book.category.present? %>
@@ -23,17 +23,17 @@
   				-->
           <%# end %>
 
-          <%# if @book.authors.present? %>
+          <% if @book.authors.present? %>
             <div>
-  				    <strong class="text-muted">저자</strong>&nbsp;&nbsp;<%#= @book.authors.html_safe %>
+  				    <strong class="text-muted">저자</strong>&nbsp;&nbsp;<%= @book.authors.html_safe %>
   				  </div>
-          <%# end %>
+          <% end %>
 
-          <%# if @book.translators.present? %>
+          <% if @book.translators.present? %>
             <div>
-              <strong class="text-muted">역자</strong>&nbsp;&nbsp;<%#= @book.translators.html_safe %>
+              <strong class="text-muted">역자</strong>&nbsp;&nbsp;<%= @book.translators.html_safe %>
             </div>
-          <%# end %>
+          <% end %>
 
           <% if @book.publisher.present? %>
             <div>
@@ -41,11 +41,11 @@
             </div>
           <% end %>
 
-          <%#= if @book.date_time.present? %>
+          <% if @book.datetime.present? %>
             <div>
-              <strong class="text-muted">출판일</strong>&nbsp;&nbsp;<%#= @book.date_time.html_safe %>
+              <strong class="text-muted">출판일</strong>&nbsp;&nbsp;<%= @book.datetime.html_safe %>
             </div>
-          <%#= end %>
+          <% end %>
 
 	  	  </div>
 
