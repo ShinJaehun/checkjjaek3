@@ -8,17 +8,19 @@ class CommentsController < ApplicationController
   def create
     @comment = @commentable.comments.new(comment_params)
     @comment.user = current_user
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to @comment.commentable, notice: "Comment was successfully created."}
-        format.json { render json: @comment }
-        format.js
-      else
-        format.html { render :back, notice: "Comment was not created." }
-        format.json { render json: @comment.errors }
-        format.js
-      end
-    end
+    @comment.save
+
+#    respond_to do |format|
+#      if @comment.save
+#        format.html { redirect_to @comment.commentable, notice: "Comment was successfully created."}
+#        format.json { render json: @comment }
+#        format.js
+#      else
+#        format.html { redirect_to @comment.commentable,  notice: "Comment was not created." }
+#        format.json { render json: @comment.errors }
+#        format.js
+#      end
+#    end
   end
 
   def edit
@@ -27,11 +29,11 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
-        format.html { redirect_to @commentable, notice: "Comment was successfully updated."}
+        format.html { redirect_to @comment.commentable, notice: "Comment was successfully updated."}
         format.json { render json: @comment }
         format.js
       else
-        format.html { render :back, notice: "Comment was not updated." }
+        format.html { redirect_to @comment.commentable, notice: "Comment was not updated." }
         format.json { render json: @comment.errors }
         format.js
       end

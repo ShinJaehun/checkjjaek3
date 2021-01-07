@@ -1,13 +1,11 @@
 <ul>
   <li id="comment_<%=comment.id%>" class="comment">
-  <div>
+
     <%= comment.content %>
     <%= time_ago_in_words(comment.created_at) %> ago
 
     <%= comment.user.email %>가 썼음
-    <%= render partial: 'comments/form', locals: { commentable: comment.commentable, parent_id: comment.id } %>
-
-  </div>
+    <%#= render partial: 'comments/form', locals: { commentable: comment.commentable, parent_id: comment.id } %>
 
   <div>
     <% if comment.replies.any? %>

@@ -1,0 +1,3 @@
+//alert("hello!")
+$('#comments_list_<%=@comment.commentable.id%>').append("<%= j render 'comments/comment', comment: @comment %>");
+$('#comments_form_<%=@comment.commentable.id%> #comment_content').val('');

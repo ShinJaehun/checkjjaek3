@@ -1,13 +1,4 @@
 <div class="comments">
-  <div class="comment_header">
-    <h2>Comments:</h2>
-  </div>
-
-  <div class="comment_list">
-    <%= render "comments/list" %>
-  </div>
-
-  <div class="comments_form">
-    <%= render partial: "comments/form", locals: { commentable: @post } %>
-  </div>
+  <%= render "comments/list", post: post %>
+  <%= render partial: "comments/form", locals: { commentable: post } %>
 </div>

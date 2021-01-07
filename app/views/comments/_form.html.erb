@@ -1,4 +1,5 @@
-  <%= form_for([commentable, Comment.new]) do | f | %>
+<div id="comments_form_<%=commentable.id%>">
+  <%= form_for([commentable, Comment.new], remote: true) do | f | %>
     <%= f.hidden_field :parent_id, value: local_assigns[:parent_id]  %>
 
     <div >
@@ -8,3 +9,4 @@
       </p>
     </div>
   <% end %>
+</div>
