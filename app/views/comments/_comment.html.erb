@@ -3,7 +3,7 @@
 
     <%= comment.content %>
     <%= time_ago_in_words(comment.created_at) %> 전에 
-    <%= comment.user.email %>가 썼음
+    <%= comment.user.name %>가 썼음
 
     <%= link_to "Reply", polymorphic_path([:reply, comment.commentable, comment]), class: 'reply-comment-link', remote: true  %>
 

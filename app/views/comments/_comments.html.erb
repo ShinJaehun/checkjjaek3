@@ -3,7 +3,7 @@
     <% if post.comments.size > 0 %>
       <%= render post.comments.where(parent_id: nil) %>
     <% else %>
-      <li>
+      <li id="comments_list_no_comments">
         No comments
       </li>
     <% end %>
