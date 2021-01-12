@@ -1,0 +1,2 @@
+//alert("@comment.id : " + "<%#= @comment.id %>\n" + "@reply.id : " + "<%#= @reply.id %>\n" + "parent_id : " + "<%#= @comment.parent_id %>")
+$("#comment_<%= @comment.id %> .comment-content").first().after("<%=j render('comments/form', commentable: @reply.commentable, parent_id: @comment.id) %>");

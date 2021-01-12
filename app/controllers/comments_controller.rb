@@ -1,9 +1,13 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_commentable
-  before_action :set_comment, only: [ :edit, :update, :destroy ]
+  before_action :set_comment, only: [ :reply, :edit, :update, :destroy ]
 
   load_and_authorize_resource
+
+  def reply
+    @reply = @commentable.comments.build(parent: @comment)
+  end
 
   def create
     @comment = @commentable.comments.new(comment_params)

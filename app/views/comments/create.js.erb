@@ -1,3 +1,20 @@
-//alert("hello!")
-$('#comments_list_<%=@comment.commentable.id%>').append("<%= j render 'comments/comment', comment: @comment %>");
-$('#comments_form_<%=@comment.commentable.id%> #comment_content').val('');
+//alert("@comment.id : " + "<%#= @comment.id %>\n" + "parent_id : " + "<%#= @comment.parent_id %>")
+
+<% if @comment.parent %>
+  $comment_parent = $("#comment_<%= @comment.parent.id %> > ul");
+  if(!$comment_parent.length){
+    $("#comment_<%= @comment.parent.id %>").append("<ul></ul>");
+    $comment_parent = $("#comment_<%= @comment.parent.id %> > ul");
+  }
+  $comment_form = $("#comment_<%= @comment.parent.id %> #comments_form");
+<% else %>
+  $comment_parent = $("#commentable_<%= @comment.commentable.id %> #comments_list");
+  $comment_form = $("#commentable_<%= @comment.commentable.id %> #comments_form");
+<% end %>
+
+$comment_parent.append("<%=j render 'comments/comment', comment: @comment %>").find('li').last();
+$comment_form.find('form')[0].reset();
+
+<% if @comment.parent %>
+  $comment_form.remove();
+<% end %>

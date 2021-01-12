@@ -1,12 +1,10 @@
-<div id="comments_form_<%=commentable.id%>">
+<div id="comments_form">
   <%= form_for([commentable, Comment.new], remote: true) do | f | %>
     <%= f.hidden_field :parent_id, value: local_assigns[:parent_id]  %>
 
-    <div >
-      <p>
-        <%= f.text_field :content %>
-        <%= f.submit %>
-      </p>
+    <div class="comment_input">
+      <%= f.text_field :content %>
+      <%= f.submit %>
     </div>
   <% end %>
 </div>

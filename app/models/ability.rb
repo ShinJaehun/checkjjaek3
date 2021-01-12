@@ -20,6 +20,7 @@ class Ability
       end
 
       can :create, Comment
+      can :reply, Comment
       can :destroy, Comment, user_id: user.id
 
       can :book_search, Book

@@ -1,18 +1,17 @@
-<ul>
-  <li id="comment_<%=comment.id%>" class="comment">
+<li id="comment_<%=comment.id%>">
+  <div class="comment-content">
 
     <%= comment.content %>
-    <%= time_ago_in_words(comment.created_at) %> ago
-
+    <%= time_ago_in_words(comment.created_at) %> 전에 
     <%= comment.user.email %>가 썼음
-    <%#= render partial: 'comments/form', locals: { commentable: comment.commentable, parent_id: comment.id } %>
 
-  <div>
-    <% if comment.replies.any? %>
-      <ul>
-        <%= render comment.replies %>
-      </ul>
-    <% end %>
+    <%= link_to "Reply", polymorphic_path([:reply, comment.commentable, comment]), class: 'reply-comment-link', remote: true  %>
+
   </div>
-  </li>
-</ul>
+
+  <% if comment.replies.any? %>
+    <ul>
+      <%= render comment.replies %>
+    </ul>
+  <% end %>
+</li>
