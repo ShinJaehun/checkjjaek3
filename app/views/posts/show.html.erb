@@ -10,9 +10,7 @@
       </div>
     </div>
 
-  
     <% if @post.like_users.count > 0 %>
-      
       <div class="card my-4 book-reader" style="width: 18rem;">
         <div class="card-body">
           <div class="title">이 책짹을 좋아하는 분들</div>
@@ -23,9 +21,9 @@
           </div>
         </div>
       </div>
-        
     <% end %>
-  
+
+  </div>
 
   <div class="col-md-8 order-md-1">
     <%= render 'item' %>
