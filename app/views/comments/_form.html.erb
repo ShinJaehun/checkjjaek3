@@ -1,10 +1,14 @@
-<div id="comments_form">
-  <%= form_for([commentable, Comment.new], remote: true) do | f | %>
-    <%= f.hidden_field :parent_id, value: local_assigns[:parent_id]  %>
-
-    <div class="comment_input">
-      <%= f.text_field :content %>
-      <%= f.submit %>
-    </div>
-  <% end %>
+<div id="comments_form" class="media">
+  <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+  <div class="media-body">
+    <%= form_for([commentable, Comment.new], remote: true) do | f | %>
+      <%= f.hidden_field :parent_id, value: local_assigns[:parent_id]  %>
+      <div class="input-group">
+        <%= f.text_field :content, maxlength: '200', class: "form-control form-control-sm", placeholder: "댓글을 입력하세요." %>
+        <span class="input-group-btn">
+          <%= f.submit '입력', class: "btn btn-outline-secondary btn-sm" %>
+        </span>
+      </div>
+    <% end %>
+  </div>
 </div>

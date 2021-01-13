@@ -1,4 +1,4 @@
-<div id="commentable_<%=post.id%>">
+<div id="commentable_<%=post.id%>" class="post-comment">
   <ul id="comments_list">
     <% if post.comments.size > 0 %>
       <%= render post.comments.where(parent_id: nil) %>

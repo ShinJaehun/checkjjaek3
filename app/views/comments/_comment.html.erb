@@ -1,12 +1,15 @@
 <li id="comment_<%=comment.id%>">
-  <div class="comment-content">
-
-    <%= comment.content %>
-    <%= time_ago_in_words(comment.created_at) %> 전에 
-    <%= comment.user.name %>가 썼음
-
-    <%= link_to "Reply", polymorphic_path([:reply, comment.commentable, comment]), class: 'reply-comment-link', remote: true  %>
-
+  <div class="media">
+    <%= link_to image_tag(avatar_url(comment.user), class: "rounded-circle user-photo", title: comment.user.name), comment.user %>
+    <div class="comment-content">
+      <div class="panel-heading">
+        <strong><%= link_to comment.user.name, comment.user%></strong>님 <span class="text-muted"><%= "#{time_ago_in_words(comment.created_at)} 전" %> </span>
+      </div>
+      <div class="panel-body">
+        <%= comment.content %>
+        <%= link_to "Reply", polymorphic_path([:reply, comment.commentable, comment]), class: 'reply-comment-link', remote: true  %>
+      </div>
+    </div>
   </div>
 
   <% if comment.replies.any? %>

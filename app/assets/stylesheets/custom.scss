@@ -321,6 +321,9 @@ footer {
 }
 
 /* posts index list comment */
+
+//css 디버깅할 때 가장 필요한 거 같애...
+//div {border:1px solid red}
   
 .user-photo {
   padding: 0px;
@@ -329,35 +332,51 @@ footer {
 }
 
 .post-comment {
+
+//  div {border:1px solid red}
+  
   padding-top: 5px;
   padding-bottom: 15px;
   font-size: 14px;
   margin: 0 10px; //상하 좌우
 
+  #comments_list {
+    padding: 0px 5px;
+  }
+
+  ul{
+    list-style:none;
+    //padding-left:0px;
+  }
+
   .media {
     padding: 5px 0;
-    .media-body {
+    .comment-content {
+      padding: 0 10px;
+    }
+    .input-group {
       padding: 0 10px;
     }
   }
-  .comment-input {
-    padding: 5px 0;
-    .row {
-      padding: 0 15px;
-      .input-group .form-control {
-        border-radius: 0.25rem;
-      }
+
+  #comments_form {
+    padding: 0 5px;
+
+    .comment_input {
+      border-radius: 0.25rem;
     }
   }
 }
 
-.col-panel {
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  padding: 0 5px;
-}
-  
+/*
+//.col-panel {
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//  padding: 0 5px;
+//}
+*/
+
 /* book show */
 
 .book-info{
