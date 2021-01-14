@@ -333,8 +333,6 @@ footer {
 
 .post-comment {
 
-//  div {border:1px solid red}
-  
   padding-top: 5px;
   padding-bottom: 15px;
   font-size: 14px;
@@ -350,21 +348,24 @@ footer {
   }
 
   .media {
+    
     padding: 5px 0;
     .comment-content {
       padding: 0 10px;
     }
+
     .input-group {
       padding: 0 10px;
     }
+
   }
 
   #comments_form {
     padding: 0 5px;
+  }
 
-    .comment_input {
-      border-radius: 0.25rem;
-    }
+  .reply_form {
+    padding: 10px;
   }
 }
 
