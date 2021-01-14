@@ -10,11 +10,14 @@ Rails.application.routes.draw do
         get :reply
       end
     end
-    #post 'comments', to: 'comments#create'
   end
 
   resources :books do
     resources :posts, module: :books
+  end
+
+  resources :messages do
+    resources :posts, module: :messages
   end
 
   resources :users, only:[:show] do

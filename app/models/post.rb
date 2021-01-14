@@ -4,6 +4,7 @@ class Post < ApplicationRecord
   validates :user_id, presence: true
   belongs_to :user, :counter_cache => :posts_count
 
+  # Book/Message와 Post의 1:N 관계(Book이나 Message와의 관계를 직접 명시할 필요 없음)
   belongs_to :postable, polymorphic: true
 
   has_many :likes, dependent: :destroy

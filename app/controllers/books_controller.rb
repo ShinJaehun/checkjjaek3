@@ -133,11 +133,6 @@ class BooksController < ApplicationController
 #    puts book_params[:posts_attributes]['0']
 #    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
 
-    #post = @book.posts.new book_params.first.content, book_params.first.user_id
-    # post.content = book_params.first.content
-    # post.user_id = book_params.first.user_id
-    #post.save
-
     post = @book.posts.new(content: book_params[:posts_attributes]['0'][:content])
     post.user_id = book_params[:posts_attributes]['0'][:user_id]
     post.save
