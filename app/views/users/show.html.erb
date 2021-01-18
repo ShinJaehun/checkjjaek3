@@ -84,6 +84,10 @@
     <% end %>
 
   </div>
+
+  <div id="book-search-form">
+    <%= link_to '글 남기기', new_message_path(receiver_id: @user.id)  %>
+  </div>
   
   <div class="col-md-8 order-md-1">
     <%= render 'posts/list' %>

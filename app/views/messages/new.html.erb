@@ -33,8 +33,11 @@
             
             <%= form_for(@message) do |form| %>
               <%= form.hidden_field :sender_id, :value => current_user.id %>
-              <%= form.hidden_field :receiver_id, :value => current_user.id %>
-      
+              <% if params[:receiver_id].present? %>
+                <%= form.hidden_field :receiver_id, :value => params[:receiver_id].html_safe %>
+              <% else %>
+                <%= form.hidden_field :receiver_id, :value => current_user.id %>
+              <% end %>
               <%= form.fields_for :posts do |posts_field| %>
                 <%= posts_field.hidden_field :user_id, :value => current_user.id %>
                 <%= posts_field.text_area :content, id: "textarea", require: true, placeholder: "어떤 이야기를 나눌까요?" %>

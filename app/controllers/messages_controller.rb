@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
     # 얘는 message에 해당하는 sender_id와 receiver_id 밖에 없음...
     puts message_params
     puts message_params[:posts_attributes]
-    puts message_params[:posts_attributes][:content]
+    puts message_params[:posts_attributes]['0']
     puts '#########################################################'
 
     @message = Message.create(

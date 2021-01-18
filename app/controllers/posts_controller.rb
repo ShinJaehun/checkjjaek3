@@ -15,8 +15,22 @@ class PostsController < ApplicationController
     # 가장 많은 좋아요를 받은 책짹
     @favorite_posts = Post.all.sort{|a,b| b.like_users.count <=> a.like_users.count}.first(10)
 
-    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).order(created_at: :desc)
+    #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).order(created_at: :desc)
+    #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).or(Post.where(postable_type: "Message"))
+    #@posts = Post.where(postable_type: "Message")
+    
+    @messages = Message.where(receiver_id: current_user.id)
+    #@posts = Post.where(postable_type: "Message", postable_id: @messages.ids)
+    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).or(Post.where(postable_type: "Message", postable_id: @messages.ids)).order(created_at: :desc)
 
+    #@posts = Post.where(postable_type: "Message").where(receiver_id: current_user.id)
+    #@posts = Post.includes(:messages).where(receiver_id: current_user.id)
+#    @messages = Message.where(receiver_id: current_user.id) #일단 이렇게 하면 정상적으로 메시지를 찾기는 함.... 여기서 메시지의 ID를 얻어내야 하는가?
+#    @posts = Post.where(postable_type: "Message", postable_id: @messages.ids)
+    # 중요한 테스트를 해봐야 하는데 만일 Message 모델에 추가한 receiver_id와sender_id 관련 내용을 삭제한다면
+    # 올바른 @messages를 찾아낼 수 있는 것인가? => 이거 필요 없음.....
+
+    
   end
 
   # GET /posts/1
