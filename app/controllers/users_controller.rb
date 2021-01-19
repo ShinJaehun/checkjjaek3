@@ -4,7 +4,9 @@ class UsersController < ApplicationController
     load_and_authorize_resource
 
     def show
-        @posts = @user.posts.order(created_at: :desc)
+      # user show에서 해당 사용자에게 남긴 메시지를 확인할 수 있음.
+      @receive_messages = Message.where(receiver_id: @user.id)
+      @posts = @user.posts.where.not(postable_type: 'Message').or(Post.where(postable: @receive_messages)).order(created_at: :desc)
     end
 
     def follow
