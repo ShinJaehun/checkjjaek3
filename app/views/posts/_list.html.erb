@@ -53,18 +53,25 @@
 
   <!--style="width:40rem;"를 붙이면 card가 고정폭으로 변경됨-->
   <% elsif post.postable_type == "Message" %>
+
+    <% sender = User.find(post.postable.sender_id) %>
+    <% receiver = User.find(post.postable.receiver_id) %>
+
     <div class="post-list card my-4">
   
       <!--포스트 내용-->
       <div class="post-content media">
-        <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
-
+        <% if sender.id != receiver.id %>
+          <%= link_to image_tag(avatar_url(sender), class: "rounded-circle user-photo", title: sender.name), sender %>
+          <i class="fas fa-angle-double-right"></i>
+          <%= link_to image_tag(avatar_url(receiver), class: "rounded-circle user-photo", title: receiver.name), receiver %>
+        <% else %>
+          <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+        <% end %>
         <div class="media-body">
           <!--포스트 정보-->
           <div class="information">
 
-            <% sender = User.find(post.postable.sender_id) %>
-            <% receiver = User.find(post.postable.receiver_id) %>
 
             <% if sender.id != receiver.id %>
               <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.
