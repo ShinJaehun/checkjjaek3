@@ -62,8 +62,16 @@
         <div class="media-body">
           <!--포스트 정보-->
           <div class="information">
-            <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 작성했습니다.
-      
+
+            <% sender = User.find(post.postable.sender_id) %>
+            <% receiver = User.find(post.postable.receiver_id) %>
+
+            <% if sender.id != receiver.id %>
+              <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.
+            <% else %>
+              <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 글을 남겼습니다.
+            <% end %>
+
             <!-- fontawesome으로 만든 좋아요 버튼 -->
             <% if !post.like_users.include?(current_user)%>
               <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
