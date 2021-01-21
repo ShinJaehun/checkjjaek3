@@ -107,6 +107,14 @@
   </div>
 
   <div class="col-md-8 order-md-1">
+
+    <div>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBook">
+        책짹<i class="fas fa-dove ml-2"></i>
+      </button>
+    </div>
+
     <div class="book-search-form">
       <%= form_tag book_search_path, method: :get, class: "input-group mt-4" do %>
         <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
@@ -153,6 +161,34 @@
 
     <%= render 'list' %>
     
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <%= form_tag book_search_path, method: :get do %>
+          
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">책짹</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+
+
+          <div class="modal-body">
+            <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= submit_tag "책 찾기", class: "btn btn-primary" %>
+          </div>
+
+        <% end %>
+
+      </div>
+    </div>
   </div>
 
 </div>
