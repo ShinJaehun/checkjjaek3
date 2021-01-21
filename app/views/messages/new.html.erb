@@ -40,7 +40,7 @@
               <% end %>
               <%= form.fields_for :posts do |posts_field| %>
                 <%= posts_field.hidden_field :user_id, :value => current_user.id %>
-                <%= posts_field.text_area :content, id: "textarea", require: true, placeholder: "어떤 이야기를 나눌까요?" %>
+                <%= posts_field.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: "어떤 이야기를 나눌까요?" %>
               <% end %>
       
               <%= form.submit '글 남기기', class: "btn btn-outline-secondary" %>

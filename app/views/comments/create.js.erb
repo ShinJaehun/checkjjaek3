@@ -3,16 +3,12 @@
 <% if @comment.parent %>
   $comment_parent = $("#comment_<%= @comment.parent.id %> > ul");
   //첫 대댓글인 경우 빈 ul을 만들어줘야 함
-  if(!$comment_parent.length){
+  if (!$comment_parent.length) {
     $("#comment_<%= @comment.parent.id %>").append("<ul></ul>");
     $comment_parent = $("#comment_<%= @comment.parent.id %> > ul");
   }
   $comment_form = $("#comment_<%= @comment.parent.id %> #comments_form");
 <% else %>
-  //첫 댓글인 경우 No comments를 삭제
-  if($("#comments_list_no_comments").length){
-    $("#comments_list_no_comments").remove();
-  }
   $comment_parent = $("#commentable_<%= @comment.commentable.id %> #comments_list");
   $comment_form = $("#commentable_<%= @comment.commentable.id %> #comments_form");
 <% end %>

@@ -61,17 +61,18 @@
   
       <!--포스트 내용-->
       <div class="post-content media">
+
         <% if sender.id != receiver.id %>
-          <%= link_to image_tag(avatar_url(sender), class: "rounded-circle user-photo", title: sender.name), sender %>
-          <i class="fas fa-angle-double-right"></i>
-          <%= link_to image_tag(avatar_url(receiver), class: "rounded-circle user-photo", title: receiver.name), receiver %>
+          <%= link_to image_tag(avatar_url(sender), class: "rounded-circle user-photo ml-3", title: sender.name), sender %>
+          <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
+          <%= link_to image_tag(avatar_url(receiver), class: "rounded-circle user-photo mr-3", title: receiver.name), receiver %>
         <% else %>
-          <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+          <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo mx-3", title: post.user.name), post.user %>
         <% end %>
+
         <div class="media-body">
           <!--포스트 정보-->
           <div class="information">
-
 
             <% if sender.id != receiver.id %>
               <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.

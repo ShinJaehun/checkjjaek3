@@ -2,10 +2,6 @@
   <ul id="comments_list">
     <% if post.comments.size > 0 %>
       <%= render post.comments.where(parent_id: nil) %>
-    <% else %>
-      <li id="comments_list_no_comments">
-        No comments
-      </li>
     <% end %>
   </ul>
   <%= render partial: "comments/form", locals: { commentable: post } %>

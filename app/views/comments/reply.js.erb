@@ -1,2 +1,8 @@
 //alert("@comment.id : " + "<%#= @comment.id %>\n" + "@reply.id : " + "<%#= @reply.id %>\n" + "parent_id : " + "<%#= @comment.parent_id %>")
+
+if ($('.reply_form').length != 0){
+  // reply 누를 때마다 입력 창이 계속 나오지 않도록
+  $('.reply_form').remove();
+}
+
 $("#comment_<%= @comment.id %> .media").first().after("<div class='reply_form'><%=j render('comments/form', commentable: @reply.commentable, parent_id: @comment.id) %></div>");
