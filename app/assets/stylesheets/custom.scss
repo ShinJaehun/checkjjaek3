@@ -74,8 +74,28 @@ a {
 
 /* devise sign in, edit, log in */
 
+/* 가상요소로 백그라운드만 흐리게 */
+
+#main_bk {
+  padding: 40px;
+  position: relative;
+  background-position: bottom;
+  background-image: url("logo/main_bk.jpg");
+  background-size: cover;
+}
+#main_bk::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left:0;
+  right: 0;
+  background-color: #000;
+}
 
 .card-container {
+    opacity: 1;
     max-width: 350px;
     padding: 0 40px;
     // background-color: #F7F7F7;
