@@ -1,31 +1,38 @@
 <div class="container">
-  <%= image_tag("logo/logo.png", class: "user-info-logo-img") %>
-  <div class="container pb-2" style="text-align: center; display: inline-block;">
-    <strong><%= User.count %></strong><span class="text-muted">명의 사용자가 </span><strong><%= Post.count %></strong><span class="text-muted">개의 책짹을 남겼습니다.</span>
+  <div class="row">
+    <div class="col-8" ><%= image_tag("logo/main_bk.jpg", class: "img-rounded", style: "display:block; width:600px; margin: 90px auto;") %></div>
+    <div class="col-4 container py-5">
+      
+      <div class="card card-container ">
+        <%= image_tag("logo/logo.png", class: "user-info-logo-img pt-3") %>
+        <div class="container py-2" style="text-align: center; display: inline-block;">
+          <strong><%= User.count %></strong><span class="text-muted">명의 사용자가 </span><strong><%= Post.count %></strong><span class="text-muted">개의 책짹을 남겼습니다.</span>
+        </div>
+
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-user-info pb-5"}) do |f| %>
+          <!--<form class="form-signin">-->
+          <!--<span id="reauth-email" class="reauth-email"></span>-->
+          <label for="inputEmail">메일주소</label>
+          <%= f.email_field :email, required: true, autofocus: true, id: "inputEmail", class: "form-control"%>
+          <!--<input type="email" id="inputEmail" class="form-control" required autofocus>-->
+          <label for="inputPassword">비밀번호</label>
+          <%= f.password_field :password, required: true, id: "inputPassword", class: "form-control"%>
+          <!--<input type="password" id="inputPassword" class="form-control" required>-->
+          <div id="remember" class="checkbox">
+            <label>
+              <%= f.check_box :remember_me, as: :boolean if devise_mapping.rememberable? %>로그인 상태 유지
+                <!--<input type="checkbox" value="remember-me"> 로그인 상태 유지-->
+            </label>
+          </div>
+          <!--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>-->
+          <button class="btn btn-outline-secondary btn-signin" type="submit">로그인</button>
+        
+          <a href="#" class="forgot-password">
+              비밀번호를 잊으셨나요?
+          </a>
+        <% end %>  
+      </div><!-- /card-container -->
+      
+    </div>
   </div>
-  
-  <div class="card card-container">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-user-info"}) do |f| %>
-      <!--<form class="form-signin">-->
-      <!--<span id="reauth-email" class="reauth-email"></span>-->
-      <label for="inputEmail">메일주소</label>
-      <%= f.email_field :email, required: true, autofocus: true, id: "inputEmail", class: "form-control"%>
-      <!--<input type="email" id="inputEmail" class="form-control" required autofocus>-->
-      <label for="inputPassword">비밀번호</label>
-      <%= f.password_field :password, required: true, id: "inputPassword", class: "form-control"%>
-      <!--<input type="password" id="inputPassword" class="form-control" required>-->
-      <div id="remember" class="checkbox">
-        <label>
-          <%= f.check_box :remember_me, as: :boolean if devise_mapping.rememberable? %>로그인 상태 유지
-            <!--<input type="checkbox" value="remember-me"> 로그인 상태 유지-->
-        </label>
-      </div>
-      <!--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>-->
-      <button class="btn btn-outline-secondary btn-signin" type="submit">로그인</button>
-    
-      <a href="#" class="forgot-password">
-          비밀번호를 잊으셨나요?
-      </a>
-    <% end %>  
-  </div><!-- /card-container -->
 </div><!-- /container -->

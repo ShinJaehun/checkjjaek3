@@ -77,7 +77,7 @@ a {
 
 .card-container {
     max-width: 350px;
-    padding: 40px 40px;
+    padding: 0 40px;
     // background-color: #F7F7F7;
     /* just in case there no content*/
     margin: 0 auto 25px;
@@ -94,7 +94,7 @@ a {
 .user-info-logo-img {
     width: 150px;
     // height: 100px;
-    margin: 20px auto 20px;
+    margin: 0 auto;
     display: block;
 }
 
