@@ -122,67 +122,72 @@
 
     <%= render 'list' %>
     
-  </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-        <%= form_tag book_search_path, method: :get do %>
+    <!-- Modal -->
+    <div class="modal fade" id="modalBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
           
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">책짹</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
+          <%= form_tag book_search_path, method: :get do %>
+            
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">
+                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= current_user.name %>님,
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
 
-          <div class="modal-body">
-            <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
-          </div>
+            <div class="modal-body">
+              <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+            </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <%= submit_tag "책 찾기", class: "btn btn-primary" %>
-          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <%= submit_tag "책 찾기", class: "btn btn-primary" %>
+            </div>
 
-        <% end %>
+          <% end %>
 
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
+    <!-- Modal -->
+    <div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
-        <%= form_for(@message) do | f | %>
+          <%= form_for(@message) do | f | %>
 
-          <%= f.hidden_field :sender_id, :value => current_user.id %>
-          <%= f.hidden_field :receiver_id, :value => current_user.id %>
+            <%= f.hidden_field :sender_id, :value => current_user.id %>
+            <%= f.hidden_field :receiver_id, :value => current_user.id %>
 
-          <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">글을 남겨주세요</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">
+                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= current_user.name %>님,
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
 
-          <div class="modal-body">
-            <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
-            <%= f.fields_for :posts do | p | %>
-              <%= p.hidden_field :user_id, :value => current_user.id %>
-              <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 이야기를 나눌까요?" %>
-            <% end %>
-          </div>
+            <div class="modal-body">
+              <%= f.fields_for :posts do | p | %>
+                <%= p.hidden_field :user_id, :value => current_user.id %>
+                <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 이야기를 나눌까요?" %>
+              <% end %>
+            </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <%= f.submit "글 남기기", class: "btn btn-primary" %>
-          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <%= f.submit "글 남기기", class: "btn btn-primary" %>
+            </div>
 
-        <% end %>
+          <% end %>
 
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
 </div>

@@ -3,23 +3,24 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
 
-  def new
-    puts '#########################################################'
-    puts 'New ACTION'
-    @message = Message.new
-    @message.posts.new
-    puts '#########################################################'
-
-  end
+#  별도로 message new view를 띄우지 않기로 했음!
+#  def new
+#    puts '#########################################################'
+#    puts 'New ACTION'
+#    @message = Message.new
+#    @message.posts.new
+#    puts '#########################################################'
+#
+#  end
   
   def create
-    puts '#########################################################'
-    puts 'CREATE ACTION'
-    # 얘는 message에 해당하는 sender_id와 receiver_id 밖에 없음...
-    puts message_params
-    puts message_params[:posts_attributes]
-    puts message_params[:posts_attributes]['0']
-    puts '#########################################################'
+#    puts '#########################################################'
+#    puts 'CREATE ACTION'
+#    # 얘는 message에 해당하는 sender_id와 receiver_id 밖에 없음...
+#    puts message_params
+#    puts message_params[:posts_attributes]
+#    puts message_params[:posts_attributes]['0']
+#    puts '#########################################################'
 
     @message = Message.create(
       sender_id: message_params[:sender_id],
@@ -35,9 +36,9 @@ class MessagesController < ApplicationController
   private
   
   def set_message
-    puts '#########################################################'
-    puts 'set_message'
-    puts '#########################################################'
+#    puts '#########################################################'
+#    puts 'set_message'
+#    puts '#########################################################'
   end
 
   def message_params

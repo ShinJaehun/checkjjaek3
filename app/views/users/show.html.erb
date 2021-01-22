@@ -86,11 +86,54 @@
   </div>
 
   <div class="col-md-8 order-md-1">
-
-    <div id="book-search-form">
-      <%= link_to '글 남기기', new_message_path(receiver_id: @user.id)  %>
+    <div class="card modal-buttons mt-4">
+      <div class="card-body">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">
+         글 남기기
+        </button>
+      </div>
     </div>
-  
+
     <%= render 'posts/list' %>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <%= form_for(@message) do | f | %>
+
+            <%= f.hidden_field :sender_id, :value => current_user.id %>
+            <%= f.hidden_field :receiver_id, :value => @user.id %>
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">
+                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
+                <%= image_tag avatar_url(@user), class: "rounded-circle user-photo" %>
+                <%= current_user.name %>님이 <%= @user.name %>님께,
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+              <%= f.fields_for :posts do | p | %>
+                <%= p.hidden_field :user_id, :value => current_user.id %>
+                <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 이야기를 나눌까요?" %>
+              <% end %>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <%= f.submit "글 남기기", class: "btn btn-primary" %>
+            </div>
+
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

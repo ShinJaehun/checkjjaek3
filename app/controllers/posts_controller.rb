@@ -29,6 +29,7 @@ class PostsController < ApplicationController
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where(postabled: @receive_messages) # AND 조건이기 때문에 내가 나한테 남긴 글만 보임(postable_type이 book인 post는 아예 안 보임) 그리고 이건 준우님이 가르쳐주신 Post.where(postable: @messages) object 자체를 조건으로 사용하기...
     @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where.not(postable_type: 'Message').or(Post.where(postable: @receive_messages)).order(created_at: :desc)
 
+    # 나 자신에게 message 남기기
     @message = Message.new
     @message.posts.new
   end
@@ -36,41 +37,13 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
-#    아직 이럴 필요까진 없는 듯...
-#    @comments = if params[:comment]
-#                  @post.comments.where(id: params[:comment])
-#                else
-#                  @post.comments.where(parent_id: nil)
-#                end
-#    @comments = @comments.page(params[:page].per(5)
   end
-
-  # # GET /posts/new
-  # def new
-  #   @post = Post.new
-  # end
 
   # GET /posts/1/edit
   def edit
     @posts = Post.where(postable_id: @post.postable.id).order(created_at: :desc)
     redirect_to root_path and return unless @post.user == current_user
   end
-
-  # # POST /posts
-  # # POST /posts.json
-  # def create
-  #   # @post = Post.new(post_params)
-  #   @post = current_user.posts.new(post_params)
-  #   respond_to do |format|
-  #     if @post.save
-  #       format.html { redirect_to @post, notice: 'Post was successfully created.' }
-  #       format.json { render :show, status: :created, location: @post }
-  #     else
-  #       format.html { render :new }
-  #       format.json { render json: @post.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json

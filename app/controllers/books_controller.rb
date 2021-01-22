@@ -47,8 +47,9 @@ class BooksController < ApplicationController
         # 마지막 페이지임을 알려주기 위해서 필요
         @is_end = hash['meta']['is_end'].to_s
 
-        puts "############################################################"
-        puts "total_count : " + @total_count.to_s
+#        puts "############################################################"
+#        puts "total_count : " + @total_count.to_s
+
 #        puts hash['meta']['pageable_count']
 #        puts "마지막 페이지인가요: " + hash['meta']['is_end'].to_s
 #        puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s
@@ -79,9 +80,9 @@ class BooksController < ApplicationController
           end
         end
       
-        puts "current_page : " + @current_page.to_s + " max_index : " + @max_index.to_s
-        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
-        puts "############################################################"
+#        puts "current_page : " + @current_page.to_s + " max_index : " + @max_index.to_s
+#        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
+#        puts "############################################################"
 
         @items = hash['documents']
 
@@ -108,7 +109,7 @@ class BooksController < ApplicationController
         # thumbnail_path = URI.unescape(thumbnail_url.match(/^http.+?(http.+?)%3F/)[1].to_s)
         # %3F는 '?'를 의미
 
-        puts "-----------------book_thumbnail-------------------------"
+        # puts "-----------------book_thumbnail-------------------------"
         thumbnail_url_unescape = URI.unescape(thumbnail_url)
         # puts "thumbnail_url_unescape : " + thumbnail_url_unescape
 
@@ -125,14 +126,12 @@ class BooksController < ApplicationController
         # 뒤에 timestamp가 붙지 않는 녀석도 있음...  이나중 탁구부;;
           thumbnail_path = thumbnail_url_unescape.match(/^http.+?(http.+?)$/)[1].to_s
         else
-
           puts "큰일났어... 또 새로운 녀석이 나타났나봐...ㅠㅠ"
           thumbnail_path = nil
-
         end
 
-        puts "thumbnail_path : " + thumbnail_path
-        puts "-----------------book_thumbnail-------------------------"
+        # puts "thumbnail_path : " + thumbnail_path
+        # puts "-----------------book_thumbnail-------------------------"
 
       end
 

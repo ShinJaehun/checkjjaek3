@@ -14,17 +14,6 @@ class CommentsController < ApplicationController
     @comment.user = current_user
     @comment.save
 
-#    respond_to do |format|
-#      if @comment.save
-#        format.html { redirect_to @comment.commentable, notice: "Comment was successfully created."}
-#        format.json { render json: @comment }
-#        format.js
-#      else
-#        format.html { redirect_to @comment.commentable,  notice: "Comment was not created." }
-#        format.json { render json: @comment.errors }
-#        format.js
-#      end
-#    end
   end
 
   def edit
