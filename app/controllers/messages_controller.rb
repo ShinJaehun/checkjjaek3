@@ -30,7 +30,11 @@ class MessagesController < ApplicationController
     post.user_id = message_params[:posts_attributes]['0'][:user_id]
     post.save
 
-    redirect_to root_path
+    if post.user_id != message_params[:receiver_id]
+      redirect_to user_path(message_params[:receiver_id])
+    else
+      redirect_to root_path
+    end
   end
 
   private
