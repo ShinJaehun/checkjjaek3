@@ -4,8 +4,7 @@ class BooksController < ApplicationController
   load_and_authorize_resource
 
   def show
-    #@posts = Post.where(book_id: @book.id).order(created_at: :desc)
-    @posts = Post.where(postable_id: @book.id).order(created_at: :desc)
+    @posts = Post.where(postable_id: @book.id, postable_type: "Book").order(created_at: :desc)
   end
   
   def book_search

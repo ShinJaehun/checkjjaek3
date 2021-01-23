@@ -11,9 +11,9 @@ class PostsController < ApplicationController
     # follower 수를 기준으로 한 추천 사용자
     @suggested_friends_by_followers =  User.all.sort{|a,b| b.followers.count <=> a.followers.count}.first(10)
     # 최근 책짹
-    @recent_posts = Post.order(id: :desc).limit(10);
+    @recent_posts = Post.where(postable_type: "Book").order(id: :desc).limit(10);
     # 가장 많은 좋아요를 받은 책짹
-    @favorite_posts = Post.all.sort{|a,b| b.like_users.count <=> a.like_users.count}.first(10)
+    @favorite_posts = Post.where(postable_type: "Book").sort{|a,b| b.like_users.count <=> a.like_users.count}.first(10)
 
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).order(created_at: :desc) #원래 이거였음(followees 피드 저장)
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).or(Post.where(postable_type: "Message")) #Message 유형의 post 추가
