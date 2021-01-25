@@ -20,7 +20,6 @@ $comment_form.find('form')[0].reset();
 
 <% if @comment.parent %>
   //대댓글이라면 입력폼 삭제함
-
   $(".reply_form").remove();
   $comment_form.remove();
 <% end %>

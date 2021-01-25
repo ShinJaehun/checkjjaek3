@@ -1,6 +1,14 @@
-alert("@comment.id : " + "<%= @comment.id %>\n" )
-// 여러 동작을 해야 함...
-// comment_id의 reply_form을 삭제하고...
-// 해당 comment의 li를 또 삭제하고
-// 새로 처음부터 반영되도록 적용해야 함.... 그래야 자식 노드까지 다 출력할 수 있음...
-//$("#comment_<%= @comment.id %>").first().after("<div class='media'><%= link_to image_tag(avatar_url(@comment.user), class: 'rounded-circle user-photo', title: @comment.user.name), @comment.user %></div>");
+//alert("@comment.id : " + "<%= @comment.id %>\n" )
+//comment_list를 모두 지우고 comments를 전부 새로 갱신하려고 했는데 jquery에서 여러줄 refresh가 안되는 거 같다.ㅠㅠ
+//$("#commentable_<%#=@comment.commentable.id%> #comments_list").remove();
+
+//$("#commentable_<%#=@comment.commentable.id%>").append("<ul id='comments_list'><%#= render @comment.commentable.comments.where(parent_id: nil) %></ul><%#= render partial: 'comments/form', locals: { commentable: @comment.commentable } %>");
+//$("#commentable_<%#=@comment.commentable.id%>").append("<ul id='comments_list'></ul>");
+//$("#commentable_<%#=@comment.commentable.id%> #comments_list").html("<%#= render @comment.commentable.comments.where(parent_id: nil) %>");
+
+//그래서 수정하고 있는 comment 바로 위에 id가 here인 li를 하나 더 추가하고
+//해당 댓글 삭제 후 다시 갱신, 갱신 이후 here 삭제
+$("#commentable_<%=@comment.commentable.id%> #comment_<%=@comment.id%>").before("<li id='here'></li>");
+$("#commentable_<%=@comment.commentable.id%> #comment_<%=@comment.id%>").remove();
+$("#commentable_<%=@comment.commentable.id%> #here").after("<%= j render 'comments/comment', comment: @comment %>");
+$("#commentable_<%=@comment.commentable.id%> #here").remove();

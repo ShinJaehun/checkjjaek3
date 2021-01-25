@@ -20,18 +20,18 @@ class CommentsController < ApplicationController
   end
 
   def update
-   # @comment.update(comment_params)
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to @comment.commentable, notice: "Comment was successfully updated."}
-        format.json { render json: @comment }
-        format.js
-      else
-        format.html { redirect_to @comment.commentable, notice: "Comment was not updated." }
-        format.json { render json: @comment.errors }
-        format.js
-      end
-    end
+   @comment.update(comment_params)
+#    respond_to do |format|
+#      if @comment.update(comment_params)
+#        format.html { redirect_to @comment.commentable, notice: "Comment was successfully updated."}
+#        format.json { render json: @comment }
+#        format.js
+#      else
+#        format.html { redirect_to @comment.commentable, notice: "Comment was not updated." }
+#        format.json { render json: @comment.errors }
+#        format.js
+#      end
+#    end
   end
 
   def destroy
