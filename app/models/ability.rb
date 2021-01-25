@@ -22,6 +22,7 @@ class Ability
       can :create, Comment
       can :reply, Comment
       can :destroy, Comment, user_id: user.id
+      can :update, Comment, user_id: user.id
 
       can :book_search, Book
       can :manage, Book

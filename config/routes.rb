@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :posts do
     post 'like', to: 'posts#like', as: :like, on: :member
-    resources :comments, only: [:create, :destroy] do
+    resources :comments, only: [:create, :edit, :update, :destroy] do
       member do
         get :reply
       end

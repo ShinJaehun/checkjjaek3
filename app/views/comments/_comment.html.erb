@@ -7,7 +7,8 @@
       </div>
       <div class="panel-body">
         <%= comment.content %>
-        <%= link_to content_tag(:i, "", class: ["far", "fa-comment-dots"]), polymorphic_path([:reply, comment.commentable, comment]), remote: true  %>
+        <%= link_to content_tag(:i, "", class: ["far", "fa-comment-dots"]), polymorphic_path([:reply, comment.commentable, comment]), remote: true %>
+        <%= link_to content_tag(:i, "", class: ["fas", "fa-edit"]), polymorphic_path([:edit, comment.commentable, comment]), remote: true %>
         <%= link_to content_tag(:i, "", class: ["far", "fa-times-circle"]), [comment.commentable, comment], method: :delete, data: { confirm: "삭제하시겠습니까?" } if (current_user.has_role? :admin or comment.user == current_user) %>
       </div>
     </div>

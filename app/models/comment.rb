@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   validates :content, presence: { message: '내용을 입력하세요' }, length: { maximum: 200 }
+  validates :parent_id, numericality: { only_integer: true }, allow_blank: true
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user

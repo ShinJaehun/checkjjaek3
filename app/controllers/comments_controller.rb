@@ -20,6 +20,7 @@ class CommentsController < ApplicationController
   end
 
   def update
+   # @comment.update(comment_params)
     respond_to do |format|
       if @comment.update(comment_params)
         format.html { redirect_to @comment.commentable, notice: "Comment was successfully updated."}

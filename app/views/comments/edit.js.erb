@@ -1,0 +1,9 @@
+//alert("@comment.id : " + "<%= @comment.id %>\n")
+
+$("#comment_<%= @comment.id %> .media").first().remove();
+
+if (!$("#comment_<%= @comment.id %> ul").length) {
+  $("#comment_<%= @comment.id %>").append("<div class='reply_form'><%=j render('comments/edit_form', commentable: @comment.commentable, parent_id: @comment.parent_id) %></div>");
+} else {
+  $("#comment_<%= @comment.id %> ul").first().before("<div class='reply_form'><%=j render('comments/edit_form', commentable: @comment.commentable, parent_id: @comment.parent_id) %></div>");
+}
