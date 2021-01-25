@@ -42,7 +42,8 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
     @posts = Post.where(postable_id: @post.postable.id).order(created_at: :desc)
-    redirect_to root_path and return unless @post.user == current_user
+
+    redirect_to root_path and return unless (current_user.has_role? :admin or @post.user == current_user)
   end
 
   # PATCH/PUT /posts/1
