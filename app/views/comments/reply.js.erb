@@ -1,6 +1,6 @@
 //alert("@comment.id : " + "<%#= @comment.id %>\n" + "@reply.id : " + "<%#= @reply.id %>\n" + "parent_id : " + "<%#= @comment.parent_id %>")
 
-if ($('.reply_form').length != 0){
+if ($('.reply_form').length){
   // reply 누를 때마다 입력 창이 계속 나오지 않도록
   $('.reply_form').remove();
 }
