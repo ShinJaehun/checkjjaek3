@@ -64,6 +64,8 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    @post.postable.destroy
+    # @post 삭제할 때 postable 삭제하지 않으면 postable은 그대로 유지됨
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
