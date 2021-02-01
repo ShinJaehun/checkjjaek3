@@ -27,6 +27,7 @@ class Ability
       can :book_search, Book
       can :manage, Book
       can :manage, Message
+      can :manage, Photo
       
     end
     # Define abilities for the passed in user here. For example:

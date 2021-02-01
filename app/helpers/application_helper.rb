@@ -4,7 +4,7 @@ module ApplicationHelper
     gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
     "http://gravatar.com/avatar/#{gravatar_id}.png?d=retro&s=150"
   end
-  
+
   def extract_thumbnail110_url(url)
     # book image가 있으면 해당 url을, 없으면 no image avaliable 이미지를 리턴
     unless url.to_s.empty?
@@ -66,5 +66,7 @@ module ApplicationHelper
   #   end
   # end
   
-    
+  def thumbnail input
+    return self.images[input].variant(resize: '300x300!').processed
+  end
 end

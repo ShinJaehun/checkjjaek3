@@ -29,9 +29,11 @@ class PostsController < ApplicationController
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where(postabled: @receive_messages) # AND 조건이기 때문에 내가 나한테 남긴 글만 보임(postable_type이 book인 post는 아예 안 보임) 그리고 이건 준우님이 가르쳐주신 Post.where(postable: @messages) object 자체를 조건으로 사용하기...
     @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where.not(postable_type: 'Message').or(Post.where(postable: @receive_messages)).order(created_at: :desc)
 
-    # 나 자신에게 message 남기기
     @message = Message.new
     @message.posts.new
+
+    @photo = Photo.new
+    @photo.posts.new
   end
 
   # GET /posts/1

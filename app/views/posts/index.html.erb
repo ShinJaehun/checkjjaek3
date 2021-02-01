@@ -117,6 +117,10 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">
          글 남기기
         </button>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPhoto">
+         사진 올리기
+        </button>
       </div>
     </div>
 
@@ -181,6 +185,41 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
               <%= f.submit "글 남기기", class: "btn btn-primary" %>
+            </div>
+
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalPhoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <%= form_for(@photo) do | f | %>
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">
+                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= current_user.name %>님,
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+              <%= f.file_field :images, multiple: true %>
+
+              <%= f.fields_for :posts do | p | %>
+                <%= p.hidden_field :user_id, :value => current_user.id %>
+                <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 사진인가요?" %>
+              <% end %>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <%= f.submit "사진 올리기", class: "btn btn-primary" %>
             </div>
 
           <% end %>

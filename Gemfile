@@ -5,7 +5,7 @@ ruby '2.7.0'
 
 
 # bootstrap
-#em 'bootstrap', '~>4.5.3'
+#gem 'bootstrap', '~>4.5.3'
 #gem 'jquery-rails', '~>4.4.0'
 
 gem "bootstrap_flash_messages"
@@ -17,6 +17,9 @@ gem 'rest-client'
 gem 'rails_db'
 
 # 이미지 처리
+gem 'aws-sdk-s3'
+gem 'mini_magick'
+
 #gem 'fog'
 #gem 'carrierwave'
 #gem 'mini_magick', '~> 4.8'
