@@ -66,6 +66,13 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    if @post.postable_type == 'Photo'
+      @post.postable.images.each do |image|
+        # s3에서 해당 이미지 삭제하기...
+        # image.purge_later # 이게 더 나은 방법이라고는 하는데 여러 이미지 파일이 있을 때는 transaction 문제
+        image.purge
+      end
+    end
     @post.postable.destroy
     # @post 삭제할 때 postable 삭제하지 않으면 postable은 그대로 유지됨
     @post.destroy
