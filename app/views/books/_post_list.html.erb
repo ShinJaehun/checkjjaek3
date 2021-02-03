@@ -1,54 +1,64 @@
 <% @posts.each do |post| %>
   <!--style="width:40rem;"를 붙이면 card가 고정폭으로 변경됨-->
   <div class="post-list card my-4">
-    
-    <div class="media post-content">
-      <!--책 이미지-->
-      <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border mx-3", width:'150px'), post.postable.url, target: "_blank" %>
+
+    <div class="post-information media">
+
+      <div class="media-left">
+        <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %> 
+      </div>
+
+      <div class="media-body align-self-center">
+        <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 작성했습니다.
+
+        <!-- fontawesome으로 만든 좋아요 버튼 -->
+        <% if !post.like_users.include?(current_user)%>
+          <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+        <% else %>
+          <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+        <% end %>
+
+        <% if post.like_users.count > 0 %>
+          <span class="badge badge-primary badge-pill"><%= post.like_users.count %></span>
+        <% end %>
+
+        <!--수정, 삭제 버튼-->
+        <% if can? :manage, post %>
+          <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
+          <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
+        <% end %>
+
+      </div><!-- media-body -->
+
+    </div><!-- post-information media -->
+
+    <div class="book-information media">
+      <div class="media-left">
+        <!--책 이미지-->
+        <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border mx-3", width:'150px'), post.postable.url, target: "_blank" %>
+      </div>
 
       <!--포스트 내용-->
       <div class="media-body">
         <!--책 제목-->
-        <h6 class="card-title mb-2">
+        <h6 class="card-title">
           <%= link_to post.postable.title, post.postable.url, target: "_blank" %>
         </h6>
         <!--저자-->
-        <div class="card-subtitle mb-2 text-muted"><%#= post.postable.authors %></div>
-        <!--포스트 정보-->
-        <div class="information">
-          <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 작성했습니다.
+        <div class="card-subtitle text-muted"><%#= post.postable.authors %></div>
 
-          <!-- fontawesome으로 만든 좋아요 버튼 -->
-          <% if !post.like_users.include?(current_user)%>
-            <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
-          <% else %>
-            <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
-          <% end %>
-  
-          <% if post.like_users.count > 0 %>
-            <span class="badge badge-primary badge-pill"><%= post.like_users.count %></span>
-          <% end %>
-          
-          <!--수정, 삭제 버튼-->
-          <% if can? :manage, post %>
-            <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
-            <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
-          <% end %>
-
-        </div>
-        
         <!-- 해시태그를 처리한 본문 -->
-        <div class="content">
+        <div class="book-content">
           <%= render_with_hashtags(post.content) %>
         </div>
-  
-      </div>
-  
-    </div>
-  
+
+      </div><!-- media-body -->
+
+    </div><!-- book-information media -->
+
     <!--books show _post_list 댓글-->
-    <div>
-      <%= render 'comments/comments', post: post %>.
+    <div class="comments">
+      <%= render 'comments/comments', post: post %>
     </div>
 
   </div>

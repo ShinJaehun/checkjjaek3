@@ -4,19 +4,85 @@
     <% if post.postable_type == "Book" %>
 
       <!--포스트 내용-->
-      <div class="post-content media">
-        <!--책 이미지-->
-        <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border mx-3", width:'150px'), post.postable %>
+      <div class="post-information media">
+
+        <div class="media-left">
+          <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+        </div>
+
+        <div class="media-body align-self-center">
+
+          <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 작성했습니다.
+
+          <!-- fontawesome으로 만든 좋아요 버튼 -->
+          <% if !post.like_users.include?(current_user)%>
+            <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+          <% else %>
+            <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+          <% end %>
+
+          <% if post.like_users.count > 0 %>
+            <span class="badge badge-primary badge-pill"><%= post.like_users.count %></span>
+          <% end %>
+
+          <!--수정, 삭제 버튼-->
+          <% if can? :manage, post %>
+            <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
+            <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
+          <% end %>
+
+        </div><!-- media-body -->
+      </div><!-- post-information media -->
+
+      <div class="book-information media">
+
+        <div class="media-left">
+          <!--책 이미지-->
+          <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable %>
+        </div>
 
         <div class="media-body">
           <!--책 제목-->
-          <h6 class="card-title mb-2"><%= link_to post.postable.title, post.postable %></h6>
+          <h6 class="card-title"><%= link_to post.postable.title, post.postable %></h6>
           <!--저자-->
-          <div class="card-subtitle mb-2 text-muted"><%#= post.postable.authors %></div>
+          <div class="card-subtitle text-muted"><%= post.postable.authors %></div>
 
-          <!--포스트 정보-->
-          <div class="information">
-            <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 작성했습니다.
+          <!-- 해시태그를 처리한 본문 -->
+          <div class="book-content">
+            <%= render_with_hashtags(post.content) %>
+          </div>
+
+        </div><!-- media-body -->
+
+      </div><!-- book-information media -->
+
+    <% elsif post.postable_type == "Message" %>
+
+      <% sender = User.find(post.postable.sender_id) %>
+      <% receiver = User.find(post.postable.receiver_id) %>
+
+        <!--포스트 내용-->
+        <div class="post-information media">
+
+          <div class="media-left">
+            <% if sender.id != receiver.id %>
+              <%= link_to image_tag(avatar_url(sender), class: "rounded-circle user-photo", title: sender.name), sender %>
+              <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
+              <%= link_to image_tag(avatar_url(receiver), class: "rounded-circle user-photo", title: receiver.name), receiver %>
+            <% else %>
+              <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+            <% end %>
+          </div> <!-- media-left -->
+
+          <div class="media-body align-self-center">
+
+            <!--포스트 정보-->
+
+            <% if sender.id != receiver.id %>
+              <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.
+            <% else %>
+              <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 글을 남겼습니다.
+            <% end %>
 
             <!-- fontawesome으로 만든 좋아요 버튼 -->
             <% if !post.like_users.include?(current_user)%>
@@ -35,77 +101,26 @@
               <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
             <% end %>
 
-          </div><!-- information -->
-
-          <!-- 해시태그를 처리한 본문 -->
-          <div class="content">
-            <%= render_with_hashtags(post.content) %>
-          </div>
-        </div><!-- media-body -->
-
-      </div><!-- post-content media -->
-
-    <% elsif post.postable_type == "Message" %>
-
-      <% sender = User.find(post.postable.sender_id) %>
-      <% receiver = User.find(post.postable.receiver_id) %>
-
-        <!--포스트 내용-->
-        <div class="post-content media">
-
-          <% if sender.id != receiver.id %>
-            <%= link_to image_tag(avatar_url(sender), class: "rounded-circle user-photo ml-3", title: sender.name), sender %>
-            <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
-            <%= link_to image_tag(avatar_url(receiver), class: "rounded-circle user-photo mr-3", title: receiver.name), receiver %>
-          <% else %>
-            <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo mx-3", title: post.user.name), post.user %>
-          <% end %>
-
-          <div class="media-body">
-            <!--포스트 정보-->
-            <div class="information">
-
-              <% if sender.id != receiver.id %>
-                <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.
-              <% else %>
-                <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 글을 남겼습니다.
-              <% end %>
-
-              <!-- fontawesome으로 만든 좋아요 버튼 -->
-              <% if !post.like_users.include?(current_user)%>
-                <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
-              <% else %>
-                <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
-              <% end %>
-
-              <% if post.like_users.count > 0 %>
-                <span class="badge badge-primary badge-pill"><%= post.like_users.count %></span>
-              <% end %>
-
-              <!--수정, 삭제 버튼-->
-              <% if can? :manage, post %>
-                <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
-                <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
-              <% end %>
-            </div><!-- information -->
-
-            <!-- 해시태그를 처리한 본문 -->
-            <div class="content">
-              <%= render_with_hashtags(post.content) %>
-            </div>
           </div><!-- media-body -->
-        </div><!-- post-content media -->
+
+        </div><!-- post-information media -->
+
+        <!-- 해시태그를 처리한 본문 -->
+        <div class="content">
+          <%= render_with_hashtags(post.content) %>
+        </div>
 
     <% elsif post.postable_type == "Photo" %>
 
         <!--포스트 내용-->
-        <div class="post-content media">
+        <div class="post-information media">
 
-          <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo mx-3", title: post.user.name), post.user %>
+          <div class="media-left">
+            <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+          </div> <!-- media-left -->
 
-          <div class="media-body">
+          <div class="media-body align-self-center">
             <!--포스트 정보-->
-            <div class="information">
 
               <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 사진을 올렸습니다.
 
@@ -125,20 +140,21 @@
                 <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
                 <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
               <% end %>
-            </div><!-- information -->
 
-            <div>
-              <% post.postable.images.each do |image| %>
-                <%= image_tag image.variant(resize: "400x400") %>
-              <% end %>
-            </div>
-
-            <!-- 해시태그를 처리한 본문 -->
-            <div class="content">
-              <%= render_with_hashtags(post.content) %>
-            </div>
           </div><!-- media-body -->
-        </div><!-- post-content media -->
+
+        </div><!-- post-information media -->
+
+        <!-- 해시태그를 처리한 본문 -->
+        <div class="content">
+          <%= render_with_hashtags(post.content) %>
+        </div>
+
+        <div class="photo-images">
+          <% post.postable.images.each do |image| %>
+            <%= image_tag image.variant(resize: "400x400") %>
+          <% end %>
+        </div>
 
     <% else %>
       <!--다른 형태의 post에 대한 처리-->
@@ -146,7 +162,7 @@
     <% end %>
 
     <!--댓글-->
-    <div>
+    <div class="comments">
       <%= render 'comments/comments', post: post %>
     </div>
 

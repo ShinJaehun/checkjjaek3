@@ -1,6 +1,8 @@
 <div id="comments_form" class="media">
-  <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
-  <div class="media-body">
+  <div class="media-left">
+    <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+  </div>
+  <div class="media-body align-self-center">
     <%= form_for([commentable, Comment.new], remote: true) do | f | %>
       <%= f.hidden_field :parent_id, value: local_assigns[:parent_id]  %>
       <div class="input-group">
