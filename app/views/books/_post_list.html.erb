@@ -5,7 +5,7 @@
     <div class="post-information media">
 
       <div class="media-left">
-        <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %> 
+        <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
       </div>
 
       <div class="media-body align-self-center">
@@ -35,7 +35,7 @@
     <div class="book-information media">
       <div class="media-left">
         <!--책 이미지-->
-        <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border mx-3", width:'150px'), post.postable.url, target: "_blank" %>
+        <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable.url, target: "_blank" %>
       </div>
 
       <!--포스트 내용-->

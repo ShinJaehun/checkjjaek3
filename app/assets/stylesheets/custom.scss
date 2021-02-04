@@ -324,36 +324,42 @@ footer {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-//.posts {
 //  div {border:1px solid red}
-  .post-information {
-    font-size: 14px;
-    margin: 15px 15px 5px;
-  }
+.post-information {
+  font-size: 14px;
+  margin: 15px 15px 5px;
+}
 
-  .content {
-    margin: 10px 20px 10px;
-  }
+.content {
+  margin: 10px 20px 10px;
+}
 
-  .photo-images {
-    margin: 5px 15px 10px;
-  }
+.photo-images {
+  margin: 5px 15px 10px;
+}
 
 
-  .media-body {
-    .card-title {
-      font-weight: bold;
-    }
-    margin-left: 10px;
+.media-body {
+  .card-title {
+    font-weight: bold;
   }
-  .information {
-    padding-bottom: 10px;
-  }
-
-//}
+  margin-left: 10px;
+}
+.information {
+  padding-bottom: 10px;
+}
 
 .book-information {
   margin: 10px 25px 5px;
+  font-size: 14px;
+
+  .media-body {
+    margin-left: 20px;
+
+    .book-content {
+      margin-top: 5px;
+    }
+  }
 }
 
 /* posts index list comment */

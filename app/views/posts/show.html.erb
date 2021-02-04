@@ -26,7 +26,16 @@
   </div>
 
   <div class="col-md-8 order-md-1">
-    <%= render 'item' %>
+    <div class="post-list card my-4">
+      <% if @post.postable_type == "Book" %>
+        <%= render 'posts/books/item', post: @post %>
+      <% elsif @post.postable_type == "Message" %>
+        <%= render 'posts/messages/item', post: @post %>
+      <% elsif @post.postable_type == "Photo" %>
+        <%= render 'posts/photos/item', post: @post %>
+      <% else %>
+      <% end %>
+    </div>
   </div>
 
 </div>

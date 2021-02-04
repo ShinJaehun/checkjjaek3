@@ -3,15 +3,15 @@
     <div class="card my-4" style="width: 18rem;">
       <div class="profile-image">
         <!--gravatar image를 profile 이미지로 사용하기-->
-        <%= image_tag avatar_url(@user), class: "rounded-circle", style: "padding: 30px;" %>  
+        <%= image_tag avatar_url(@user), class: "rounded-circle", style: "padding: 30px;" %>
       </div>
       <div class="card-body">
         <h5 class="card-title"><strong><%= @user.name %></strong>님</h5>
         <div class="row follow-counter">
           <div class="col-md-4", style="text-align: center; padding: 0 5px;">
-            <div>책짹</div> 
+            <div>책짹</div>
             <div><strong><%= @user.posts_count %></strong></div>
-          </div>  
+          </div>
           <div class="col-md-4", style="text-align: center; padding: 0 5px;">
             <div>팔로잉</div>
             <div><strong><%= @user.followees.count %></strong></div>
@@ -21,7 +21,7 @@
             <div><strong><%= @user.followers.count %></strong></div>
           </div>
         </div>
-        
+
         <div class="follow-button", style="margin-top: 15px;">
           <!-- 준우 샘이 도와주신 follow/unfollow 버튼 처리 -->
           <% if can? :follow, @user %>
@@ -32,10 +32,10 @@
             <% end %>
           <% end %>
         </div>
-        
+
       </div>
     </div>
-    
+
     <div class="card my-4 book-reader" style="width: 18rem;">
       <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
       <div class="card-body">
@@ -48,9 +48,9 @@
         </div>
       </div>
     </div>
-  
+
     <% if @user.followees.count > 0 %>
-    
+
       <div class="card my-4 book-reader" style="width: 18rem;">
         <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
         <div class="card-body">
@@ -63,11 +63,11 @@
           </div>
         </div>
       </div>
-    
+
     <% end %>
-    
+
     <% if @user.followers.count > 0 %>
-    
+
       <div class="card my-4 book-reader" style="width: 18rem;">
         <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
         <div class="card-body">
@@ -95,7 +95,22 @@
       </div>
     </div>
 
-    <%= render 'posts/list' %>
+    <div class="posts">
+      <% @posts.each do |post| %>
+        <!--style="width:40rem;"를 붙이면 card가 고정폭으로 변경됨-->
+        <div class="post-list card my-4">
+          <% if post.postable_type == "Book" %>
+            <%= render 'posts/books/item', post: post %>
+          <% elsif post.postable_type == "Message" %>
+            <%= render 'posts/messages/item', post: post %>
+          <% elsif post.postable_type == "Photo" %>
+            <%= render 'posts/photos/item', post: post %>
+          <% else %>
+            <!--다른 형태의 post에 대한 처리-->
+         <% end %>
+        </div><!-- post-list card -->
+      <% end %>
+    </div><!-- posts -->
 
     <!-- Modal -->
     <div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

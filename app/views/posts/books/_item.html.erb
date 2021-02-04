@@ -1,0 +1,58 @@
+<!--포스트 내용-->
+<div class="post-information media">
+
+  <div class="media-left">
+    <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+  </div>
+
+  <div class="media-body align-self-center">
+
+    <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 작성했습니다.
+
+    <!-- fontawesome으로 만든 좋아요 버튼 -->
+    <% if !post.like_users.include?(current_user)%>
+      <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+    <% else %>
+      <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+    <% end %>
+
+    <% if post.like_users.count > 0 %>
+      <span class="badge badge-primary badge-pill"><%= post.like_users.count %></span>
+    <% end %>
+
+    <!--수정, 삭제 버튼-->
+    <% if can? :manage, post %>
+      <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
+      <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
+    <% end %>
+
+    <!--홈으로 가기 버튼-->
+    <%#= link_to( content_tag(:i, "",class: ["fas", "fa-home"]), root_path )%>
+
+  </div><!-- media-body -->
+</div><!-- post-information media -->
+
+<div class="book-information media">
+
+  <div class="media-left">
+    <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable %>
+  </div>
+
+  <div class="media-body">
+    <!--책 제목-->
+    <h6 class="card-title"><%= link_to post.postable.title, post.postable %></h6>
+    <!--저자-->
+    <div class="card-subtitle text-muted"><%= post.postable.authors %></div>
+
+    <!-- 해시태그를 처리한 본문 -->
+    <div class="book-content">
+      <%= render_with_hashtags(post.content) %>
+    </div>
+
+  </div><!-- media-body -->
+</div><!-- book-information media -->
+
+<!--post show _item 댓글-->
+<div class="comments">
+  <%= render 'comments/comments', post: post %>
+</div>
