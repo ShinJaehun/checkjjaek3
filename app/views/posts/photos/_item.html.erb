@@ -28,7 +28,7 @@
     <% end %>
 
     <!--홈으로 가기 버튼-->
-    <%= link_to( content_tag(:i, "",class: ["fas", "fa-home"]), root_path )%>
+    <%#= link_to( content_tag(:i, "",class: ["fas", "fa-home"]), root_path )%>
 
   </div><!-- media-body -->
 </div><!-- post-information media -->
@@ -40,7 +40,7 @@
 
 <div class="photo-images">
   <% post.postable.images.each do |image| %>
-    <%= image_tag image.variant(resize: "400x400") %>
+    <%= link_to image_tag(image.variant(resize: "400x400")), image %>
   <% end %>
 </div>
 
