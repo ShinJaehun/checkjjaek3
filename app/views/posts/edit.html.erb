@@ -21,17 +21,17 @@
             -->
             <%# end %>
 
-            <%# if @post.postable.authors.present? %>
+            <% if @post.postable.authors.present? %>
               <div>
-                <strong class="text-muted">저자</strong>&nbsp;&nbsp;<%#= @post.postable.authors.html_safe %>
+                <strong class="text-muted">저자</strong>&nbsp;&nbsp;<%= @post.postable.authors.html_safe %>
               </div>
-            <%# end %>
+            <% end %>
 
-            <%# if @post.postable.translators.present? %>
+            <% if @post.postable.translators.present? %>
               <div>
-                <strong class="text-muted">역자</strong>&nbsp;&nbsp;<%#= @post.postable.translators.html_safe %>
+                <strong class="text-muted">역자</strong>&nbsp;&nbsp;<%= @post.postable.translators.html_safe %>
               </div>
-            <%# end %>
+            <% end %>
 
             <% if @post.postable.publisher.present? %>
               <div>
@@ -39,11 +39,11 @@
               </div>
             <% end %>
 
-            <%# if @post.postable.date_time.present? %>
+            <% if @post.postable.datetime.present? %>
               <div>
-                <strong class="text-muted">출판일</strong>&nbsp;&nbsp;<%#= @post.postable.date_time.html_safe %>
+                <strong class="text-muted">출판일</strong>&nbsp;&nbsp;<%= @post.postable.datetime.html_safe %>
               </div>
-            <%# end %>
+            <% end %>
 
           </div>
 
@@ -68,9 +68,9 @@
                 <!--보존이 필요하다면 아래와 같은 방법으로 DB에는 남아 있지만 테이블에 존재하지 않다면 보여주지 안는 식으로 처리해야 함-->
                 <%# if User.all.include?(post.user) %>
                 <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
-                <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+                <%= link_to image_tag(user_avatar(post.user, 30), class: "rounded-circle", title: post.user.name), post.user %>
                 <!--이미지 태그만-->
-                <%#= image_tag avatar_url(post.user), class: "rounded-circle user-photo" %>
+                <%#= image_tag user_avatar(post.user, 30), class: "rounded-circle" %>
                 <%# end %>
               <% end %>
             </div>
@@ -87,17 +87,17 @@
   <div class="col-md-8 order-md-1">
 
     <div class="new-card card my-4">
-      <div class="content-input">
-        <div class="row">
-          <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
-          <div class="content-panel">
-            <%= form_for(@post) do |form| %>
-              <%= form.hidden_field :book_id, :value => @post.postable.id %>
-              <%= form.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: '이 책을 읽고 무엇을 느꼈나요?' %>
-              <!--<h6 class="pull-right" id="counter"></h6>-->
-              <%= form.submit '책짹', class: 'btn btn-info' %>
-            <% end %>
-          </div>
+      <div class="content-input media">
+        <div class="media-left">
+          <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+        </div>
+        <div class="media-body">
+          <%= form_for(@post) do |form| %>
+            <%= form.hidden_field :book_id, :value => @post.postable.id %>
+            <%= form.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: '이 책을 읽고 무엇을 느꼈나요?' %>
+            <!--<h6 class="pull-right" id="counter"></h6>-->
+            <%= form.submit '책짹', class: 'btn btn-info' %>
+          <% end %>
         </div>
       </div>
 

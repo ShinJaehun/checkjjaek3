@@ -1,24 +1,25 @@
 <% unless @keyword_book.present? %>
+
   <h1>검색어를 입력하세요.</h1>
 
 <% else %>
-  
+
   <% if @items.present? %>
 
     <div class="book-search-title">
       <h4><b class="text-warning"><%= @keyword_book %></b> 책 찾기</h4>
     </div>
-    
+
     <div class="book-search-result">
-            
+
       <% @items.each do |item| %>
-  
+
         <div class="item media">
           <%= image_tag extract_thumbnail110_url(strip_tags(item['thumbnail'])), class: "item-thumbnail" %>
-  
+
           <div class="info media-body">
             <div class="title">
-              <%= link_to item['title'].html_safe, 
+              <%= link_to item['title'].html_safe,
                 new_book_path(
                   title: strip_tags(item['title']),
                   contents: strip_tags(item['contents']),
@@ -30,7 +31,7 @@
                   translators: strip_tags(item['translators'].join(",")),
                   thumbnail: strip_tags(item['thumbnail'])) %>
             </div>
-          
+
             <div class="writers text-muted">
 
               <% if item['authors'].present? %>
@@ -44,17 +45,17 @@
               <% if item['publisher'].present? %>
                 <%= item['publisher'].html_safe %> | 
               <% end %>
-              
+
               <% if item['datetime'].present? %>
                 <%= item['datetime'][0..9] %>
               <% end %>
 
             </div>
-          
+
             <div class="contents">
               <%= item['contents'].html_safe %>
             </div>
-          
+
           </div>
         </div>
       <% end %>
@@ -62,7 +63,7 @@
     </div>
 
   <% end %>
-  
+
   <div class="book-search-result-pagination">
     <nav aria-label="Page navigation">
     <!--pagination 처리 : 걍 의식의 흐름대로 코딩했는데... 나중에 어떤 오류가 발생할지 장담할 수 없음-->
@@ -79,7 +80,7 @@
             <li class="page-item"><%= link_to p, book_search_path(keyword_book: @keyword_book, page: p), class: "page-link" %></li>
           <% end %>
         <% end %>
-        
+
         <% if @max_index > 5 && @current_page < @max_index - 2 %>
           <li class="page-item"><%= link_to '...', book_search_path(keyword_book: @keyword_book, page: @end_index + 1), class: "page-link" %></li>
           <li class="page-item"><%= link_to @max_index, book_search_path(keyword_book: @keyword_book, page: @max_index), class: "page-link" %></li>

@@ -1,7 +1,7 @@
 <li id="comment_<%=comment.id%>">
   <div class="media my-2">
     <div class="media-left">
-      <%= link_to image_tag(avatar_url(comment.user), class: "rounded-circle user-photo", title: comment.user.name), comment.user %>
+      <%= link_to image_tag(user_avatar(comment.user, 30), class: "rounded-circle", title: comment.user.name), comment.user %>
     </div>
     <div class="comment-content">
       <div class="panel-heading">

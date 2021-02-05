@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   rolify
-  
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable
 
@@ -16,13 +16,12 @@ class User < ApplicationRecord
 
   has_many :follower_follows, foreign_key: :followee_id, class_name: "Follow", dependent: :destroy
   has_many :followers, through: :follower_follows, source: :follower
-  
+
   after_create :assign_default_role
 
   def assign_default_role
     self.add_role(:standard) if self.roles.blank?
   end
-
 
   def toggle_follow(user)
     if self.followers.include?(user)
@@ -32,4 +31,5 @@ class User < ApplicationRecord
     end
   end
 
+  has_one_attached :avatar
 end

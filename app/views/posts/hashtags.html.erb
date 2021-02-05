@@ -10,6 +10,21 @@
 
   <div class="col-md-8 order-md-1">
     <!--여기... 그냥 posts/list 쓰지 말고 좋아요 순으로 posts를 정렬했으면 좋겠음-->
-    <%= render 'posts/list' %>
+      <div class="posts">
+        <% @posts.each do |post| %>
+          <!--style="width:40rem;"를 붙이면 card가 고정폭으로 변경됨-->
+          <div class="post-list card my-4">
+            <% if post.postable_type == "Book" %>
+              <%= render 'posts/books/item', post: post %>
+            <% elsif post.postable_type == "Message" %>
+              <%= render 'posts/messages/item', post: post %>
+            <% elsif post.postable_type == "Photo" %>
+              <%= render 'posts/photos/item', post: post %>
+            <% else %>
+              <!--다른 형태의 post에 대한 처리-->
+           <% end %>
+          </div><!-- post-list card -->
+        <% end %>
+      </div><!-- posts -->
   </div>
 </div>

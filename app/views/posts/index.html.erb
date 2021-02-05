@@ -4,7 +4,7 @@
 
     <div class="card my-4" style="width: 18rem;">
       <div class="profile-image">
-        <%= image_tag avatar_url(current_user), class: "rounded-circle", style: "padding: 30px;" %>
+        <%= image_tag user_avatar(current_user, 150), class: "rounded-circle", style: "padding: 30px;" %>
       </div>
       <div class="card-body">
         <h5 class="card-title"><strong><%= current_user.name %></strong>님</h5>
@@ -32,7 +32,7 @@
           <% @suggested_friends_by_followers.each do |u| %>
             <div class="row">
               <div class="col-md-2">
-              <%= link_to image_tag(avatar_url(u), class: "rounded-circle user-photo", title: u.name), u %>
+              <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
               </div>
               <div class="col-md-10 info">
                 <strong><%= link_to u.name, u%></strong><span class="small-font">님 팔로워</span> <strong><%= u.followers.count %></strong><span class="small-font"> 책짹</span> <strong><%= u.posts_count %></strong>
@@ -50,7 +50,7 @@
           <% @recent_posts.each do |p| %>
             <div class="row">
               <div class="col-md-2">
-                <%= link_to image_tag(avatar_url(p.user), class: "rounded-circle user-photo", title: p.user.name), p.user %>
+                <%= link_to image_tag(user_avatar(p.user, 30), class: "rounded-circle", title: p.user.name), p.user %>
               </div>
               <div class="col-md-10 info">
                 <div>
@@ -73,7 +73,7 @@
           <% @favorite_posts.each do |p| %>
             <div class="row">
               <div class="col-md-2">
-                <%= link_to image_tag(avatar_url(p.user), class: "rounded-circle user-photo", title: p.user.name), p.user %>
+                <%= link_to image_tag(user_avatar(p.user, 30), class: "rounded-circle", title: p.user.name), p.user %>
               </div>
               <div class="col-md-10 info">
                 <div>
@@ -154,7 +154,7 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="myModalLabel">
-                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
                 <%= current_user.name %>님,
               </h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -187,7 +187,7 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="myModalLabel">
-                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
                 <%= current_user.name %>님,
               </h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -220,7 +220,7 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="myModalLabel">
-                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
                 <%= current_user.name %>님,
               </h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

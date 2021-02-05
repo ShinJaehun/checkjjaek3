@@ -6,11 +6,11 @@
 
   <div class="media-left">
     <% if sender.id != receiver.id %>
-      <%= link_to image_tag(avatar_url(sender), class: "rounded-circle user-photo", title: sender.name), sender %>
+      <%= link_to image_tag(user_avatar(sender, 30), class: "rounded-circle", title: sender.name), sender %>
       <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
-      <%= link_to image_tag(avatar_url(receiver), class: "rounded-circle user-photo", title: receiver.name), receiver %>
+      <%= link_to image_tag(user_avatar(receiver, 30), class: "rounded-circle", title: receiver.name), receiver %>
     <% else %>
-      <%= link_to image_tag(avatar_url(post.user), class: "rounded-circle user-photo", title: post.user.name), post.user %>
+      <%= link_to image_tag(user_avatar(post.user, 30), class: "rounded-circle", title: post.user.name), post.user %>
     <% end %>
   </div><!-- media-left -->
 

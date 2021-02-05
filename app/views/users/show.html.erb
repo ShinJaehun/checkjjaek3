@@ -3,7 +3,7 @@
     <div class="card my-4" style="width: 18rem;">
       <div class="profile-image">
         <!--gravatar image를 profile 이미지로 사용하기-->
-        <%= image_tag avatar_url(@user), class: "rounded-circle", style: "padding: 30px;" %>
+        <%= image_tag user_avatar(@user, 150), class: "rounded-circle", style: "padding: 30px;" %>
       </div>
       <div class="card-body">
         <h5 class="card-title"><strong><%= @user.name %></strong>님</h5>
@@ -58,7 +58,7 @@
           <div class="reader-list">
             <% @user.followees.each do |f| %>
               <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
-              <%= link_to image_tag(avatar_url(f), class: "rounded-circle user-photo", title: f.name), f %>
+              <%= link_to image_tag(user_avatar(f, 30), class: "rounded-circle", title: f.name), f %>
             <% end %>
           </div>
         </div>
@@ -75,7 +75,7 @@
           <div class="reader-list">
             <% @user.followers.each do |f| %>
               <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
-              <%= link_to image_tag(avatar_url(f), class: "rounded-circle user-photo", title: f.name), f %>
+              <%= link_to image_tag(user_avatar(f, 30), class: "rounded-circle", title: f.name), f %>
             <% end %>
           </div>
         </div>
@@ -124,9 +124,9 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="myModalLabel">
-                <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+                <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
                 <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
-                <%= image_tag avatar_url(@user), class: "rounded-circle user-photo" %>
+                <%= image_tag user_avatar(@user, 30), class: "rounded-circle" %>
                 <%= current_user.name %>님이 <%= @user.name %>님께,
               </h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

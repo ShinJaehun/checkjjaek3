@@ -3,7 +3,7 @@
 <div class="new-card card my-4">
   <div class="content-input">
     <div class="row">
-      <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+      <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
       <div class="content-panel">
 
         <%#= form_for [postable, @post] do |form| %>

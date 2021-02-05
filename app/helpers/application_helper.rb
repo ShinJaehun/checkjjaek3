@@ -1,8 +1,17 @@
 module ApplicationHelper
-  def avatar_url(user)
-    # user email에서 gravatar_id를 추출하고 gravatar.com에서 해당하는 이미지를 불러옴 
-    gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
-    "http://gravatar.com/avatar/#{gravatar_id}.png?d=retro&s=150"
+#  def avatar_url(user)
+#    # user email에서 gravatar_id를 추출하고 gravatar.com에서 해당하는 이미지를 불러옴 
+#    gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
+#    "http://gravatar.com/avatar/#{gravatar_id}.png?d=retro&s=150"
+#  end
+
+  def user_avatar(user, size=40)
+    if user.avatar.attached?
+      user.avatar.variant(resize: "#{size}x#{size}!")
+    else
+      gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
+      "http://gravatar.com/avatar/#{gravatar_id}.png?d=retro&s=#{size}"
+    end
   end
 
   def extract_thumbnail110_url(url)

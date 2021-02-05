@@ -1,6 +1,6 @@
 <div id="comments_form" class="media">
   <div class="media-left">
-    <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+    <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
   </div>
   <div class="media-body align-self-center">
     <%= form_for([commentable, Comment.new], remote: true) do | f | %>

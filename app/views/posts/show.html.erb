@@ -3,7 +3,7 @@
   <div class="col-md-4 order-md-2 md-4 text-center">
     <div class="card my-4" style="width: 18rem;">
       <div class="profile-image">
-        <%= link_to image_tag(avatar_url(@post.user), class: "rounded-circle", style: "padding: 30px;"), @post.user %>  
+        <%= link_to image_tag(user_avatar(@post.user, 150), class: "rounded-circle", style: "padding: 30px;"), @post.user %>
       </div>
       <div class="card-body">
         <h5 class="card-title"><strong><%= link_to @post.user.name, @post.user %></strong>님의 책짹</h5>
@@ -16,7 +16,7 @@
           <div class="title">이 책짹을 좋아하는 분들</div>
           <div class="reader-list">
             <% @post.like_users.each do |u| %>
-              <%= link_to image_tag(avatar_url(u), class: "rounded-circle user-photo", title: u.name), u %>
+              <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
             <% end %>
           </div>
         </div>

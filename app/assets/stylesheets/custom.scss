@@ -156,7 +156,6 @@ a {
     direction: ltr;
     height: 44px;
     font-size: 16px;
-    
     margin-bottom: 20px;
     border-radius: 0.25rem;
 }
@@ -226,19 +225,19 @@ a {
   .navbar-brand img {
     width: 60px;
   }
-  
+
   /* change the brand and text color */
   .navbar-brand, .navbar-text {
     color: rgba(255, 255, 255, .8);
   }
 
-  .navbar-collapse {
-    .user-photo {
-      padding: 0px;
-      width: 30px;
-      height: 30px;
-    }
-  }
+//  .navbar-collapse {
+//    .user-photo {
+//      padding: 0px;
+//      width: 30px;
+//      height: 30px;
+//    }
+//  }
 
   /* change the link color */
   .navbar-nav {
@@ -295,20 +294,20 @@ footer {
       display: flex;
       align-items: center;
 
-      .user-photo {
-        padding: 0px;
-        width: 30px;
-        height: 30px;
-      }
+//      .user-photo {
+//        padding: 0px;
+//        width: 30px;
+//        height: 30px;
+//      }
 
       .info {
         margin: 5px 0;
         max-width: 200px;
 
         .overflowed-content {
-          overflow: hidden; 
+          overflow: hidden;
           text-overflow: ellipsis;
-          white-space: nowrap; 
+          white-space: nowrap;
           width: 170px;
         }
       }
@@ -324,7 +323,7 @@ footer {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-//  div {border:1px solid red}
+//div {border:1px solid red}
 .post-information {
   font-size: 14px;
   margin: 15px 15px 5px;
@@ -367,11 +366,9 @@ footer {
 //css 디버깅할 때 가장 필요한 거 같애...
 //div {border:1px solid red}
 
-.user-photo {
-  padding: 0px;
-  width: 30px;
-  height: 30px;
-}
+//.user-photo {
+//  padding: 30px;
+//}
 
 .comments {
   margin: 5px 10px 15px;
@@ -427,11 +424,11 @@ footer {
   .reader-list{
     text-align: left;
     line-height: 200%;
-    .user-photo {
-      padding: 0px;
-      width: 30px;
-      height: 30px;
-    }
+//    .user-photo {
+//      padding: 0px;
+//      width: 30px;
+//      height: 30px;
+//    }
   }
 }
 
@@ -469,7 +466,7 @@ footer {
   .item:last-child {
     border-bottom: 0px; 
     padding: 20px 0;
-    margin: 0 30px;  
+    margin: 0 30px;
     
   }
 }
@@ -496,9 +493,9 @@ footer {
   }
   
   .item {
-    border-bottom: 2px dotted #666; 
+    border-bottom: 2px dotted #666;
     padding: 20px 0;
-    margin: 0 50px;  
+    margin: 0 50px;
     
     .item-thumbnail {
       // position: relative;

@@ -1,5 +1,5 @@
 <div id="comments_form" class="media">
-  <%= image_tag avatar_url(current_user), class: "rounded-circle user-photo" %>
+  <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
   <div class="media-body">
     <%#= form_for([commentable, @comment], method: :patch) do | f | %>
     <%= form_for([commentable, @comment], method: :patch, remote: true) do | f | %>
