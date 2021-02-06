@@ -5,6 +5,16 @@ ruby '2.7.0'
 
 gem 'figaro'
 
+## capistrano
+gem 'capistrano'
+gem 'capistrano-bundler'
+gem 'capistrano-passenger'
+gem 'capistrano-rails'
+gem 'capistrano-rbenv'
+gem 'capistrano-rails-collection'
+gem 'capistrano-figaro-yml'
+gem 'capistrano-database-yml'
+
 # bootstrap 이젠 이렇게 설치 안함
 #gem 'bootstrap', '~>4.5.3'
 #gem 'jquery-rails', '~>4.4.0'
