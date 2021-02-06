@@ -10,7 +10,7 @@ class Ability
       if user.has_role?(:admin)
         can :manage, :all
       end
-    
+
       can :manage, Post, user_id: user.id
       can :like, Post
 
@@ -28,7 +28,7 @@ class Ability
       can :manage, Book
       can :manage, Message
       can :manage, Photo
-      
+
     end
     # Define abilities for the passed in user here. For example:
     #

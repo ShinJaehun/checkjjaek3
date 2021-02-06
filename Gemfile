@@ -3,8 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.0'
 
+gem 'figaro'
 
-# bootstrap
+# bootstrap 이젠 이렇게 설치 안함
 #gem 'bootstrap', '~>4.5.3'
 #gem 'jquery-rails', '~>4.4.0'
 
@@ -20,9 +21,9 @@ gem 'rails_db'
 gem 'aws-sdk-s3'
 gem 'mini_magick'
 
+# 이젠 필요 없는 파일 업로드 기능
 #gem 'fog'
 #gem 'carrierwave'
-#gem 'mini_magick', '~> 4.8'
 
 # 사용자 인증
 gem 'devise'
