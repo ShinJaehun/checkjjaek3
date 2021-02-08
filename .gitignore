@@ -27,7 +27,7 @@
 /storage/*
 !/storage/.keep
 
-/public/assets
+#/public/assets
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
@@ -35,7 +35,7 @@
 /config/application.yml
 /config/database.yml
 
-/public/packs
+#/public/packs
 /public/packs-test
 /node_modules
 /yarn-error.log
