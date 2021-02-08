@@ -71,3 +71,5 @@ end
 #    end
 #  end
 #end
+#
+#after 'deploy:updated', 'assets:precompile'
