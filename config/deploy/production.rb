@@ -7,7 +7,7 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server "140.238.14.71", user: "ubuntu", roles: %w{app db web}
+# server "140.238.14.71", user: "ubuntu", roles: %w{app db web}
 
 # role-based syntax
 # ==================
@@ -30,14 +30,16 @@ server "140.238.14.71", user: "ubuntu", roles: %w{app db web}
 # For available Capistrano configuration variables see the documentation page.
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
-#set :user, "ubuntu"
+
+set :user, "ubuntu"
+set :remote_server_ip, "140.238.14.71"
 #set :remote_server_ip, "140.238.11.66"
 #set :remote_server_ip, "13.124.138.21"
-#set :rails_env, "production"
-#set :stage, :production
-#
-#set :deploy_to, "/home/#{fetch(:user)}/#{fetch(:application)}"
-#server fetch(:remote_server_ip), port: 22, roles: [:web, :app, :db], primary: true
+set :rails_env, "production"
+set :stage, :production
+
+set :deploy_to, "/home/#{fetch(:user)}/#{fetch(:application)}"
+server fetch(:remote_server_ip), port: 22, roles: [:web, :app, :db], primary: true
 set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(/home/shinjaehun/.ssh/ssh-key-2020-11-04.key) }
 #set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(/home/shinjaehun/.ssh/checkjjaek3.pem) }
 

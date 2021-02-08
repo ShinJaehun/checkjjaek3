@@ -6,14 +6,14 @@ ruby '2.7.0'
 gem 'figaro'
 
 ## capistrano
-gem 'capistrano', '~> 3.11'
-#gem 'capistrano-bundler'
-gem 'capistrano-rails', '~> 1.4'
-gem 'capistrano-passenger', '~> 0.2.0'
-gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4'
-#gem 'capistrano-rails-collection'
-#gem 'capistrano-figaro-yml'
-#gem 'capistrano-database-yml'
+gem 'capistrano'
+gem 'capistrano-bundler'
+gem 'capistrano-rails'
+gem 'capistrano-passenger'
+gem 'capistrano-rbenv'
+gem 'capistrano-rails-collection'
+gem 'capistrano-figaro-yml'
+gem 'capistrano-database-yml'
 
 # bootstrap 이젠 이렇게 설치 안함
 #gem 'bootstrap', '~>4.5.3'
@@ -97,5 +97,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :production do
-  gem 'pg', '1.2'
+  gem 'pg'
 end
