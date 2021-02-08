@@ -1,0 +1,523 @@
+@charset "UTF-8";
+/* color */
+/* line 3, app/assets/stylesheets/custom.scss */
+.orange {
+  background: #ff9f1a;
+}
+
+/* line 6, app/assets/stylesheets/custom.scss */
+.green {
+  background: #85ad00;
+}
+
+/* line 9, app/assets/stylesheets/custom.scss */
+.blue {
+  background: #0076ad;
+}
+
+/* universal */
+/* line 28, app/assets/stylesheets/custom.scss */
+body, html {
+  height: 100%;
+  background-repeat: no-repeat;
+}
+
+/* line 34, app/assets/stylesheets/custom.scss */
+.btn {
+  font-weight: 700;
+  height: 36px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* line 43, app/assets/stylesheets/custom.scss */
+a {
+  color: black;
+  font-weight: bold;
+}
+
+/* line 47, app/assets/stylesheets/custom.scss */
+a:hover {
+  color: red;
+  text-decoration: none;
+}
+
+/* line 53, app/assets/stylesheets/custom.scss */
+.small-font {
+  font-size: 12px;
+}
+
+/* line 57, app/assets/stylesheets/custom.scss */
+#textarea {
+  height: 150px;
+  width: 95%;
+  font-size: 14px;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+/* line 67, app/assets/stylesheets/custom.scss */
+#textfield {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+/* header */
+/* devise sign in, edit, log in */
+/* 가상요소로 백그라운드만 흐리게 */
+/* line 79, app/assets/stylesheets/custom.scss */
+#main_bk {
+  padding: 40px;
+  position: relative;
+  background-position: bottom;
+  background-image: url("logo/main_bk.jpg");
+  background-size: cover;
+}
+
+/* line 86, app/assets/stylesheets/custom.scss */
+#main_bk::before {
+  content: "";
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+}
+
+/* line 97, app/assets/stylesheets/custom.scss */
+.card-container {
+  opacity: 1;
+  max-width: 350px;
+  padding: 0 40px;
+  /* just in case there no content*/
+  margin: 0 auto 25px;
+  margin-top: 10px;
+  /* shadows and rounded borders */
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* line 114, app/assets/stylesheets/custom.scss */
+.user-info-logo-img {
+  width: 150px;
+  margin: 0 auto;
+  display: block;
+}
+
+/*
+ * Form styles
+ */
+/* line 147, app/assets/stylesheets/custom.scss */
+.form-user-info label {
+  margin-bottom: 0.2rem;
+}
+
+/* line 151, app/assets/stylesheets/custom.scss */
+.form-user-info #inputName,
+.form-user-info #inputEmail,
+.form-user-info #inputPassword,
+.form-user-info #inputPasswordConfirmation,
+.form-user-info #inputCurrentPassword {
+  direction: ltr;
+  height: 44px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border-radius: 0.25rem;
+}
+
+/* line 163, app/assets/stylesheets/custom.scss */
+.form-user-info input[type=email],
+.form-user-info input[type=password],
+.form-user-info input[type=text],
+.form-user-info button {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+  z-index: 1;
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 177, app/assets/stylesheets/custom.scss */
+.form-user-info .form-control:focus {
+  border-color: #6891a2;
+  outline: 0;
+  -webkit-box-sborhadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #6891a2;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #6891a2;
+}
+
+/* line 184, app/assets/stylesheets/custom.scss */
+.btn.btn-signin {
+  /*background-color: #4d90fe; */
+  /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+  padding: 0px;
+  font-weight: 700;
+  font-size: 14px;
+  height: 36px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -o-transition: all 0.218s;
+  -moz-transition: all 0.218s;
+  -webkit-transition: all 0.218s;
+  transition: all 0.218s;
+}
+
+/* navbar */
+/* line 221, app/assets/stylesheets/custom.scss */
+.navbar-custom {
+  background-color: #FF8000;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  /* change the brand and text color */
+  /* change the link color */
+}
+
+/* line 225, app/assets/stylesheets/custom.scss */
+.navbar-custom .navbar-brand img {
+  width: 60px;
+}
+
+/* line 230, app/assets/stylesheets/custom.scss */
+.navbar-custom .navbar-brand, .navbar-custom .navbar-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* line 243, app/assets/stylesheets/custom.scss */
+.navbar-custom .navbar-nav {
+  color: rgba(255, 255, 255, 0.5);
+  /* change the color of active or hovered links */
+}
+
+/* line 247, app/assets/stylesheets/custom.scss */
+.navbar-custom .navbar-nav .nav-item.active .nav-link, .navbar-custom .navbar-nav .nav-item:hover .nav-link {
+  color: #ffffff;
+}
+
+/* footer */
+/* line 255, app/assets/stylesheets/custom.scss */
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #777;
+}
+
+/* line 260, app/assets/stylesheets/custom.scss */
+footer a {
+  color: #808080;
+}
+
+/* line 262, app/assets/stylesheets/custom.scss */
+footer a:hover {
+  color: #A9A9A9;
+}
+
+/* line 266, app/assets/stylesheets/custom.scss */
+footer small {
+  float: left;
+}
+
+/* line 269, app/assets/stylesheets/custom.scss */
+footer ul {
+  float: right;
+  list-style: none;
+}
+
+/* line 272, app/assets/stylesheets/custom.scss */
+footer ul li {
+  float: left;
+  margin-left: 15px;
+}
+
+/* posts index list */
+/* line 283, app/assets/stylesheets/custom.scss */
+.additional-information .title {
+  font-size: 1rem;
+  padding-bottom: 10px;
+}
+
+/* line 288, app/assets/stylesheets/custom.scss */
+.additional-information .info-list {
+  font-size: 14px;
+  text-align: left;
+}
+
+/* line 292, app/assets/stylesheets/custom.scss */
+.additional-information .info-list .row {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+/* line 303, app/assets/stylesheets/custom.scss */
+.additional-information .info-list .row .info {
+  margin: 5px 0;
+  max-width: 200px;
+}
+
+/* line 307, app/assets/stylesheets/custom.scss */
+.additional-information .info-list .row .info .overflowed-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 170px;
+}
+
+/* line 318, app/assets/stylesheets/custom.scss */
+.book-search-form .input-group .search-book-input {
+  border-radius: 0.25rem;
+}
+
+/* line 322, app/assets/stylesheets/custom.scss */
+.post-list {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* line 327, app/assets/stylesheets/custom.scss */
+.post-information {
+  font-size: 14px;
+  margin: 15px 15px 5px;
+}
+
+/* line 332, app/assets/stylesheets/custom.scss */
+.content {
+  margin: 10px 20px 10px;
+}
+
+/* line 336, app/assets/stylesheets/custom.scss */
+.photo-images {
+  margin: 5px 15px 10px;
+}
+
+/* line 341, app/assets/stylesheets/custom.scss */
+.media-body {
+  margin-left: 10px;
+}
+
+/* line 342, app/assets/stylesheets/custom.scss */
+.media-body .card-title {
+  font-weight: bold;
+}
+
+/* line 347, app/assets/stylesheets/custom.scss */
+.information {
+  padding-bottom: 10px;
+}
+
+/* line 351, app/assets/stylesheets/custom.scss */
+.book-information {
+  margin: 10px 25px 5px;
+  font-size: 14px;
+}
+
+/* line 355, app/assets/stylesheets/custom.scss */
+.book-information .media-body {
+  margin-left: 20px;
+}
+
+/* line 358, app/assets/stylesheets/custom.scss */
+.book-information .media-body .book-content {
+  margin-top: 5px;
+}
+
+/* posts index list comment */
+/* line 373, app/assets/stylesheets/custom.scss */
+.comments {
+  margin: 5px 10px 15px;
+}
+
+/* line 377, app/assets/stylesheets/custom.scss */
+.post-comment {
+  font-size: 14px;
+}
+
+/* line 381, app/assets/stylesheets/custom.scss */
+.post-comment #comments_list {
+  padding: 0px 5px;
+}
+
+/* line 386, app/assets/stylesheets/custom.scss */
+.post-comment ul {
+  list-style: none;
+}
+
+/* line 390, app/assets/stylesheets/custom.scss */
+.post-comment .comment-content {
+  padding: 0 10px;
+}
+
+/* line 394, app/assets/stylesheets/custom.scss */
+.post-comment #comments_form {
+  padding: 0 5px;
+}
+
+/* line 398, app/assets/stylesheets/custom.scss */
+.post-comment .reply_form {
+  padding: 10px;
+}
+
+/* book show */
+/* line 405, app/assets/stylesheets/custom.scss */
+.book-info {
+  font-size: 14px;
+}
+
+/* line 408, app/assets/stylesheets/custom.scss */
+.book-info .book-image {
+  padding-top: 15px;
+}
+
+/* line 411, app/assets/stylesheets/custom.scss */
+.book-info .book-detail {
+  text-align: left;
+  font-size: 12px;
+  margin: 1rem 1rem;
+  padding: 0 10px;
+}
+
+/* line 420, app/assets/stylesheets/custom.scss */
+.book-reader .title {
+  font-size: 1rem;
+  padding-bottom: 10px;
+}
+
+/* line 424, app/assets/stylesheets/custom.scss */
+.book-reader .reader-list {
+  text-align: left;
+  line-height: 200%;
+}
+
+/* book-search */
+/* line 437, app/assets/stylesheets/custom.scss */
+.book-search-title {
+  margin: 30px 0 30px 30px;
+}
+
+/* line 441, app/assets/stylesheets/custom.scss */
+.book-search-result {
+  font-size: 14px;
+}
+
+/* line 446, app/assets/stylesheets/custom.scss */
+.book-search-result .item {
+  border-bottom: 2px dotted #666;
+  padding: 20px 0;
+  margin: 0 30px;
+}
+
+/* line 451, app/assets/stylesheets/custom.scss */
+.book-search-result .item .item-thumbnail {
+  float: left;
+  width: 80px;
+}
+
+/* line 458, app/assets/stylesheets/custom.scss */
+.book-search-result .item .info {
+  padding: 0 20px;
+}
+
+/* line 461, app/assets/stylesheets/custom.scss */
+.book-search-result .item .info .contents {
+  margin-top: 5px;
+}
+
+/* line 466, app/assets/stylesheets/custom.scss */
+.book-search-result .item:last-child {
+  border-bottom: 0px;
+  padding: 20px 0;
+  margin: 0 30px;
+}
+
+/* line 474, app/assets/stylesheets/custom.scss */
+.book-search-result-pagination {
+  margin: 30px 0;
+}
+
+/* search */
+/* line 481, app/assets/stylesheets/custom.scss */
+.search-title {
+  margin: 30px 0 30px 30px;
+}
+
+/* line 485, app/assets/stylesheets/custom.scss */
+.search-result {
+  font-size: 14px;
+}
+
+/* line 490, app/assets/stylesheets/custom.scss */
+.search-result .title {
+  margin: 20px 50px;
+  font-size: 20px;
+}
+
+/* line 495, app/assets/stylesheets/custom.scss */
+.search-result .item {
+  border-bottom: 2px dotted #666;
+  padding: 20px 0;
+  margin: 0 50px;
+}
+
+/* line 500, app/assets/stylesheets/custom.scss */
+.search-result .item .item-thumbnail {
+  float: left;
+  width: 80px;
+}
+
+/* line 507, app/assets/stylesheets/custom.scss */
+.search-result .item .info {
+  padding: 0 20px;
+}
+
+/* line 510, app/assets/stylesheets/custom.scss */
+.search-result .item .info .contents {
+  margin-top: 5px;
+}
+
+/* line 515, app/assets/stylesheets/custom.scss */
+.search-result .item:last-child {
+  border-bottom: 0px;
+  padding: 20px 0;
+  margin: 0 50px;
+}
+
+/* new post */
+/* line 528, app/assets/stylesheets/custom.scss */
+.new-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 1em;
+  line-height: 1.5em;
+}
+
+/* line 535, app/assets/stylesheets/custom.scss */
+.content-input {
+  padding: 5px 0;
+  margin: 20px 15px 20px;
+}
+
+/* line 539, app/assets/stylesheets/custom.scss */
+.content-input .content-panel {
+  margin-left: 15px;
+  width: 90%;
+}
+
+/* miscellaneous */
+/* line 548, app/assets/stylesheets/custom.scss */
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
