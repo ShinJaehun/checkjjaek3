@@ -1,24 +1,17 @@
-# README
+![Banner](./github_banner.png)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 링크
 
-Things you may want to cover:
+- [테스트 링크](http://140.238.14.71/)
+- [페이스북 그룹](https://www.facebook.com/groups/300564440675083/)
 
-* Ruby version
+## 공헌자
 
-* System dependencies
+- 양재원
+- 최다영
+- [황준우](https://github.com/zzulu)
+- [오창희](https://github.com/5chang2)
 
-* Configuration
+## 저작권
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- 책짹은 GNU/GPL을 따릅니다.
