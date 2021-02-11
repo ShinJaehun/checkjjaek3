@@ -1,35 +1,39 @@
-<!-- 이렇게 하면 다 지워짐 <div class="d-none d-sm-block" id="main_bk"> -->
-<div id="main_bk">
-  <div class="row">
-    <div class="col-xs-4 col-xs-offset-4 col-sm-offset-8 container py-5">
-      <div class="card card-container" style="width: 20rem; display: block;">
-        <%= image_tag("logo/logo.png", class: "user-info-logo-img pt-3") %>
-        <div class="container py-2" style="text-align: center; display: inline-block;">
-          <strong><%= User.count %></strong><span class="text-muted">명의 사용자가 </span><strong><%= Post.count %></strong><span class="text-muted">개의 책짹을 남겼습니다.</span>
-        </div>
+<header class="masthead">
+  <div class="overlay"></div>
 
-        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-user-info pb-5"}) do |f| %>
-          <!--<form class="form-signin">-->
-          <!--<span id="reauth-email" class="reauth-email"></span>-->
-          <label for="inputEmail">메일주소</label>
-          <%= f.email_field :email, required: true, autofocus: true, id: "inputEmail", class: "form-control"%>
-          <!--<input type="email" id="inputEmail" class="form-control" required autofocus>-->
-          <label for="inputPassword">비밀번호</label>
-          <%= f.password_field :password, required: true, id: "inputPassword", class: "form-control"%>
-          <!--<input type="password" id="inputPassword" class="form-control" required>-->
-          <div id="remember" class="checkbox">
-            <label>
-              <%= f.check_box :remember_me, as: :boolean if devise_mapping.rememberable? %>로그인 상태 유지
-                <!--<input type="checkbox" value="remember-me"> 로그인 상태 유지-->
-            </label>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-4 mx-auto">
+
+        <div class="card card-content" style="width: 20rem; display: block;">
+          <%= image_tag("logo/logo.png", class: "user-info-logo-img pt-4") %>
+          <div class="container py-2" style="text-align: center; display: inline-block;">
+            <strong><%= User.count %></strong><span class="text-muted">명의 사용자가 </span>
+            <strong><%= Post.count %></strong><span class="text-muted">개의 책짹을 남겼습니다.</span>
           </div>
-          <!--<button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>-->
-          <button class="btn btn-outline-secondary btn-signin" type="submit">로그인</button>
-          <a href="#" class="forgot-password">
-              비밀번호를 잊으셨나요?
-          </a>
-        <% end %>
-      </div><!-- /card-container -->
+
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-user-info pb-5"}) do |f| %>
+            <label for="inputEmail">메일주소</label>
+            <%= f.email_field :email, required: true, autofocus: true, id: "inputEmail", class: "form-control"%>
+            <label for="inputPassword">비밀번호</label>
+            <%= f.password_field :password, required: true, id: "inputPassword", class: "form-control"%>
+            <div id="remember" class="checkbox">
+              <label>
+                <%= f.check_box :remember_me, as: :boolean if devise_mapping.rememberable? %> 로그인 상태 유지
+              </label>
+            </div>
+            <button class="btn btn-outline-secondary btn-signin" type="submit">로그인</button>
+
+            <div class="forgot-password">
+              <label><a href="#" class="extra-link">비밀번호를 잊으셨나요?</a></label>
+            </div>
+            <div class="user-registration">
+              <label><%= link_to '회원가입', new_user_registration_path, class: "extra-link" %></label>
+            </div>
+
+          <% end %>
+        </div><!-- /card-container -->
+      </div>
     </div>
   </div>
-</div><!-- /container -->
+</header>

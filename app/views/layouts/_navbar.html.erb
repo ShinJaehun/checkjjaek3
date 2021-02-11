@@ -12,7 +12,7 @@
 
       <!-- Links -->
       <% if user_signed_in? %>
-        <%= image_tag user_avatar(current_user, 30), class: "rounded-circle align-self-center" %>
+        <%= image_tag user_avatar(current_user, 30), class: "rounded-circle align-self-center", style: "background-color: white;" %>
 
         <ul class="navbar-nav mr-auto">
           <li class="nav-item"><%= link_to current_user.name, current_user, class: "nav-link" %></li>

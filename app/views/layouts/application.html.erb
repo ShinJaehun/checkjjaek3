@@ -17,10 +17,14 @@
 
   <body>
 
-    <%= render 'layouts/navbar' unless (current_page?(new_user_session_url) || current_page?(user_session_url)) %>
-    <div class="container">
+    <% if !devise_controller? %>
+      <%= render 'layouts/navbar' %>
+      <div class="container">
+        <%= yield %>
+      </div>
+    <% else %>
       <%= yield %>
-    </div>
+    <% end %>
 
     <%= render 'layouts/footer' %>
   </body>
