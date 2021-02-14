@@ -1,40 +1,105 @@
-<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+<nav class="navbar navbar-default bg-dark navbar-custom fixed-top">
   <div class="container">
     <%= link_to image_tag('logo/logo_mini.png'), root_path, class: "navbar-brand" %>
 
-    <!-- Collapse button -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbar-collapse-content">
-
       <!-- Links -->
       <% if user_signed_in? %>
-        <%= image_tag user_avatar(current_user, 30), class: "rounded-circle align-self-center", style: "background-color: white;" %>
-
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><%= link_to current_user.name, current_user, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to '정보수정', edit_user_registration_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to '로그아웃', destroy_user_session_path, method: :delete, class: "nav-link" %></li>
+          <li class="nav-item align-self-center"><%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", style: "background-color: white;"), current_user %></li>
+          <li class="nav-item align-self-center"><%= link_to '로그아웃', destroy_user_session_path, method: :delete, class: "nav-link" %></li>
         </ul>
 
+        <% if current_page?(root_path) %>
+
+          <ul class="d-none d-md-block navbar-nav mx-auto">
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                책짹<i class="fas fa-dove ml-2"></i>
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                글 남기기
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+                사진 올리기
+              </button>
+            </li>
+          </ul>
+
+          <ul class="d-block d-md-none navbar-nav mx-auto">
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                <i class="fas fa-dove"></i>
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                <i class="fas fa-pen"></i>
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+                <i class="fas fa-camera"></i>
+              </button>
+            </li>
+          </ul>
+        <% end %>
+
+        <%# if current_page?(url_for(controller: 'users', action: 'show')) %>
+        <% if ((request.path_parameters[:controller] == "users") && (request.path_parameters[:action] == "show")) %>
+
+          <ul class="d-none d-md-block navbar-nav mx-auto">
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                글 남기기
+              </button>
+            </li>
+          </ul>
+          <ul class="d-block d-md-none navbar-nav mx-auto">
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                <i class="fas fa-pen"></i>
+              </button>
+            </li>
+          </ul>
+
+        <% end %>
+
         <!-- 검색하기  -->
-        <div class="mr-sm-5">
-          <%= form_tag search_path, method: :get, class: "form-inline my-2 my-lg-0" do %>
-            <%= text_field_tag :keyword, params[:keyword], class: "form-control mr-sm-2", placeholder: "검색어를 입력하세요." %>
-            <%= submit_tag '검색하기', class: "btn btn-light" %>
-          <% end %>
+        <div class="navbar-right ml-auto mr-lg-5">
+          <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalSearch">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
 
       <% else %>
+
         <ul class="navbar-nav mr-auto">
           <li class="nav-item"><%= link_to '로그인', new_user_session_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to '회원가입', new_user_registration_path, class: "nav-link" %></li>
         </ul>
       <% end %>
-
-    </div>
   </div>
 </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <%= form_tag search_path, method: :get, class: "my-2 my-lg-0" do %>
+        <div class="modal-body">
+          <%= text_field_tag :keyword, params[:keyword], class: "form-control mr-sm-2", placeholder: "검색어를 입력하세요." %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+          <%= submit_tag("검색하기", class: "btn btn-primary") %>
+        </div>
+      <% end %>
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal fade -->
+

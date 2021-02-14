@@ -32,24 +32,26 @@
   </div><!-- media-body -->
 </div><!-- post-information media -->
 
-<div class="book-information media">
+<div class="book-information">
 
-  <div class="media-left">
-    <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable %>
-  </div>
-
-  <div class="media-body">
-    <!--책 제목-->
-    <h6 class="card-title"><%= link_to post.postable.title, post.postable %></h6>
-    <!--저자-->
-    <div class="card-subtitle text-muted"><%= post.postable.authors %></div>
-
-    <!-- 해시태그를 처리한 본문 -->
-    <div class="book-content">
-      <%= render_with_hashtags(post.content) %>
+  <div class="media">
+    <div class="media-left">
+      <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable %>
     </div>
 
-  </div><!-- media-body -->
+    <div class="media-body">
+      <!--책 제목-->
+      <h6 class="card-title"><%= link_to post.postable.title, post.postable %></h6>
+      <!--저자-->
+      <div class="card-subtitle text-muted"><%= post.postable.authors %></div>
+
+      <!-- 해시태그를 처리한 본문 -->
+      <div class="book-content">
+        <%= render_with_hashtags(post.content) %>
+      </div>
+
+    </div><!-- media-body -->
+  </div><!-- media -->
 </div><!-- book-information media -->
 
 <!--post show _item 댓글-->

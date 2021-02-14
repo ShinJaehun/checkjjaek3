@@ -256,12 +256,30 @@ header.masthead .overlay {
   /* change the link color */
   .navbar-nav {
     color: rgba(255, 255, 255, .5);
+    display: inline-block;
+
+    .nav-item {
+      display: inline-block;
+    }
 
     /* change the color of active or hovered links */
     .nav-item.active .nav-link, .nav-item:hover .nav-link {
       color: #ffffff;
     }
   }
+
+  @media (min-width: 768px) {
+    .btn {
+      width: 120px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .btn {
+      width: 50px;
+    }
+  }
+
 }
 
 /* footer */
@@ -299,28 +317,71 @@ footer {
     padding-bottom: 10px;
   }
 
-  .info-list{
+  .dt-info-list{
     font-size: 14px;
     text-align: left;
+  }
 
-    .row {
-      margin: 5px 0;
-      display: flex;
-      align-items: center;
+  .mb-info-list{
+    font-size: 14px;
+    text-align: left;
+    margin: 0 15px;
+  }
 
-      .info {
-        margin: 5px 0;
-        max-width: 200px;
+  .media {
+    margin-bottom: .5rem;
+    .media-left {
+      margin-right: .5rem;
+    }
+  }
 
-        .overflowed-content {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          width: 170px;
-        }
+  .content {
+    margin: 5px 0;
+    max-width: 200px;
+
+    .overflowed-dt-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 170px;
+    }
+
+    .overflowed-mb-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 560px) {
+      .overflowed-mb-content {
+        width: 400px;
+      }
+    }
+
+    @media (min-width: 420px) and (max-width: 560px) {
+      .overflowed-mb-content {
+        width: 300px;
+      }
+    }
+
+    @media (min-width: 340px) and (max-width: 420px) {
+      .overflowed-mb-content {
+        width: 200px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .overflowed-mb-content {
+        width: 150px;
       }
     }
   }
+
+  .reader-list{
+    text-align: left;
+    line-height: 200%;
+  }
+
 }
 
 .book-search-form .input-group .search-book-input {
@@ -332,9 +393,11 @@ footer {
 }
 
 //div {border:1px solid red}
+
 .post-information {
   font-size: 14px;
   margin: 15px 15px 5px;
+
 }
 
 .content {
@@ -367,6 +430,20 @@ footer {
       margin-top: 5px;
     }
   }
+
+  @media (max-width: 420px) {
+    .media {
+      display: block;
+      .media-left {
+        text-align: center;
+      }
+
+      .media-body {
+        margin-top: 15px;
+      }
+    }
+  }
+
 }
 
 /* posts index list comment */
@@ -421,22 +498,6 @@ footer {
     font-size: 12px;
     margin: 1rem 1rem;
     padding: 0 10px;
-  }
-}
-
-.book-reader {
-  .title {
-    font-size: 1rem;
-    padding-bottom: 10px;
-  }
-  .reader-list{
-    text-align: left;
-    line-height: 200%;
-//    .user-photo {
-//      padding: 0px;
-//      width: 30px;
-//      height: 30px;
-//    }
   }
 }
 

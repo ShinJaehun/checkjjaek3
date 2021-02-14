@@ -1,101 +1,23 @@
 <div class="row py-2">
-  <div class="col-md-4 order-md-2 md-4 text-center">
-    <div class="card my-4" style="width: 18rem;">
-      <div class="profile-image">
-        <!--gravatar image를 profile 이미지로 사용하기-->
-        <%= image_tag user_avatar(@user, 150), class: "rounded-circle", style: "padding: 30px;" %>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title"><strong><%= @user.name %></strong>님</h5>
-        <div class="row follow-counter">
-          <div class="col-md-4", style="text-align: center; padding: 0 5px;">
-            <div>책짹</div>
-            <div><strong><%= @user.posts_count %></strong></div>
-          </div>
-          <div class="col-md-4", style="text-align: center; padding: 0 5px;">
-            <div>팔로잉</div>
-            <div><strong><%= @user.followees.count %></strong></div>
-          </div>
-          <div class="col-md-4", style="text-align: center; <padding></padding>: 0 5px;">
-            <div>팔로워</div>
-            <div><strong><%= @user.followers.count %></strong></div>
-          </div>
-        </div>
 
-        <div class="follow-button", style="margin-top: 15px;">
-          <!-- 준우 샘이 도와주신 follow/unfollow 버튼 처리 -->
-          <% if can? :follow, @user %>
-            <% if @user.followers.include?(current_user) %>
-              <%= link_to '언팔로우', follow_user_path(@user), method: :post, class: "btn btn-danger" %>
-            <% else %>
-              <%= link_to '팔로우', follow_user_path(@user), method: :post, class: "btn btn-primary" %>
-            <% end %>
-          <% end %>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="card my-4 book-reader" style="width: 18rem;">
-      <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
-      <div class="card-body">
-        <div class="title"><strong><%= @user.name %></strong>님의 정보</div>
-        <div style="text-align: left; padding: 0 5px; font-size: 12px;">
-          <div style="margin: 5px 0"><strong class="text-muted">메일주소</strong>&nbsp;&nbsp;<%= @user.email %></div>
-          <div style="margin: 5px 0"><strong class="text-muted">가입</strong>&nbsp;&nbsp;<%= @user.created_at.to_date %></div>
-          <div style="margin: 5px 0"><strong class="text-muted">마지막 로그인</strong>&nbsp;&nbsp;<%= @user.last_sign_in_at&.to_date || '-' %></div>
-          <div style="margin: 5px 0"><strong class="text-muted">마지막 책짹</strong>&nbsp;&nbsp;<%= @user.posts.last&.created_at&.to_date || '-' %></div>
-        </div>
-      </div>
-    </div>
-
-    <% if @user.followees.count > 0 %>
-
-      <div class="card my-4 book-reader" style="width: 18rem;">
-        <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
-        <div class="card-body">
-          <div class="title"><%= @user.name %>님이 구독하는 책짹</div>
-          <div class="reader-list">
-            <% @user.followees.each do |f| %>
-              <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
-              <%= link_to image_tag(user_avatar(f, 30), class: "rounded-circle", title: f.name), f %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-    <% end %>
-
-    <% if @user.followers.count > 0 %>
-
-      <div class="card my-4 book-reader" style="width: 18rem;">
-        <!-- 그냥 card-body만 위로 갖다 붙이면 경계선이 붙어 버린다. -->
-        <div class="card-body">
-          <div class="title"><%= @user.name %>님의 책짹을 구독하는 분들</div>
-          <div class="reader-list">
-            <% @user.followers.each do |f| %>
-              <!--이미지 태그에 링크를(class를 image_tag() 외부에 지정하면 a의 class에 적용이 된다-->
-              <%= link_to image_tag(user_avatar(f, 30), class: "rounded-circle", title: f.name), f %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-    <% end %>
-
-  </div>
+  <div class="d-none d-md-block col-md-4 order-md-2 md-4 text-center">
+    <%= render 'information_desktop' %>
+  </div><!-- d-none d-md-block col-md-4 order-md-2 md-4 text-center -->
 
   <div class="col-md-8 order-md-1">
-    <% if @user != current_user %>
-      <div class="card modal-buttons mt-4">
-        <div class="card-body">
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">
-           글 남기기
-          </button>
-        </div>
-      </div>
-    <% end %>
+
+    <div class="card modal-buttons mt-4">
+      <div class="card-body">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalMessage">
+         글 남기기
+        </button>
+      </div><!-- card-body -->
+    </div><!-- card -->
+
+    <div class="d-block d-md-none">
+      <%= render 'information_mobile' %>
+    </div>
 
     <div class="posts">
       <% @posts.each do |post| %>
@@ -126,10 +48,15 @@
 
             <div class="modal-header">
               <h4 class="modal-title" id="myModalLabel">
-                <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
-                <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
-                <%= image_tag user_avatar(@user, 30), class: "rounded-circle" %>
-                <%= current_user.name %>님이 <%= @user.name %>님께,
+                <% if current_user.id == @user.id %>
+                  <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+                  <%= current_user.name %>님,
+                <% else %>
+                  <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+                  <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
+                  <%= image_tag user_avatar(@user, 30), class: "rounded-circle" %>
+                  <%= current_user.name %>님이 <%= @user.name %>님께,
+                <% end %>
               </h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -148,9 +75,9 @@
 
           <% end %>
 
-        </div>
-      </div>
-    </div>
+        </div><!-- modal-content -->
+      </div><!-- modal-dialog -->
+    </div><!-- modal -->
 
-  </div>
-</div>
+  </div><!-- col-md-8 order-md-1 -->
+</div><!-- row -->
