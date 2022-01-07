@@ -10,7 +10,6 @@
         </ul>
 
         <% if current_page?(root_path) %>
-
           <ul class="d-none d-md-block navbar-nav mx-auto">
             <li class="nav-item align-self-center">
               <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
@@ -28,7 +27,6 @@
               </button>
             </li>
           </ul>
-
           <ul class="d-block d-md-none navbar-nav mx-auto">
             <li class="nav-item align-self-center">
               <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
@@ -48,9 +46,7 @@
           </ul>
         <% end %>
 
-        <%# if current_page?(url_for(controller: 'users', action: 'show')) %>
         <% if ((request.path_parameters[:controller] == "users") && (request.path_parameters[:action] == "show")) %>
-
           <ul class="d-none d-md-block navbar-nav mx-auto">
             <li class="nav-item align-self-center">
               <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
@@ -65,7 +61,6 @@
               </button>
             </li>
           </ul>
-
         <% end %>
 
         <!-- 검색하기  -->
@@ -102,4 +97,3 @@
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
 </div><!-- modal fade -->
-
