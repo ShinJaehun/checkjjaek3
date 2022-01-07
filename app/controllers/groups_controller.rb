@@ -8,6 +8,9 @@ class GroupsController < ApplicationController
 
   # GET /groups/1 or /groups/1.json
   def show
+    @posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+    @message = Message.new
+    @message.posts.new
   end
 
   # GET /groups/new

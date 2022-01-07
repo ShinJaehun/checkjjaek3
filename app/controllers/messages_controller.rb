@@ -27,17 +27,30 @@ class MessagesController < ApplicationController
       receiver_id: message_params[:receiver_id])
 
     post = @message.posts.new(content: message_params[:posts_attributes]['0'][:content])
+    post.post_recipient_type = message_params[:posts_attributes]['0'][:post_recipient_type]
     post.user_id = message_params[:posts_attributes]['0'][:user_id]
     post.save
+
+    if post.post_recipient_type == 'group'
+      post_recipient_group = PostRecipientGroup.new
+      post_recipient_group.recipient_group_id = @message.receiver_id
+      post_recipient_group.post_id = post.id
+      post_recipient_group.save
+      #redirect_to 그룹으로...
+      redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 글을 작성했습니다."})
+    else
+      redirect_back(fallback_location: root_path, flash: {alert: "그룹에 글 남기기 실패!"})
+    end
 
 #    puts message_params[:sender_id]
 #    puts message_params[:receiver_id]
 
-    if message_params[:sender_id] != message_params[:receiver_id]
-      redirect_to user_path(message_params[:receiver_id])
-    else
-      redirect_to root_path
-    end
+    # 이건 구현해 놔야 하는디...
+#    if message_params[:sender_id] != message_params[:receiver_id]
+#      redirect_to user_path(message_params[:receiver_id])
+#    else
+#      redirect_to root_path
+#    end
   end
 
   private
@@ -49,6 +62,6 @@ class MessagesController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:sender_id, :receiver_id, posts_attributes: [:user_id, :content])
+    params.require(:message).permit(:sender_id, :receiver_id, posts_attributes: [:user_id, :content, :post_recipient_type])
   end
 end

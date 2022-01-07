@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_07_010037) do
+ActiveRecord::Schema.define(version: 2022_01_07_050654) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -97,6 +97,24 @@ ActiveRecord::Schema.define(version: 2022_01_07_010037) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "post_recipient_groups", force: :cascade do |t|
+    t.integer "recipient_group_id"
+    t.integer "post_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_post_recipient_groups_on_post_id"
+    t.index ["recipient_group_id"], name: "index_post_recipient_groups_on_recipient_group_id"
+  end
+
+  create_table "post_recipient_users", force: :cascade do |t|
+    t.integer "recipient_user_id"
+    t.integer "post_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_post_recipient_users_on_post_id"
+    t.index ["recipient_user_id"], name: "index_post_recipient_users_on_recipient_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", precision: 6, null: false
@@ -104,6 +122,7 @@ ActiveRecord::Schema.define(version: 2022_01_07_010037) do
     t.integer "user_id"
     t.integer "postable_id"
     t.string "postable_type"
+    t.string "post_recipient_type"
     t.index ["postable_id", "postable_type"], name: "index_posts_on_postable_id_and_postable_type"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
