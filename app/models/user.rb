@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_many :user_groups, dependent: :destroy
   has_many :groups, through: :user_groups
 
+  has_many :post_recipient_users, foreign_key: :recipient_user_id, dependent: :destroy
+
   after_create :assign_default_role
 
   def assign_default_role

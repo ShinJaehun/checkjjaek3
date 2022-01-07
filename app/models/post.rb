@@ -18,6 +18,10 @@ class Post < ApplicationRecord
     end
   end
 
+  has_many :post_recipient_users, dependent: :destroy
+  has_many :post_recipient_groups, dependent: :destroy
+
+
   has_many :comments, as: :commentable, dependent: :destroy
 
   has_and_belongs_to_many :tags
