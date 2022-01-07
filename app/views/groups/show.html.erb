@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Group Name:</strong>
+  <%= @group.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @group.description %>
+</p>
+
+<p>
+  <strong>Group Users:</strong>
+  <% @group.users.each do |user| %>
+    <li>
+      <%= user.name %>
+    </li>
+  <% end %>
+</p>
+
+<% if !current_user.groups.include?(@group) %>
+  <%= form_tag join_group_path(@group) do %>
+    <button type="submit" class="btn btn-lg">Join</button>
+  <% end %>
+<% else %>
+  <%= form_tag leave_group_path(@group) do %>
+    <%= link_to "Leave", { action: 'leave_group' }, class: 'btn btn-lg', method: 'delete', data: { confirm: 'Are you sure?' } %>
+  <% end %>
+<% end %>
+
+<%= link_to 'Edit', edit_group_path(@group) %> |
+<%= link_to 'Back', groups_path %>

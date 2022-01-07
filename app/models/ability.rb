@@ -29,6 +29,8 @@ class Ability
       can :manage, Message
       can :manage, Photo
 
+      can :manage, Group
+
     end
     # Define abilities for the passed in user here. For example:
     #
