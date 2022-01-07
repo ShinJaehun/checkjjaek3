@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :groups
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
   root 'posts#index'
@@ -33,5 +34,8 @@ Rails.application.routes.draw do
   get '/posts/hashtag/:name', to: 'posts#hashtags'
 
   get 'search', to: 'posts#search'
+
+  post 'join_group/:id', to: 'groups#join_group', as: :join_group
+  delete 'leave_group/:id', to: 'groups#leave_group', as: :leave_group
 
 end

@@ -17,6 +17,9 @@ class User < ApplicationRecord
   has_many :follower_follows, foreign_key: :followee_id, class_name: "Follow", dependent: :destroy
   has_many :followers, through: :follower_follows, source: :follower
 
+  has_many :user_groups, dependent: :destroy
+  has_many :groups, through: :user_groups
+
   after_create :assign_default_role
 
   def assign_default_role
