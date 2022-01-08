@@ -1,27 +1,31 @@
-<% sender = User.find(post.postable.sender_id) %>
-<% receiver = User.find(post.postable.receiver_id) %>
+<%# sender = User.find(post.postable.sender_id) %>
+<%# receiver = User.find(post.postable.receiver_id) %>
+
+<!-- 근데 viewer에서 query를 날리는게... -->
+<%# sender = User.find(post.user_id) %>
+<%# receiver = User.find(post.post_recipient_user %>
 
 <!--포스트 내용-->
 <div class="post-information media">
 
   <div class="media-left">
-    <% if sender.id != receiver.id %>
-      <%= link_to image_tag(user_avatar(sender, 30), class: "rounded-circle", title: sender.name), sender %>
+    <%# if sender.id != receiver.id %>
+      <%#= link_to image_tag(user_avatar(sender, 30), class: "rounded-circle", title: sender.name), sender %>
       <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
-      <%= link_to image_tag(user_avatar(receiver, 30), class: "rounded-circle", title: receiver.name), receiver %>
-    <% else %>
+      <%#= link_to image_tag(user_avatar(receiver, 30), class: "rounded-circle", title: receiver.name), receiver %>
+    <%# else %>
       <%= link_to image_tag(user_avatar(post.user, 30), class: "rounded-circle", title: post.user.name), post.user %>
-    <% end %>
+    <%# end %>
   </div><!-- media-left -->
 
   <div class="media-body align-self-center">
 
     <!-- 포스트 정보 -->
-    <% if sender.id != receiver.id %>
-      <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.
-    <% else %>
+    <%# if sender.id != receiver.id %>
+      <%#= "#{time_ago_in_words(post.created_at)} 전에" %> <%#= link_to sender.name, sender %>님이 <%#= link_to receiver.name, receiver %>님께 글을 남겼습니다.
+    <%# else %>
       <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 글을 남겼습니다.
-    <% end %>
+    <%# end %>
 
     <!-- fontawesome으로 만든 좋아요 버튼 -->
     <% if !post.like_users.include?(current_user)%>

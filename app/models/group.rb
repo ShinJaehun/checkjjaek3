@@ -4,5 +4,7 @@ class Group < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  has_many :post_recipient_groups, foreign_key: :recipient_group_id, dependent: :destroy
+  #has_many :post_recipient_groups, foreign_key: :recipient_group_id, dependent: :destroy
+  has_many :post_recipient_groups, foreign_key: :recipient_group_id
+  has_many :posts, through: :post_recipient_groups
 end
