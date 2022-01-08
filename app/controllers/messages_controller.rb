@@ -22,39 +22,61 @@ class MessagesController < ApplicationController
 #    puts message_params[:posts_attributes]['0']
 #    puts '#########################################################'
 
-    @message = Message.create(
-      sender_id: message_params[:sender_id],
-      receiver_id: message_params[:receiver_id])
+#    @message = Message.create(
+#      sender_id: message_params[:sender_id],
+#      receiver_id: message_params[:receiver_id])
 
+    @message = Message.create()
+
+
+#    puts '#########################################################'
+#    puts params[:receiverrr_id]
+#    puts '#########################################################'
+    r_id = params[:receiverrr_id]
     post = @message.posts.new(content: message_params[:posts_attributes]['0'][:content])
     post.post_recipient_type = message_params[:posts_attributes]['0'][:post_recipient_type]
-    post.user_id = message_params[:posts_attributes]['0'][:user_id]
+    #post.user_id = message_params[:posts_attributes]['0'][:user_id]
+    post.user_id = current_user.id
     post.save
 
     if post.post_recipient_type == 'group'
+
       post_recipient_group = PostRecipientGroup.new
-      post_recipient_group.recipient_group_id = @message.receiver_id
       post_recipient_group.post_id = post.id
+      #post_recipient_group.recipient_group_id = message_params[:posts_attributes]['0'][:receiver_id]
+      #post_recipient_group.recipient_group_id = params[:receiver_id]
+#    puts '#########################################################'
+#    puts r_id
+#    puts '#########################################################'
+      post_recipient_group.recipient_group_id = r_id
       post_recipient_group.save
-      #redirect_to 그룹으로...
       redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 글을 작성했습니다."})
-    else
-      redirect_back(fallback_location: root_path, flash: {alert: "그룹에 글 남기기 실패!"})
-    end
+
+    elsif post.post_recipient_type =='user'
+      post_recipient_user = PostRecipientUser.new
+      #post_recipient_user.recipient_user_id = @message.receiver_id
+      post_recipient_group.recipient_user_id = message_params[:posts_attributes]['0'][:receiver_id]
+      post_recipient_user.post_id = post.id
+      post_recipient_user.save
 
 #    puts message_params[:sender_id]
 #    puts message_params[:receiver_id]
 
-    # 이건 구현해 놔야 하는디...
-#    if message_params[:sender_id] != message_params[:receiver_id]
-#      redirect_to user_path(message_params[:receiver_id])
-#    else
-#      redirect_to root_path
-#    end
+      if message_params[:sender_id] != message_params[:receiver_id]
+        # 다른 사용자에게 보낸 메시지라면 redirect 그 사용자에게...
+        redirect_to user_path(message_params[:receiver_id])
+      else
+        rediredt_to root_path
+      end
+
+    else
+      redirect_to root_path, flash: { alert: "그룹 또는 사용자에게 글 남기기 실패" }
+    end
+
   end
 
   private
-  
+
   def set_message
 #    puts '#########################################################'
 #    puts 'set_message'
@@ -62,6 +84,9 @@ class MessagesController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:sender_id, :receiver_id, posts_attributes: [:user_id, :content, :post_recipient_type])
+    #sender_id와 receiver_id 없어져야 함...
+    #user_id도 current_id로 대처할꺼니까 여기서 strong으로 넘길 필요 없음...
+    #params.require(:message).permit(:sender_id, :receiver_id, posts_attributes: [:user_id, :content])
+    params.require(:message).permit(posts_attributes: [:content, :post_recipient_type])
   end
 end

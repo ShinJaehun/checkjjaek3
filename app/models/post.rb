@@ -19,8 +19,11 @@ class Post < ApplicationRecord
   end
 
   has_many :post_recipient_users, dependent: :destroy
-  has_many :post_recipient_groups, dependent: :destroy
+  #has_many :post_recipient_groups, dependent: :destroy
+  #has_one :post_recipient_group, foreign_key: :post_id, dependent: :destroy
 
+  has_many :post_recipient_groups
+  has_many :groups, through: :post_recipient_groups
 
   has_many :comments, as: :commentable, dependent: :destroy
 
