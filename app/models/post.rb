@@ -18,12 +18,17 @@ class Post < ApplicationRecord
     end
   end
 
-  has_many :post_recipient_users, dependent: :destroy
-  #has_many :post_recipient_groups, dependent: :destroy
-  #has_one :post_recipient_group, foreign_key: :post_id, dependent: :destroy
+  has_many :post_recipient_users, foreign_key: :post_id, dependent: :destroy
 
-  has_many :post_recipient_groups
-  has_many :groups, through: :post_recipient_groups
+  # has_many 대신 has_one으로 바꾼 이유: PostRecipientGroup의 post_id는 항상 달라야 함...
+  # 그리고 p20.post_recipient_group.recipient_group_id으로 recipient id를 호출하기 위해...
+  has_one :post_recipient_group, foreign_key: :post_id, dependent: :destroy
+
+  # 이렇게 하면 has_many :users/belongs_to :user가 함께 존재...
+  #has_many :post_recipient_users, foreign_key: :post_id, dependent: :destroy
+  #has_many :users, through: :post_recipient_users
+  #has_many :post_recipient_groups, foreign_key: :post_id, dependent: :destroy
+  #has_many :groups, through: :post_recipient_groups
 
   has_many :comments, as: :commentable, dependent: :destroy
 
