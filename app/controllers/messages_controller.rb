@@ -28,18 +28,20 @@ class MessagesController < ApplicationController
 
     @message = Message.create()
 
-
 #    puts '#########################################################'
 #    puts params[:receiverrr_id]
 #    puts '#########################################################'
     r_id = params[:receiverrr_id]
+    #r_type = params[:receiverrr_type]
+    #r_id = message_params[:posts_attributes]['0'][:receiverrr_id]
+    #r_type = message_params[:posts_attributes]['0'][:receiverrr_type]
     post = @message.posts.new(content: message_params[:posts_attributes]['0'][:content])
     post.post_recipient_type = message_params[:posts_attributes]['0'][:post_recipient_type]
     #post.user_id = message_params[:posts_attributes]['0'][:user_id]
     post.user_id = current_user.id
     post.save
 
-    if post.post_recipient_type == 'group'
+    if post.post_recipient_type == 'Group'
 
       post_recipient_group = PostRecipientGroup.new
       post_recipient_group.post_id = post.id
@@ -52,22 +54,29 @@ class MessagesController < ApplicationController
       post_recipient_group.save
       redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 글을 작성했습니다."})
 
-    elsif post.post_recipient_type =='user'
+    elsif post.post_recipient_type =='User'
       post_recipient_user = PostRecipientUser.new
-      #post_recipient_user.recipient_user_id = @message.receiver_id
-      post_recipient_group.recipient_user_id = message_params[:posts_attributes]['0'][:receiver_id]
       post_recipient_user.post_id = post.id
+      #post_recipient_user.recipient_user_id = @message.receiver_id
+      #post_recipient_user.recipient_user_id = message_params[:posts_attributes]['0'][:receiver_id]
+      post_recipient_user.recipient_user_id = r_id
       post_recipient_user.save
+
+      if current_user.id != r_id
+        redirect_to user_path(r_id), flash: {notice: "그룹에 글을 작성했습니다."}
+      else
+        redirect_to root_path
+      end
 
 #    puts message_params[:sender_id]
 #    puts message_params[:receiver_id]
 
-      if message_params[:sender_id] != message_params[:receiver_id]
-        # 다른 사용자에게 보낸 메시지라면 redirect 그 사용자에게...
-        redirect_to user_path(message_params[:receiver_id])
-      else
-        rediredt_to root_path
-      end
+#      if message_params[:sender_id] != message_params[:receiver_id]
+#        # 다른 사용자에게 보낸 메시지라면 redirect 그 사용자에게...
+#        redirect_to user_path(message_params[:receiver_id])
+#      else
+#        rediredt_to root_path
+#      end
 
     else
       redirect_to root_path, flash: { alert: "그룹 또는 사용자에게 글 남기기 실패" }

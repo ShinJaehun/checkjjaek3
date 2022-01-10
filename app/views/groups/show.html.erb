@@ -50,13 +50,16 @@
 <%= form_for(@message) do |f| %>
   <%#= f.hidden_field :sender_id, value: current_user.id %>
   <%#= f.hidden_field :receiver_id, value: @group.id %>
+  <%#= hidden_field_tag :receiverrr_type, "Group" %>
   <%= hidden_field_tag :receiverrr_id, @group.id %>
 
   <div class="field">
     <%= f.fields_for :posts do |p| %>
       <%#= p.hidden_field :user_id, value: current_user.id %>
-      <%= p.hidden_field :post_recipient_type, value: 'group' %>
+      <%#= p.hidden_field :receiverrr_id, value: @group.id %>
+      <%#= p.hidden_field :receiverrr_type, value: "Group" %>
 
+      <%= p.hidden_field :post_recipient_type, value: 'Group' %>
       <%= p.text_area :content %>
     <% end %>
   </div>

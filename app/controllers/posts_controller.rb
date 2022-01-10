@@ -18,16 +18,35 @@ class PostsController < ApplicationController
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).order(created_at: :desc) #원래 이거였음(followees 피드 저장)
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).or(Post.where(postable_type: "Message")) #Message 유형의 post 추가
     #@posts = Post.where(postable_type: "Message") #Message만 보기
-    
     #@messages = Message.where(receiver_id: current_user.id) #일단 이렇게 하면 정상적으로 메시지를 찾기는 함.... 여기서 메시지의 ID를 얻어내야 하는가?
     #@posts = Post.where(postable_type: "Message", postable_id: @messages.ids)
     # 중요한 테스트를 해봐야 하는데 만일 Message 모델에 추가한 receiver_id와sender_id 관련 내용을 삭제한다면 올바른 @messages를 찾아낼 수 있는 것인가? => 이거 필요 없음.....
 
-    @receive_messages = Message.where(receiver_id: current_user.id)
+#    recipient_users = PostRecipientUser.where(recipient_user_id: current_user.id)
+#    Post.where(postable_type: "Message").joins(:post_recipient_group).where(post_recipient_groups: {recipient_group_id: 1})
+#    @receive_messages = Message.where(receiver_id: current_user.id)
+
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).or(Post.where(postable_type: "Message", postable_id: @receive_messages.ids)).order(created_at: :desc) # 일단 성공/followees 피드에 user_id에 해당하는 post가 저장되니까... 문제 발생
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where.not(postable_type: "Message") # messages는 출력하지 않아요...
     #@posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where(postabled: @receive_messages) # AND 조건이기 때문에 내가 나한테 남긴 글만 보임(postable_type이 book인 post는 아예 안 보임) 그리고 이건 준우님이 가르쳐주신 Post.where(postable: @messages) object 자체를 조건으로 사용하기...
-    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id)).where.not(postable_type: 'Message').or(Post.where(postable: @receive_messages)).order(created_at: :desc)
+#    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id))
+#      .where.not(postable_type: 'Message')
+#      .or(Post.where(postable: @receive_messages))
+#      .order(created_at: :desc)
+
+    # join과 or를 함께 쓰기가 생각보다 어려움...
+#    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id))
+#      .where.not(postable_type: 'Message')
+#      .or(Post.where(postable_type: "Message")
+#      .joins(:post_recipient_user)
+#      .where(post_recipient_users: { recipient_user_id: current_user.id }))
+#      .order(created_at: :desc)
+
+    @posts = Post.where(user_id: current_user.followees.ids.push(current_user.id))
+      .where.not(postable_type: 'Message')
+      .or(Post.where(postable_type: "Message")
+      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
+      .order(created_at: :desc)
 
     @message = Message.new
     @message.posts.new
