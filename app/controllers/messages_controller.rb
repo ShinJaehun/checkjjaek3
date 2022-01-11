@@ -31,7 +31,7 @@ class MessagesController < ApplicationController
 #    puts '#########################################################'
 #    puts params[:receiverrr_id]
 #    puts '#########################################################'
-    r_id = params[:receiverrr_id]
+    r_id = params[:receiverrr_id].to_i
     #r_type = params[:receiverrr_type]
     #r_id = message_params[:posts_attributes]['0'][:receiverrr_id]
     #r_type = message_params[:posts_attributes]['0'][:receiverrr_type]
@@ -47,9 +47,6 @@ class MessagesController < ApplicationController
       post_recipient_group.post_id = post.id
       #post_recipient_group.recipient_group_id = message_params[:posts_attributes]['0'][:receiver_id]
       #post_recipient_group.recipient_group_id = params[:receiver_id]
-#    puts '#########################################################'
-#    puts r_id
-#    puts '#########################################################'
       post_recipient_group.recipient_group_id = r_id
       post_recipient_group.save
       redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 글을 작성했습니다."})
@@ -62,10 +59,16 @@ class MessagesController < ApplicationController
       post_recipient_user.recipient_user_id = r_id
       post_recipient_user.save
 
-      if current_user.id != r_id
-        redirect_to user_path(r_id), flash: {notice: "그룹에 글을 작성했습니다."}
+#    puts '#########################################################'
+#    puts current_user.id
+#    puts r_id
+      # 빌어먹으로 params로 받은 값이 integer가 아닐줄이야...
+#    puts '#########################################################'
+
+      if current_user.id == r_id
+        redirect_to root_path, flash: {notice: "나에게 글을 작성했습니다."}
       else
-        redirect_to root_path
+        redirect_to user_path(r_id), flash: {notice: "다른 사용자에게 글을 작성했습니다."}
       end
 
 #    puts message_params[:sender_id]
