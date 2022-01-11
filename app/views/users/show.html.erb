@@ -43,8 +43,9 @@
 
           <%= form_for(@message) do | f | %>
 
-            <%= f.hidden_field :sender_id, :value => current_user.id %>
-            <%= f.hidden_field :receiver_id, :value => @user.id %>
+            <%#= f.hidden_field :sender_id, :value => current_user.id %>
+            <%#= f.hidden_field :receiver_id, :value => @user.id %>
+            <%= hidden_field_tag :receiverrr_id, @user.id %>
 
             <div class="modal-header">
               <h4 class="modal-title" id="myModalLabel">
@@ -63,7 +64,8 @@
 
             <div class="modal-body">
               <%= f.fields_for :posts do | p | %>
-                <%= p.hidden_field :user_id, :value => current_user.id %>
+                <%#= p.hidden_field :user_id, :value => current_user.id %>
+                <%= p.hidden_field :post_recipient_type, value: "User" %>
                 <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 이야기를 나눌까요?" %>
               <% end %>
             </div>
