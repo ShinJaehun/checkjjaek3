@@ -66,6 +66,16 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1 or /groups/1.json
   def destroy
+    # group/user_groups/post_recipient_groups 모두 삭제
+    # post_recipient_groups와 연결된 posts는 그대로 남아 있음...
+    # 삭제할 그룹의 포스트 모두 삭제하고 group 삭제
+    # 언젠가 혹시 모를 일에 대비하기 위해 posts는 그대로 놔둬야 하는가?
+    posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+    unless posts.blank?
+      posts.each do |p|
+        p.destroy
+      end
+    end
     @group.destroy
 
     respond_to do |format|
