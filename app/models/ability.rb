@@ -29,7 +29,9 @@ class Ability
       can :manage, Message
       can :manage, Photo
 
-      can :manage, Group
+      can :read, Group
+      #can :manage, Group, id: user.group_ids
+      can :manage, Group, id: Group.with_role(:group_manager, user).pluck(:id)
 
     end
     # Define abilities for the passed in user here. For example:
