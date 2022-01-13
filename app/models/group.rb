@@ -1,4 +1,7 @@
 class Group < ApplicationRecord
+  resourcify
+  # rolify의 영향을 받는 resource
+
   has_many :user_groups, dependent: :destroy
   has_many :users, through: :user_groups
 

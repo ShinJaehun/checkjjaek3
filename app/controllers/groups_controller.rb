@@ -1,6 +1,12 @@
 class GroupsController < ApplicationController
   #before_action :set_group, only: %i[ show edit update destroy ]
   before_action :set_group, except: %i[ index new create ]
+  before_action :authenticate_user!
+  #devise 로그인 사용자만 메서드 사용 가능
+  load_and_authorize_resource except: %i[ new create join_group leave_group apply_group cancel_apply_group ]
+  #cancancan
+  #new create join leave를 제외하고 허가된 사용자만 메서드를 사용할 수 있음
+  #근데 왜 index는 except하지 않아도 모든 그룹을 다 볼 수 있는거지?
 
   # GET /groups or /groups.json
   def index
@@ -11,6 +17,14 @@ class GroupsController < ApplicationController
   # GET /groups/1 or /groups/1.json
   def show
     @posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+
+    #@pending_users = User.includes(:user_groups).where("user_groups.state": "pending")
+    #이렇게 하면 사용자가 다른 그룹에서 pending하고 있어도 몽땅 pending_users에 포함됨
+    @pending_users = User.find(@group.user_groups.where(state: "pending").pluck(:user_id))
+    @active_users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+    #구현할 수 있는 다양한 방법을 알아두는게 필요하긴 한데
+    #뭐가 더 나은 방법인가?
+
     @message = Message.new
     @message.posts.new
   end
@@ -36,11 +50,11 @@ class GroupsController < ApplicationController
         usergroup = UserGroup.new
         usergroup.user_id = current_user.id
         usergroup.group_id = @group.id
-        #usergroup.state = "active"
+        usergroup.state = "active"
         usergroup.save
 
-        #current_user.add_role :group_manager, @group
-        #current_user.add_role :group_menber, @group
+        current_user.add_role :group_manager, @group
+        current_user.add_role :group_member, @group
 
         redirect_to @group, noitce: "Group was successfully created."
 
@@ -76,6 +90,12 @@ class GroupsController < ApplicationController
         p.destroy
       end
     end
+
+    #dependent: destroy 때문에 굳이 삭제할 필요 없는가?
+    #이걸 혹시 rolyfi에서 처리하는 것은 아닌가?
+#    current_user.remove_role :group_manager, @group
+#    current_user.remove_role :group_member, @group
+
     @group.destroy
 
     respond_to do |format|
@@ -84,14 +104,58 @@ class GroupsController < ApplicationController
     end
   end
 
+  def apply_group
+    if UserGroup.where(user_id: current_user.id, group_id: @group.id).count <= 0
+      usergroup = UserGroup.new
+      usergroup.user_id = current_user.id
+      usergroup.group_id = @group.id
+      usergroup.state = "pending"
+      usergroup.save
+
+      redirect_to @group, notice: "You've been applied for #{@group.name}."
+    else
+      redirect_to groups_path, alert: "You're already a member of #{@group.name}."
+    end
+  end
+
+  def cancel_apply_group
+    apply_user = User.find(params[:apply_user_id])
+
+    usergroup = apply_user.user_groups.find_by_group_id(@group.id)
+    if usergroup.state == "pending" && usergroup.user_id == apply_user.id && usergroup.group_id == @group.id
+      usergroup.destroy
+      redirect_to group_path, notice: "Applying has been canceled."
+    else
+      redirect_to @group, alert: "user/group 오류 또는 active 상태가 아님"
+    end
+  end
+
+  def approve_user
+    apply_user = User.find(params[:apply_user_id])
+
+    if current_user.has_role? :group_manager, @group
+      usergroup = apply_user.user_groups.find_by_group_id(@group.id)
+
+      if usergroup.state == "pending" && usergroup.user_id == apply_user.id && usergroup.group_id == @group.id
+        usergroup.state = "active"
+        usergroup.save
+        apply_user.add_role :group_member, @group
+        redirect_to @group, notice: "#{apply_user.name}'s been approved."
+      else
+        redirect_to groups_path, alert: "user/group 오류 또는 pending 상태가 아님"
+      end
+    end
+  end
+
   def join_group
     if UserGroup.where(user_id: current_user.id, group_id: @group.id).count <= 0
       usergroup = UserGroup.new
       usergroup.user_id = current_user.id
       usergroup.group_id = @group.id
+      usergroup.state = "active"
       usergroup.save
 
-      #current_user.add_role :group_member, @group
+      current_user.add_role :group_member, @group
       redirect_to @group, notice: "You've been added to #{@group.name}."
     else
       redirect_to groups_path, notice: "You're already a member of #{@group.name}."
@@ -99,15 +163,22 @@ class GroupsController < ApplicationController
   end
 
   def leave_group
-#    if !current_user.has_role? :group_manager, @group
-#      if current_user.has_role? :group_member, @group
-#        current_user.remove_role :group_member, @group
+    if !current_user.has_role? :group_manager, @group
+      if current_user.has_role? :group_member, @group
+        current_user.remove_role :group_member, @group
         usergroup = current_user.user_groups.find_by_group_id(@group.id)
-        usergroup.destroy
-        redirect_to groups_path, notice: "You're no longer a member of #{@group.name}."
-
-#      end
-#    end
+        if usergroup.state == "active" && usergroup.user_id == current_user.id && usergroup.group_id == @group.id
+          usergroup.destroy
+          redirect_to groups_path, notice: "You're no longer a member of #{@group.name}."
+        else
+          redirect_to @group, alert: "user/group 오류 또는 pending 상태가 아님"
+        end
+      else
+        redirect_to @group, alert: "group_member가 아님!"
+      end
+    else
+      redirect_to @group, alert: "group_manager는 탈퇴 불가!"
+    end
   end
 
   private

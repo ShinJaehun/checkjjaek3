@@ -42,14 +42,17 @@ class MessagesController < ApplicationController
     post.save
 
     if post.post_recipient_type == 'Group'
-
-      post_recipient_group = PostRecipientGroup.new
-      post_recipient_group.post_id = post.id
-      #post_recipient_group.recipient_group_id = message_params[:posts_attributes]['0'][:receiver_id]
-      #post_recipient_group.recipient_group_id = params[:receiver_id]
-      post_recipient_group.recipient_group_id = r_id
-      post_recipient_group.save
-      redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 글을 작성했습니다."})
+      if current_user.has_role? :group_member, Group.find(r_id)
+        post_recipient_group = PostRecipientGroup.new
+        post_recipient_group.post_id = post.id
+        #post_recipient_group.recipient_group_id = message_params[:posts_attributes]['0'][:receiver_id]
+        #post_recipient_group.recipient_group_id = params[:receiver_id]
+        post_recipient_group.recipient_group_id = r_id
+        post_recipient_group.save
+        redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 글을 작성했습니다."})
+      else
+        redirect_back(fallback_location: root_path, flash: {alert: "그룹에 글을 작성할 권한 없음"})
+      end
 
     elsif post.post_recipient_type =='User'
       post_recipient_user = PostRecipientUser.new

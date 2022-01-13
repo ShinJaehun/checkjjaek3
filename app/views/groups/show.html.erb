@@ -12,18 +12,54 @@
 
 <p>
   <strong>Group Users:</strong>
-  <% @group.users.each do |user| %>
+  <% @active_users.each do |user| %>
     <li>
-      <%= user.name %>
+      <%= link_to user.name, user %>
+      (
+      <% user.roles.each do |r| %>
+        <% if r.resource_id == @group.id %>
+          <%= r.name %>
+        <% end %>
+      <% end %>
+      )
     </li>
   <% end %>
 </p>
 
+<p>
+  <strong>Request to Join</strong>
+  <table>
+    <tbody>
+      <% @pending_users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <% if user == current_user %>
+          <td>
+            <%= form_tag cancel_apply_group_path(@group), method: "delete" do %>
+              <%= hidden_field_tag :apply_user_id, user.id %>
+              <button type="submit" class="btn btn-lg">Cancel</button>
+            <% end %>
+          </td>
+        <% end %>
+        <% if current_user.has_role? :group_manager, @group %>
+          <td>
+            <%= form_tag approve_user_path(@group) do %>
+              <%= hidden_field_tag :apply_user_id, user.id %>
+              <button type="submit" class="btn btn-lg">Approve</button>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</p>
+
 <% if !current_user.groups.include?(@group) %>
-  <%= form_tag join_group_path(@group) do %>
-    <button type="submit" class="btn btn-lg">Join</button>
+  <%= form_tag apply_group_path(@group) do %>
+    <button type="submit" class="btn btn-lg">Apply</button>
   <% end %>
-<% else %>
+<% elsif current_user.user_groups.find_by_group_id(@group.id).state == "active" %>
   <%= form_tag leave_group_path(@group) do %>
     <%= link_to "Leave", { action: 'leave_group' }, class: 'btn btn-lg', method: 'delete', data: { confirm: 'Are you sure?' } %>
   <% end %>
@@ -37,9 +73,13 @@
         <% if post.postable_type == "Message" %>
           <tr>
             <td><%= post.content %></td>
-            <td>by <%= post.user.name %></td>
-            <td><%= link_to 'Edit', edit_post_path(post) %></td>
-            <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>
+              by <%= link_to post.user.name, post.user %>
+            </td>
+            <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
+              <td><%= link_to 'Edit', edit_post_path(post) %></td>
+              <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
           </tr>
         <% end %>
       <% end %>
