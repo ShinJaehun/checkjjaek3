@@ -67,31 +67,79 @@ class PostsController < ApplicationController
     #post edit 하는데 왜 posts를...
     #@posts = Post.where(postable_id: @post.postable.id).order(created_at: :desc)
 
-    unless current_user.has_role? :admin or @post.user == current_user
-      redirect_to root_path, flash: { alert: "글을 수정할 권한 없음!" }
-    end
-
-    if @post.post_recipient_type == "Group"
-      # 그룹에서 글을 수정할 수 있는 권한을 갖고 있다면...
-
-    end
+    #cancancan으로 처리하고 있는데 여기서????
+    # admin은 manage: :all이니까 굳이 없어도 될 거 같음...
+#    unless current_user.has_role? :admin
+#      redirect_to root_path, flash: { alert: "post를 수정할 권한 없음!(admin 아님)" }
+#    end
+    # can :manage, Post, user_id: user.id 있으니까...
+#    unless @post.user == current_user
+#      redirect_to root_path, flash: { alert: "post를 수정할 권한 없음!(post.user가 current_user가 아님)" }
+#    end
+#
+#    if @post.post_recipient_type == "Group"
+#      # 그룹에서 글을 수정할 수 있는 권한을 갖고 있다면...
+#
+#    end
 
     #redirect_to root_path and return unless (current_user.has_role? :admin or @post.user == current_user)
+
+#    unless @post.post_recipient_type == "Group" or @post.post_recipient_type == "User"
+#      redirect_to root_path, flash: { notice: "post 수정 불가(recipient_type 불분명)" }
+#    end
+
+# 그냥 여기서 cancancan에 걸림...
+    # edit 자체가 안되는 거 같은데...
   end
 
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
-    respond_to do |format|
-      if @post.update(post_params)
-        # format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.html { redirect_to root_path, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
+
+    if @post.post_recipient_type == "Group"
+      @post.update(post_params)
+      redirect_to group_path(@post.post_recipient_group.recipient_group_id), flash: { notice: "Post was successfully updated." }
+#      if (current_user.has_role? :group_manager, current_user.groups.find(@post.post_recipient_group.recipient_group_id)) or (current_user.has_role? :group_member, current_user.groups.find(@post.post_recipient_group.recipient_group_id) && @post.user = current_user)
+#        @post.update(post_params)
+#        redirect_to group_path(@post.post_recipient_group.recipient_group_id), flash: { notice: "Post was successfully updated." }
+#      else
+#        redirect_to groups_path, flash: { alert: "post 수정 못함(그룹 관련...)" }
+#      end
+
+#      if current_user.has_role? :group_manager, current_user.groups.find(@post.post_recipient_group.recipient_group_id)
+#        @post.update(post_params)
+#        redirect_to groups_path, flash: { notice: "Post was successfully updated." }
+#      end
+#
+#      if current_user.has_role? :group_member, current_user.groups.find(@post.post_recipient_group.recipient_group_id) && @post.user = current_user
+#        @post.update(post_params)
+#        redirect_to groups_path, flash: { notice: "Post was successfully updated." }
+#      end
+#    end
+
+#      if current_user.has_role? :group_member, current_user.groups.find(@post.post_recipient_group.recipient_group_id) && @post.user = current_user
+#        @post.update(post_params)
+#        redirect_to groups_path, flash: { notice: "Post was successfully updated." }
+#      else
+#        redirect_to groups_path, flash: { alert: "post 수정 못함(group_member가 아니고 post.user가 current_user가 아님)" }
+#      end
+    elsif @post.post_recipient_type == "User"
+      @post.update(post_params)
+      redirect_to root_path, flash: { notice: "Post was successfully updated." }
+    else
+      redirect_to root_path, flash: { alert: "post 수정 불가(recipient_type 불분명)" }
     end
+
+#    respond_to do |format|
+#      if @post.update(post_params)
+#        # format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+#        format.html { redirect_to root_path, notice: 'Post was successfully updated.' }
+#        format.json { render :show, status: :ok, location: @post }
+#      else
+#        format.html { render :edit }
+#        format.json { render json: @post.errors, status: :unprocessable_entity }
+#      end
+#    end
   end
 
   # DELETE /posts/1
@@ -104,13 +152,29 @@ class PostsController < ApplicationController
         image.purge
       end
     end
-    @post.postable.destroy
-    # @post 삭제할 때 postable 삭제하지 않으면 postable은 그대로 유지됨
-    @post.destroy
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
+
+    if @post.post_recipient_type == "Group"
+      #@post.post_recipient_group.destroy
+      #이건 자동 삭제 아닐까?
+      @post.postable.destroy
+      # @post 삭제할 때 postable 삭제하지 않으면 postable은 그대로 유지됨
+      @post.destroy
+      redirect_to root_path, flash: { notice: "Post was successfully destroyed." }
+    elsif @post.post_recipient_type == "User"
+      #@post.post_recipient_user.destroy
+      #이건 자동 삭제 아닐까?
+      @post.postable.destroy
+      # @post 삭제할 때 postable 삭제하지 않으면 postable은 그대로 유지됨
+      @post.destroy
+      redirect_to root_path, flash: { notice: "Post was successfully destroyed." }
+    else
+      redirect_to root_path, flash: { alert: "post 삭제 불가(recipient_type 불분명)" }
     end
+
+#    respond_to do |format|
+#      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+#      format.json { head :no_content }
+#    end
   end
 
   # POST /posts/:id/like

@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   before_action :set_group, except: %i[ index new create ]
   before_action :authenticate_user!
   #devise 로그인 사용자만 메서드 사용 가능
-  load_and_authorize_resource except: %i[ new create join_group leave_group apply_group cancel_apply_group ]
+  load_and_authorize_resource except: %i[ new create join_group apply_group cancel_apply_group ]
   #cancancan
   #new create join leave를 제외하고 허가된 사용자만 메서드를 사용할 수 있음
   #근데 왜 index는 except하지 않아도 모든 그룹을 다 볼 수 있는거지?
@@ -163,7 +163,7 @@ class GroupsController < ApplicationController
   end
 
   def leave_group
-    if !current_user.has_role? :group_manager, @group
+    unless current_user.has_role? :group_manager, @group
       if current_user.has_role? :group_member, @group
         current_user.remove_role :group_member, @group
         usergroup = current_user.user_groups.find_by_group_id(@group.id)

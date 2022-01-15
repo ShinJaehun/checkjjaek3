@@ -29,9 +29,40 @@ class Ability
       can :manage, Message
       can :manage, Photo
 
-      can :read, Group
-      #can :manage, Group, id: user.group_ids
       can :manage, Group, id: Group.with_role(:group_manager, user).pluck(:id)
+      #이렇게 하면 approve 가능....ㅠㅠ
+      can :leave_group, Group, id: Group.with_role(:group_member, user).pluck(:id)
+
+      can :manage, Post do |p|
+        p.post_recipient_type == "Group" && user.has_role?(:group_manager, Group.find(p.post_recipient_group.recipient_group_id))
+      end
+      # 드디어 성공! 삭제 가능!
+
+#      can :manage, Post do |p|
+#        Group.with_role(:group_manager, user).pluck(:id).include?(p.post_recipient_group.recipient_group_id)
+#        # post update는 되는데..
+#        # post delete하면 post 아니면 post_recipient_group이 먼저 삭제되어서...
+#        # nil의 recipient_group_id가 없다고....
+#      end
+
+#      if user.groups.pluck(:id) == Group.with_role(:group_manager, user).pluck(:id)
+#        can :manage, Post
+#      end
+      #이렇게 하니까 approve 안되는디
+
+#      if user.has_role?(:group_manager, Group)
+#        can :manage, Group
+#      else
+#        if user.has_role?(:group_member, Group)
+#          can :manage, Post, user_id: user.id
+#        else
+#          can :read, Post
+#        end
+#        can :read, Group
+#      end
+
+      #can :manage, Group, id: user.group_ids
+      #can :manage, Group, id: Group.with_role(:group_manager, user).pluck(:id)
 
     end
     # Define abilities for the passed in user here. For example:
