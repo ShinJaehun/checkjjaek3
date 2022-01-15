@@ -55,15 +55,23 @@
   </table>
 </p>
 
-<% if !current_user.groups.include?(@group) %>
-  <%= form_tag apply_group_path(@group) do %>
-    <button type="submit" class="btn btn-lg">Apply</button>
+<p>
+  <% if !current_user.groups.include?(@group) %>
+    <%= form_tag apply_group_path(@group) do %>
+      <button type="submit" class="btn btn-lg">Apply</button>
+    <% end %>
+  <% elsif current_user.user_groups.find_by_group_id(@group.id).state == "active" %>
+    <%= form_tag leave_group_path(@group) do %>
+      <%= link_to "Leave", { action: 'leave_group' }, class: 'btn btn-lg', method: 'delete', data: { confirm: 'Are you sure?' } %>
+    <% end %>
   <% end %>
-<% elsif current_user.user_groups.find_by_group_id(@group.id).state == "active" %>
-  <%= form_tag leave_group_path(@group) do %>
-    <%= link_to "Leave", { action: 'leave_group' }, class: 'btn btn-lg', method: 'delete', data: { confirm: 'Are you sure?' } %>
+</p>
+
+<p>
+  <% unless current_user.has_role? :group_member, @group %>
+    테스트지만 그룹 멤버가 아니면... 여기서 포스트를 보여주지 않게 만들 수 있지 않을까?
   <% end %>
-<% end %>
+</p>
 
 <p>
   <strong>Group User Post</strong>
