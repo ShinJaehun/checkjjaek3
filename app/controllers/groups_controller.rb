@@ -80,27 +80,30 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1 or /groups/1.json
   def destroy
-    # group/user_groups/post_recipient_groups 모두 삭제
-    # post_recipient_groups와 연결된 posts는 그대로 남아 있음...
-    # 삭제할 그룹의 포스트 모두 삭제하고 group 삭제
-    # 언젠가 혹시 모를 일에 대비하기 위해 posts는 그대로 놔둬야 하는가?
-    posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
-    unless posts.blank?
-      posts.each do |p|
-        p.destroy
+    if current_user.has_role? :group_manager, @group
+      if User.find(@group.user_groups.where(state: "active").pluck(:user_id)).count == 1 and 
+          @group.user_groups.where(state: "active").pluck(:user_id).first == current_user.id
+        # group_member가 단 한명이고 그게 나라면 삭제 가능
+
+        # group/user_groups/post_recipient_groups 모두 삭제
+        # post_recipient_groups와 연결된 posts는 그대로 남아 있음...
+        # 삭제할 그룹의 포스트 먼저 모두 삭제하고 group 삭제
+        # 언젠가 혹시 모를 일에 대비하기 위해 posts는 그대로 놔둬야 하는가?
+        posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+        unless posts.blank?
+          posts.each do |p|
+            p.destroy
+          end
+        end
+
+        @group.destroy
+        redirect_to groups_url, notice: "Group was successfully destroyed."
+      else
+        redirect_to groups_url, alert: "group_manager를 제외하고 group_member가 존재하면 그룹 삭제 불가"
       end
-    end
 
-    #dependent: destroy 때문에 굳이 삭제할 필요 없는가?
-    #이걸 혹시 rolyfi에서 처리하는 것은 아닌가?
-#    current_user.remove_role :group_manager, @group
-#    current_user.remove_role :group_member, @group
-
-    @group.destroy
-
-    respond_to do |format|
-      format.html { redirect_to groups_url, notice: "Group was successfully destroyed." }
-      format.json { head :no_content }
+    else
+      redirect_to groups_url, alert: "group_manager가 아님"
     end
   end
 
