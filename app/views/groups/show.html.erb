@@ -102,31 +102,70 @@
               <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
             <% end %>
           </tr>
+        <% elsif post.postable_type == "Photo" %>
+          <tr>
+            <td>
+              <p><%= post.content %></p>
+              <p>
+                <div class="photo-images">
+                  <% post.postable.images.each do |image| %>
+                    <%= link_to image_tag(image.variant(resize: "400x400")), image %>
+                  <% end %>
+                </div>
+              </p>
+            </td>
+            <td>
+              by <%= link_to post.user.name, post.user %>
+            </td>
+            <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
+              <td><%= link_to 'Edit', edit_post_path(post) %></td>
+              <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+          </tr>
+
+        <% else %>
         <% end %>
       <% end %>
     </tbody>
   </table>
 </p>
 
-<%= form_for(@message) do |f| %>
-  <%#= f.hidden_field :sender_id, value: current_user.id %>
-  <%#= f.hidden_field :receiver_id, value: @group.id %>
-  <%#= hidden_field_tag :receiverrr_type, "Group" %>
-  <%= hidden_field_tag :receiverrr_id, @group.id %>
+<div class="my-5">
+  <%= form_for(@message) do |f| %>
+    <%#= f.hidden_field :sender_id, value: current_user.id %>
+    <%#= f.hidden_field :receiver_id, value: @group.id %>
+    <%#= hidden_field_tag :receiverrr_type, "Group" %>
+    <%= hidden_field_tag :receiverrr_id, @group.id %>
 
-  <div class="field">
-    <%= f.fields_for :posts do |p| %>
-      <%#= p.hidden_field :user_id, value: current_user.id %>
-      <%#= p.hidden_field :receiverrr_id, value: @group.id %>
-      <%#= p.hidden_field :receiverrr_type, value: "Group" %>
+    <div class="field">
+      <%= f.fields_for :posts do |p| %>
+        <%#= p.hidden_field :user_id, value: current_user.id %>
+        <%#= p.hidden_field :receiverrr_id, value: @group.id %>
+        <%#= p.hidden_field :receiverrr_type, value: "Group" %>
 
-      <%= p.hidden_field :post_recipient_type, value: 'Group' %>
-      <%= p.text_area :content %>
-    <% end %>
-  </div>
+        <%= p.hidden_field :post_recipient_type, value: 'Group' %>
+        <%= p.text_area :content %>
+      <% end %>
+    </div>
 
-  <%= f.submit %>
-<% end %>
+    <%= f.submit %>
+  <% end %>
+</div>
+
+<div class="my-5">
+  <%= form_for(@photo) do |f| %>
+    <%= hidden_field_tag :receiverrr_id, @group.id %>
+
+    <div class="field">
+      <%= f.file_field :images, multiple: true %>
+      <%= f.fields_for :posts do |p| %>
+        <%= p.hidden_field :post_recipient_type, value: 'Group' %>
+        <%= p.text_area :content %>
+      <% end %>
+    </div>
+    <%= f.submit %>
+  <% end %>
+</div>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %>
