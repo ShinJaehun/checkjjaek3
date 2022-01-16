@@ -49,9 +49,9 @@ class MessagesController < ApplicationController
         #post_recipient_group.recipient_group_id = params[:receiver_id]
         post_recipient_group.recipient_group_id = r_id
         post_recipient_group.save
-        redirect_back(fallback_location: groups_path, flash: {notice: "그룹에 message를 작성했습니다."})
+        redirect_back(fallback_location: group_path(r_id), flash: {notice: "그룹에 message를 작성했습니다."})
       else
-        redirect_back(fallback_location: root_path, flash: {alert: "그룹에 message를 작성할 권한 없음"})
+        redirect_back(fallback_location: groups_path, flash: {alert: "group_member가 아니라서 그룹에 message를 작성할 권한 없음"})
       end
 
     elsif post.post_recipient_type =='User'
