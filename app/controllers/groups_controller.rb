@@ -27,6 +27,9 @@ class GroupsController < ApplicationController
 
     @message = Message.new
     @message.posts.new
+
+    @photo = Photo.new
+    @photo.posts.new
   end
 
   # GET /groups/new
