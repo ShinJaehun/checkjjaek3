@@ -142,8 +142,29 @@ class GroupsController < ApplicationController
         apply_user.add_role :group_member, @group
         redirect_to @group, notice: "#{apply_user.name}'s been approved."
       else
-        redirect_to groups_path, alert: "user/group 오류 또는 pending 상태가 아님"
+        redirect_to @group, alert: "user/group 오류 또는 pending 상태가 아님"
       end
+    else
+      redirect_to @group, alert: "group_manager가 아님"
+    end
+  end
+
+  def suspend_user
+    suspend_user = User.find(params[:suspend_user_id])
+
+    if current_user.has_role? :group_manager, @group
+      usergroup = suspend_user.user_groups.find_by_group_id(@group.id)
+
+      if usergroup.state == "active" && usergroup.user_id == suspend_user.id && usergroup.group_id == @group.id
+        usergroup.state = "pending"
+        usergroup.save
+        suspend_user.remove_role :group_member, @group
+        redirect_to @group, notice: "#{suspend_user.name}'s been suspended."
+      else
+        redirect_to @group, alert: "user/group 오류 또는 active 상태가 아님"
+      end
+    else
+      redirect_to @group, alert: "group_manager가 아님"
     end
   end
 

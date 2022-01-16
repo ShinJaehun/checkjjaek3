@@ -12,44 +12,57 @@
 
 <p>
   <strong>Group Users:</strong>
-  <% @active_users.each do |user| %>
-    <li>
-      <%= link_to user.name, user %>
-      (
-      <% user.roles.each do |r| %>
-        <% if r.resource_id == @group.id %>
-          <%= r.name %>
-        <% end %>
+  <table>
+    <tbody>
+      <% @active_users.each do |user| %>
+        <tr>
+          <td>
+            <%= link_to user.name, user %>
+            (
+            <% user.roles.each do |r| %>
+              <% if r.resource_id == @group.id %>
+                <%= r.name %>
+              <% end %>
+            <% end %>
+            )
+          </td>
+          <td>
+            <% if current_user.has_role? :group_manager, @group and !user.has_role? :group_manager, @group %>
+              <%= form_tag suspend_user_path(@group) do %>
+                <%= hidden_field_tag :suspend_user_id, user.id %>
+                <button type="submit" class="btn btn-lg">Suspend</button>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-      )
-    </li>
-  <% end %>
+    </tbody>
+  </table>
 </p>
-
 <p>
   <strong>Request to Join</strong>
   <table>
     <tbody>
       <% @pending_users.each do |user| %>
-      <tr>
-        <td><%= user.name %></td>
-        <% if user == current_user %>
+        <tr>
+          <td><%= user.name %></td>
           <td>
-            <%= form_tag cancel_apply_group_path(@group), method: "delete" do %>
-              <%= hidden_field_tag :apply_user_id, user.id %>
-              <button type="submit" class="btn btn-lg">Cancel</button>
+            <% if user == current_user %>
+                <%= form_tag cancel_apply_group_path(@group), method: "delete" do %>
+                  <%= hidden_field_tag :apply_user_id, user.id %>
+                  <button type="submit" class="btn btn-lg">Cancel</button>
+                <% end %>
             <% end %>
           </td>
-        <% end %>
-        <% if current_user.has_role? :group_manager, @group %>
           <td>
-            <%= form_tag approve_user_path(@group) do %>
-              <%= hidden_field_tag :apply_user_id, user.id %>
-              <button type="submit" class="btn btn-lg">Approve</button>
+            <% if current_user.has_role? :group_manager, @group %>
+                <%= form_tag approve_user_path(@group) do %>
+                  <%= hidden_field_tag :apply_user_id, user.id %>
+                  <button type="submit" class="btn btn-lg">Approve</button>
+                <% end %>
             <% end %>
           </td>
-        <% end %>
-      </tr>
+        </tr>
       <% end %>
     </tbody>
   </table>
