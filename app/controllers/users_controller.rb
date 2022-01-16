@@ -9,14 +9,21 @@ class UsersController < ApplicationController
       #@posts = @user.posts.where.not(postable_type: 'Message')
       #  .or(Post.where(postable: @receive_messages)).order(created_at: :desc)
 
-      @posts = @user.posts.where.not(postable_type: "Message")
+      @posts = @user.posts
+        .where.not(postable_type: "Message")
         .or(Post.where(postable_type: "Message")
+        .where(id: PostRecipientUser.where(recipient_user_id: @user.id).pluck(:post_id)))
+        .where.not(postable_type: "Photo")
+        .or(Post.where(postable_type: "Photo")
         .where(id: PostRecipientUser.where(recipient_user_id: @user.id).pluck(:post_id)))
         .order(created_at: :desc)
 
       # 다른 사용자에게 message 남기기
       @message = Message.new
       @message.posts.new
+
+      @photo = Photo.new
+      @photo.posts.new
     end
 
     def follow
