@@ -154,12 +154,13 @@ class PostsController < ApplicationController
     end
 
     if @post.post_recipient_type == "Group"
+      g_id = @post.post_recipient_group.recipient_group_id
       #@post.post_recipient_group.destroy
       #이건 자동 삭제 아닐까?
       @post.postable.destroy
       # @post 삭제할 때 postable 삭제하지 않으면 postable은 그대로 유지됨
       @post.destroy
-      redirect_to root_path, flash: { notice: "Post was successfully destroyed." }
+      redirect_to group_path(g_id), flash: { notice: "Post was successfully destroyed." }
     elsif @post.post_recipient_type == "User"
       #@post.post_recipient_user.destroy
       #이건 자동 삭제 아닐까?

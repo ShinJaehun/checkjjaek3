@@ -11,7 +11,15 @@ class Ability
         can :manage, :all
       end
 
-      can :manage, Post, user_id: user.id
+      #can :manage, Post, user_id: user.id
+      can :manage, Post do |p|
+        p.post_recipient_type == "User" && p.user_id == user.id
+      end
+
+      can :manage, Post do |p|
+        p.post_recipient_type == "Group" && user.has_role?(:group_member, Group.find(p.post_recipient_group.recipient_group_id)) && p.user_id == user.id
+      end
+
       can :like, Post
 
       can :update, User, id: user.id
@@ -29,15 +37,17 @@ class Ability
       can :manage, Message
       can :manage, Photo
 
+      # Group 권한
+#      if user.groups.pluck(:id) == Group.with_role(:group_manager, user).pluck(:id)
+#        can :manage, Post
+#      end
+      #이렇게 하니까 approve 안되는디
+
       can :manage, Group, id: Group.with_role(:group_manager, user).pluck(:id)
       #이렇게 하면 approve 가능....ㅠㅠ
       can :leave_group, Group, id: Group.with_role(:group_member, user).pluck(:id)
 
-      can :manage, Post do |p|
-        p.post_recipient_type == "Group" && user.has_role?(:group_manager, Group.find(p.post_recipient_group.recipient_group_id))
-      end
-      # 드디어 성공! 삭제 가능!
-
+      #group_manager가 그룹 내 post 제어
 #      can :manage, Post do |p|
 #        Group.with_role(:group_manager, user).pluck(:id).include?(p.post_recipient_group.recipient_group_id)
 #        # post update는 되는데..
@@ -45,12 +55,13 @@ class Ability
 #        # nil의 recipient_group_id가 없다고....
 #      end
 
-#      if user.groups.pluck(:id) == Group.with_role(:group_manager, user).pluck(:id)
-#        can :manage, Post
-#      end
-      #이렇게 하니까 approve 안되는디
+      can :manage, Post do |p|
+        p.post_recipient_type == "Group" && user.has_role?(:group_manager, Group.find(p.post_recipient_group.recipient_group_id))
+      end
+      # 드디어 성공! 삭제 가능!
 
 #      if user.has_role?(:group_manager, Group)
+      # Group 대신 @group object를 넣어야 적용됨
 #        can :manage, Group
 #      else
 #        if user.has_role?(:group_member, Group)
