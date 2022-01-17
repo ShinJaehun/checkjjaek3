@@ -6,12 +6,13 @@ class BooksController < ApplicationController
   def show
     @posts = Post.where(postable_id: @book.id, postable_type: "Book").order(created_at: :desc)
   end
-  
+
   def book_search
+
     # keyword_book으로 검색한 경우(책 검색 결과에 포스팅하기)
     if params.has_key?(:keyword_book)
       @keyword_book = params[:keyword_book]
-      
+
       # 검색어가 있다면...
       if @keyword_book.present?
 
@@ -61,7 +62,7 @@ class BooksController < ApplicationController
         if @max_index < @current_page
           @current_page = @max_index
         end
-        
+
         # start_index와 end_index 값 지정하기
         if @current_page > 2
           @start_index = @current_page - 2
@@ -78,7 +79,7 @@ class BooksController < ApplicationController
             @end_index = 5
           end
         end
-      
+
 #        puts "current_page : " + @current_page.to_s + " max_index : " + @max_index.to_s
 #        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
 #        puts "############################################################"
@@ -87,17 +88,17 @@ class BooksController < ApplicationController
 
       end
     end
-  
+
     # 검색어가 없으면 items에 빈 array 넘기기
     @items ||= []
-    
+
   end
-  
+
   def new
     @book = Book.new
     @book.posts.new
   end
-  
+
   def create
     unless @book = Book.find_by(isbn: book_params[:isbn])
 
@@ -159,22 +160,34 @@ class BooksController < ApplicationController
 #    puts book_params[:posts_attributes]['0']
 #    puts "-----------------------book_params[:posts_attributes]['0']-----------------------"
 
+    r_id = params[:receiverrr_id].to_i
+
     post = @book.posts.new(content: book_params[:posts_attributes]['0'][:content])
-    post.user_id = book_params[:posts_attributes]['0'][:user_id]
+    post.post_recipient_type = book_params[:posts_attributes]['0'][:post_recipient_type]
+    post.user_id = current_user.id
     post.save
 
-    redirect_to root_path
+    if post.post_recipient_type == "User"
+      post_recipient_user = PostRecipientUser.new
+      post_recipient_user.post_id = post.id
+      post_recipient_user.recipient_user_id = r_id
+      post_recipient_user.save
+
+      redirect_to root_path, flash: { notice: "책짹!" }
+    else
+      redirect_to root_path, flash: { alert: "사용자에게 남기는 book 인데 prt가 User가 아님" }
+    end
   end
 
   private
-  
+
   def set_book
     @book = Book.find(params[:id])
   end
-  
+
   def book_params
     # params.require(:book).permit(:title, :isbn, :authors, :thumbnail, :publisher, :contents, :url, :date_time, :translators, posts_attributes: [:user_id, :content])
-    params.require(:book).permit(:title, :contents, :url, :isbn, :datetime, :authors, :publisher, :translators, :thumbnail, posts_attributes: [:user_id, :content])
+    params.require(:book).permit(:title, :contents, :url, :isbn, :datetime, :authors, :publisher, :translators, :thumbnail, posts_attributes: [:content, :post_recipient_type])
   end
 
 end

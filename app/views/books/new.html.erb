@@ -50,18 +50,20 @@
         <div class="media-body">
 
           <%= form_for(@book) do |form| %>
-            <%= form.hidden_field :title, :value => params[:title].html_safe %>
-            <%= form.hidden_field :contents, :value => params[:contents].html_safe %>
-            <%= form.hidden_field :url, :value => params[:url].html_safe %>
-            <%= form.hidden_field :isbn, :value => params[:isbn].html_safe %>
-            <%= form.hidden_field :datetime, :value => params[:datetime].html_safe %>
-            <%= form.hidden_field :authors, :value => params[:authors].html_safe %>
-            <%= form.hidden_field :publisher, :value => params[:publisher].html_safe %>
-            <%= form.hidden_field :translators, :value => params[:translators].html_safe %>
-            <%= form.hidden_field :thumbnail, :value => params[:thumbnail].html_safe %>
+            <%= hidden_field_tag :receiverrr_id, current_user.id %>
+
+            <%= form.hidden_field :title, value: params[:title].html_safe %>
+            <%= form.hidden_field :contents, value: params[:contents].html_safe %>
+            <%= form.hidden_field :url, value: params[:url].html_safe %>
+            <%= form.hidden_field :isbn, value: params[:isbn].html_safe %>
+            <%= form.hidden_field :datetime, value: params[:datetime].html_safe %>
+            <%= form.hidden_field :authors, value: params[:authors].html_safe %>
+            <%= form.hidden_field :publisher, value: params[:publisher].html_safe %>
+            <%= form.hidden_field :translators, value: params[:translators].html_safe %>
+            <%= form.hidden_field :thumbnail, value: params[:thumbnail].html_safe %>
 
             <%= form.fields_for :posts do |posts_field| %>
-              <%= posts_field.hidden_field :user_id, :value => current_user.id %>
+              <%= posts_field.hidden_field :post_recipient_type, value: "User" %>
               <%= posts_field.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: '이 책을 읽고 무엇을 느꼈나요?' %>
             <% end %>
 
