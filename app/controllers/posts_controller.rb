@@ -43,6 +43,9 @@ class PostsController < ApplicationController
 
     @posts = Post
       .where(user_id: current_user.followees.ids.push(current_user.id))
+      .where.not(postable_type: "Book")
+      .or(Post.where(postable_type: "Book")
+      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
       .where.not(postable_type: "Message")
       .or(Post.where(postable_type: "Message")
       .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
@@ -50,6 +53,7 @@ class PostsController < ApplicationController
       .or(Post.where(postable_type: "Photo")
       .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
       .order(created_at: :desc)
+    #좀 더 간결하게 쿼리를 작성해야 함....
 
     #이게 더 자연스럽지 않니?
     #@posts = Post.find(current_user.post_recipient_users.pluck(:post_id))

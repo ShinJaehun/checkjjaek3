@@ -88,7 +88,7 @@
 
                 <%= form_for(@book) do |form| %>
 
-                  <%= hidden_field_tag :receiverrr_id, current_user.id %>
+                  <%= hidden_field_tag :receiverrr_id, params[:receiverrr_id].html_safe %>
 
                   <%= form.hidden_field :title, value: item['title'].html_safe %>
                   <%= form.hidden_field :contents, value: item['contents'].html_safe %>

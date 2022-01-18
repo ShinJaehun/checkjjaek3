@@ -92,43 +92,70 @@
     <tbody>
       <% @posts.each do |post| %>
         <% if post.postable_type == "Message" %>
-          <tr>
-            <td><%= post.content %></td>
-            <td>
-              by <%= link_to post.user.name, post.user %>
-            </td>
-            <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
-              <td><%= link_to 'Edit', edit_post_path(post) %></td>
-              <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-            <% end %>
-          </tr>
+          <div class="my-5">
+            <tr>
+              <td><%= post.content %></td>
+              <td>
+                by <%= link_to post.user.name, post.user %>
+              </td>
+              <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
+                <td><%= link_to 'Edit', edit_post_path(post) %></td>
+                <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          </div>
         <% elsif post.postable_type == "Photo" %>
-          <tr>
-            <td>
-              <p><%= post.content %></p>
-              <p>
+          <div class="my-5">
+            <tr>
+              <td>
+                <%= post.content %>
                 <div class="photo-images">
                   <% post.postable.images.each do |image| %>
                     <%= link_to image_tag(image.variant(resize: "400x400")), image %>
                   <% end %>
                 </div>
-              </p>
-            </td>
-            <td>
-              by <%= link_to post.user.name, post.user %>
-            </td>
-            <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
-              <td><%= link_to 'Edit', edit_post_path(post) %></td>
-              <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-            <% end %>
-          </tr>
-
+              </td>
+              <td>
+                by <%= link_to post.user.name, post.user %>
+              </td>
+              <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
+                <td><%= link_to 'Edit', edit_post_path(post) %></td>
+                <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          </div>
+        <% elsif post.postable_type == "Book" %>
+          <div class="my-5">
+            <tr>
+              <td>
+                <%= post.postable.title %>
+                <%= post.content %>
+                <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable %>
+              </td>
+              <td>
+                by <%= link_to post.user.name, post.user %>
+              </td>
+              <% if current_user.has_role? :group_manager, @group or can? :manage, post %>
+                <td><%= link_to 'Edit', edit_post_path(post) %></td>
+                <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          </div>
         <% else %>
         <% end %>
       <% end %>
     </tbody>
   </table>
 </p>
+
+<div class="my-5">
+  <%= form_tag book_search_path, method: :get do %>
+    <%= hidden_field_tag :receiverrr_type, "Group" %>
+    <%= hidden_field_tag :receiverrr_id, @group.id %>
+    <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+    <%= submit_tag "책 찾기", class: "btn btn-primary" %>
+  <% end %>
+</div>
 
 <div class="my-5">
   <%= form_for(@message) do |f| %>
