@@ -92,11 +92,11 @@ class BooksController < ApplicationController
     # 검색어가 없으면 items에 빈 array 넘기기
     @items ||= []
 
+    @book = Book.new
+    @book.posts.new
   end
 
   def new
-    @book = Book.new
-    @book.posts.new
   end
 
   def create
@@ -175,7 +175,7 @@ class BooksController < ApplicationController
 
       redirect_to root_path, flash: { notice: "책짹!" }
     else
-      redirect_to root_path, flash: { alert: "사용자에게 남기는 book 인데 prt가 User가 아님" }
+      redirect_to root_path, flash: { alert: "사용자에게 남기는 book 인데 prt이 User가 아님" }
     end
   end
 

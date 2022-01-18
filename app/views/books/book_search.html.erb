@@ -19,7 +19,7 @@
 
           <div class="info media-body">
             <div class="title">
-              <%= link_to item['title'].html_safe,
+              <%#= link_to item['title'].html_safe,
                 new_book_path(
                   title: strip_tags(item['title']),
                   contents: strip_tags(item['contents']),
@@ -30,42 +30,99 @@
                   publisher: strip_tags(item['publisher']),
                   translators: strip_tags(item['translators'].join(",")),
                   thumbnail: strip_tags(item['thumbnail'])) %>
+
                 <% index = @items.find_index(item) %>
-                index는 <%= index %>
                 <a href='#' , data-toggle="modal" data-target="#modal-<%= index %>">
                   <%= item['title'].html_safe %>
                 </a>
             </div>
 
             <div class="writers text-muted">
-
               <% if item['authors'].present? %>
                 <%= item['authors'].join(",").html_safe %><span>저</span> | 
               <% end %>
-
               <% if item['translators'].present? %>
                 <%= item['translators'].join(",").html_safe %><span>역</span> | 
               <% end %>
-
               <% if item['publisher'].present? %>
                 <%= item['publisher'].html_safe %> | 
               <% end %>
-
               <% if item['datetime'].present? %>
                 <%= item['datetime'][0..9] %>
               <% end %>
-
             </div>
 
             <div class="contents">
               <%= item['contents'].html_safe %>
             </div>
 
-          </div>
-        </div>
+          </div><!-- info media-body -->
+        </div><!-- item media -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                  <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+                  <%= current_user.name %>님,
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+
+              <div class="modal-body">
+                <div class="book-image">
+                  <!--book image-->
+                  <%= image_tag extract_thumbnail250_url(item['thumbnail']), class: "border mx-3", width: "250px" %>
+                </div>
+
+                <%= item['title'] %>
+                <%= item['authors'] %>
+                <%= item['translators'] %>
+                <%= item['publisher'] %>
+                <%= item['datetime'] %>
+                <%= item['contents'] %>
+
+                <%= form_for(@book) do |form| %>
+
+                  <%= hidden_field_tag :receiverrr_id, current_user.id %>
+
+                  <%= form.hidden_field :title, value: item['title'].html_safe %>
+                  <%= form.hidden_field :contents, value: item['contents'].html_safe %>
+                  <%= form.hidden_field :url, value: item['url'].html_safe %>
+                  <%= form.hidden_field :isbn, value: item['isbn'].html_safe %>
+                  <%= form.hidden_field :datetime, value: item['datetime'].html_safe %>
+                  <%= form.hidden_field :authors, value: item['authors'] %>
+                  <%= form.hidden_field :translators, value: item['translators'] %>
+                  <%= form.hidden_field :publisher, value: item['publisher'].html_safe %>
+                  <%= form.hidden_field :thumbnail, value: item['thumbnail'].html_safe %>
+
+                  <%= form.fields_for :posts do |posts_field| %>
+                    <%= posts_field.hidden_field :post_recipient_type, value: params[:receiverrr_type].html_safe %>
+                    <%= posts_field.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: '이 책을 읽고 무엇을 느꼈나요?' %>
+                  <% end %>
+
+                  <%= form.submit '책짹', class: 'btn btn-info' %>
+
+                <% end %>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                <%#= submit_tag "책 찾기", class: "btn btn-primary" %>
+              </div>
+
+
+            </div><!-- modal-content -->
+          </div><!-- modal-dialog -->
+        </div><!-- modal fade -->
+
       <% end %>
 
-    </div>
+    </div><!-- book-search-result -->
 
   <% end %>
 
@@ -100,39 +157,3 @@
   </div>
 
 <% end %>
-
-  <% @items.each do |item| %>
-
-    <% index = @items.find_index(item) %>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modal-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <%#= form_tag book_search_path, method: :get do %>
-
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">
-                <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
-                <%= current_user.name %>님,
-              </h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-
-            <div class="modal-body">
-              <%#= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "이 그림은..." %>
-              <%= @items[index]['title'] %>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-              <%#= submit_tag "책 찾기", class: "btn btn-primary" %>
-            </div>
-
-          <%# end %>
-
-        </div><!-- modal-content -->
-      </div><!-- modal-dialog -->
-    </div><!-- modal fade -->
-  <% end %>
