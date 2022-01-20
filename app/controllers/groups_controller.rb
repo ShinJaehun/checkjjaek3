@@ -12,11 +12,19 @@ class GroupsController < ApplicationController
   def index
     @groups = Group.all
     #@groups = current_user.groups
+
+    #.where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.ids).pluck(:post_id))
+    # pending 그룹은 제외해야하기 때문에...
+    @posts = Post
+      .where(id: PostRecipientGroup.where(recipient_group_id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id)).pluck(:post_id))
+      .order(created_at: :desc)
   end
 
   # GET /groups/1 or /groups/1.json
   def show
-    @posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+    #@posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+    @posts = Post.where(id: @group.post_recipient_groups.pluck(:post_id))
+      .order(created_at: :desc)
 
     #@pending_users = User.includes(:user_groups).where("user_groups.state": "pending")
     #이렇게 하면 사용자가 다른 그룹에서 pending하고 있어도 몽땅 pending_users에 포함됨

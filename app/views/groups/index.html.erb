@@ -16,15 +16,81 @@
       <tr>
         <td><%= group.name %></td>
         <td><%= group.description %></td>
+        <td><%= link_to 'Show', group %></td>
         <% if can? :manage, group %>
-          <td><%= link_to 'Show', group %></td>
           <td><%= link_to 'Edit', edit_group_path(group) %></td>
           <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
     <% end %>
   </tbody>
-</table>
+
+<p>
+  <strong>Group User Post</strong>
+  <table>
+    <tbody>
+      <% @posts.each do |post| %>
+        <% group = Group.find(post.post_recipient_group.recipient_group_id) %>
+        <% if post.postable_type == "Message" %>
+          <div class="my-5">
+            <tr>
+              <td><%= group.name %></td>
+              <td><%= post.content %></td>
+              <td>
+                by <%= link_to post.user.name, post.user %>
+              </td>
+              <% if current_user.has_role? :group_manager, group or can? :manage, post %>
+                <td><%= link_to 'Edit', edit_post_path(post) %></td>
+                <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          </div>
+        <% elsif post.postable_type == "Photo" %>
+          <div class="my-5">
+            <tr>
+              <td><%= group.name %></td>
+              <td>
+                <%= post.content %>
+                <div class="photo-images">
+                  <% post.postable.images.each do |image| %>
+                    <%= link_to image_tag(image.variant(resize: "400x400")), image %>
+                  <% end %>
+                </div>
+              </td>
+              <td>
+                by <%= link_to post.user.name, post.user %>
+              </td>
+              <% if current_user.has_role? :group_manager, group or can? :manage, post %>
+                <td><%= link_to 'Edit', edit_post_path(post) %></td>
+                <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          </div>
+        <% elsif post.postable_type == "Book" %>
+          <div class="my-5">
+            <tr>
+              <td><%= group.name %></td>
+              <td>
+                <%= post.postable.title %>
+                <%= post.content %>
+                <%= link_to image_tag(book_thumbnail150(post.postable.thumbnail), class: "border", width:'150px'), post.postable %>
+              </td>
+              <td>
+                by <%= link_to post.user.name, post.user %>
+              </td>
+              <% if current_user.has_role? :group_manager, group or can? :manage, post %>
+                <td><%= link_to 'Edit', edit_post_path(post) %></td>
+                <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          </div>
+        <% else %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</p>
+
 
 <br>
 
