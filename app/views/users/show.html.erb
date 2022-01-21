@@ -13,6 +13,11 @@
         <div class="d-none d-md-block">
           <div class="row">
             <div class="col-4">
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                책짹<i class="fas fa-dove ml-2"></i>
+              </button>
+            </div>
+            <div class="col-4">
               <button type="button" class="btn btn-primary btn-block " data-toggle="modal" data-target="#modalMessage">
                 글 남기기
               </button>
@@ -28,6 +33,11 @@
         <!-- Button trigger modal -->
         <div class="d-block d-md-none">
           <div class="row">
+            <div class="col-4">
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                <i class="fas fa-dove"></i>
+              </button>
+            </div>
             <div class="col-4">
               <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalMessage">
                 <i class="fas fa-pen"></i>
@@ -64,6 +74,47 @@
         </div><!-- post-list card -->
       <% end %>
     </div><!-- posts -->
+  </div><!-- col-md-8 order-md-1 -->
+</div><!-- row -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <%= form_tag book_search_path, method: :get do %>
+            <%= hidden_field_tag :receiverrr_type, "User" %>
+            <%= hidden_field_tag :receiverrr_id, @user.id %>
+
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">
+                <% if current_user.id == @user.id %>
+                  <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+                  <%= current_user.name %>님,
+                <% else %>
+                  <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+                  <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
+                  <%= image_tag user_avatar(@user, 30), class: "rounded-circle" %>
+                  <%= current_user.name %>님이 <%= @user.name %>님께,
+                <% end %>
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+              <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <%= submit_tag "책 찾기", class: "btn btn-primary" %>
+            </div>
+
+          <% end %>
+
+        </div><!-- modal-content -->
+      </div><!-- modal-dialog -->
+    </div><!-- modal fade -->
 
     <!-- Modal -->
     <div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -153,5 +204,3 @@
       </div><!-- modal-dialog -->
     </div><!-- modal -->
 
-  </div><!-- col-md-8 order-md-1 -->
-</div><!-- row -->

@@ -10,6 +10,9 @@ class UsersController < ApplicationController
       #  .or(Post.where(postable: @receive_messages)).order(created_at: :desc)
 
       @posts = @user.posts
+        .where.not(postable_type: "Book")
+        .or(Post.where(postable_type: "Book")
+        .where(id: PostRecipientUser.where(recipient_user_id: @user.id).pluck(:post_id)))
         .where.not(postable_type: "Message")
         .or(Post.where(postable_type: "Message")
         .where(id: PostRecipientUser.where(recipient_user_id: @user.id).pluck(:post_id)))

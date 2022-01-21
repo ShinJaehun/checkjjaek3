@@ -173,7 +173,11 @@ class BooksController < ApplicationController
       post_recipient_user.recipient_user_id = r_id
       post_recipient_user.save
 
-      redirect_to root_path, flash: { notice: "책짹!" }
+      if r_id == current_user.id
+        redirect_to root_path, flash: { notice: "책짹!" }
+      else
+        redirect_to user_path(r_id), flash: { notice: "책짹!" }
+      end
     elsif post.post_recipient_type == "Group"
       post_recipient_group = PostRecipientGroup.new
       post_recipient_group.post_id = post.id

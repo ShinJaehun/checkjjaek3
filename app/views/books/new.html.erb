@@ -1,3 +1,5 @@
+<!-- book_search에서 modal로 직접 post할꺼니까 이 페이지는 필요 없음 -->
+
 <div class="row py-2">
 
   <div class="col-md-4 order-md-2 md-4 text-center">
@@ -50,7 +52,7 @@
         <div class="media-body">
 
           <%= form_for(@book) do |form| %>
-            <%= hidden_field_tag :receiverrr_id, current_user.id %>
+            <%= hidden_field_tag :receiverrr_id, params[:receiverrr_id].html_safe %>
 
             <%= form.hidden_field :title, value: params[:title].html_safe %>
             <%= form.hidden_field :contents, value: params[:contents].html_safe %>

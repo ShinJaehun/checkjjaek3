@@ -21,7 +21,7 @@
 
     <!-- 포스트 정보 -->
     <% if sender.id != receiver.id %>
-      <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 글을 남겼습니다.
+      <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to sender.name, sender %>님이 <%= link_to receiver.name, receiver %>님께 사진을 남겼습니다.
     <% else %>
       <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 글을 남겼습니다.
     <% end %>
