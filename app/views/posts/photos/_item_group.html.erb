@@ -1,0 +1,52 @@
+<% group = Group.find(post.post_recipient_group.recipient_group_id) %>
+
+<!--포스트 내용-->
+<div class="post-information media">
+
+  <div class="media-left">
+    <%= link_to image_tag(user_avatar(post.user, 30), class: "rounded-circle", title: post.user.name), post.user %>
+  </div><!-- media-left -->
+
+  <div class="media-body align-self-center">
+
+    <!-- 포스트 정보 -->
+    <%= "#{time_ago_in_words(post.created_at)} 전에" %> <%= link_to post.user.name, post.user %>님이 <%= link_to group.name, group %>에 사진을 남겼습니다.
+
+    <!-- fontawesome으로 만든 좋아요 버튼 -->
+    <% if !post.like_users.include?(current_user)%>
+      <%= link_to( content_tag(:i, "",class: ["far", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+    <% else %>
+      <%= link_to( content_tag(:i, "",class: ["fas", "fa-thumbs-up"]), like_post_path(post), method: :post )%>
+    <% end %>
+
+    <% if post.like_users.count > 0 %>
+      <span class="badge badge-primary badge-pill"><%= post.like_users.count %></span>
+    <% end %>
+
+    <!--수정, 삭제 버튼-->
+    <% if current_user.has_role? :group_manager, group or can? :manage, post %>
+      <%= link_to( content_tag(:i, "",class: ["fas", "fa-edit"]), edit_post_path(post) )%>
+      <%= link_to( content_tag(:i, "",class: ["far", "fa-times-circle"]), post_path(post), method: :delete, data: { confirm: '정말 삭제하시겠습니까?' } )%>
+    <% end %>
+
+    <!--홈으로 가기 버튼-->
+    <%#= link_to( content_tag(:i, "",class: ["fas", "fa-home"]), root_path )%>
+
+  </div><!-- media-body -->
+</div><!-- post-information media -->
+
+<!-- 해시태그를 처리한 본문 -->
+<div class="content">
+  <%= render_with_hashtags(post.content) %>
+</div>
+
+<div class="photo-images">
+  <% post.postable.images.each do |image| %>
+    <%= link_to image_tag(image.variant(resize: "400x400")), image %>
+  <% end %>
+</div>
+
+<!--post show _item 댓글-->
+<div class="comments">
+  <%= render 'comments/comments', post: post %>
+</div>

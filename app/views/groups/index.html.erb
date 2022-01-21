@@ -1,3 +1,44 @@
+<div class="row py-2">
+
+  <div class="d-none d-md-block col-md-4 order-md-2 md-4 text-center">
+    <%= render 'information_desktop' %>
+  </div><!-- col-md-4 order-md-2 md-4 text-center -->
+
+  <div class="col-md-8 order-md-1">
+
+    <div class="card modal-buttons mt-4">
+      <div class="card-body">
+
+
+      </div><!-- card-body -->
+    </div><!-- card modal-buttons -->
+
+    <div class="d-block d-md-none">
+      <%= render 'information_mobile' %>
+    </div>
+
+
+    <div class="posts">
+      <% @posts.each do |post| %>
+        <!--style="width:40rem;"를 붙이면 card가 고정폭으로 변경됨-->
+        <div class="post-list card my-4">
+          <% if post.postable_type == "Book" %>
+            <%= render 'posts/books/item_group', post: post %>
+          <% elsif post.postable_type == "Message" %>
+            <%= render 'posts/messages/item_group', post: post %>
+          <% elsif post.postable_type == "Photo" %>
+            <%= render 'posts/photos/item_group', post: post %>
+          <% else %>
+            <!--다른 형태의 post에 대한 처리-->
+         <% end %>
+        </div><!-- post-list card -->
+      <% end %>
+    </div><!-- posts -->
+
+  </div><!-- col-md-8 order-md-1 -->
+
+</div><!-- row py-2 -->
+
 <p id="notice"><%= notice %></p>
 
 <h1>Groups</h1>
@@ -90,8 +131,3 @@
     </tbody>
   </table>
 </p>
-
-
-<br>
-
-<%= link_to 'New Group', new_group_path %>

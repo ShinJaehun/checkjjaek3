@@ -1,0 +1,35 @@
+<div class="card my-4 text-center additional-information" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">동아리 메뉴</h5>
+    <div class="dt-info-list">
+        <div class="media align-items-center">
+          <div class="media-body content">
+            <%= link_to '동아리 만들기', new_group_path, class: "btn btn-primary btn-block" %>
+          </div>
+        </div><!-- media -->
+    </div><!-- dt-info-list -->
+  </div><!-- card-body -->
+</div><!-- card -->
+
+<div class="card my-4 text-center additional-information" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">가입한 동아리</h5>
+    <div class="dt-info-list">
+      <% @groups.each do |g| %>
+        <div class="media align-items-center">
+          <div class="media-left">
+            <%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", title: current_user.name), current_user %>
+          </div>
+          <div class="media-body content">
+            <div>
+              <strong><%= link_to g.name, g%></strong>
+            </div>
+            <div>
+              <span class="small-font">활동중: <%= g.user_groups.where.not(state: 'pending').count %>명</span>
+            </div>
+          </div>
+        </div><!-- media -->
+      <% end %>
+    </div><!-- dt-info-list -->
+  </div><!-- card-body -->
+</div><!-- card -->

@@ -10,8 +10,8 @@ class GroupsController < ApplicationController
 
   # GET /groups or /groups.json
   def index
-    @groups = Group.all
-    #@groups = current_user.groups
+    #@groups = Group.all
+    @groups = Group.find(current_user.user_groups.where.not(state: 'pending').pluck(:group_id))
 
     #.where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.ids).pluck(:post_id))
     # pending 그룹은 제외해야하기 때문에...
