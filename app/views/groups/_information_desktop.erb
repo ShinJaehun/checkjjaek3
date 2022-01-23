@@ -1,35 +1,175 @@
 <div class="card my-4 text-center additional-information" style="width: 18rem;">
   <div class="card-body">
-    <h5 class="card-title">동아리 메뉴</h5>
+    <h5 class="card-title"><%= @group.name %></h5>
     <div class="dt-info-list">
-        <div class="media align-items-center">
-          <div class="media-body content">
-            <%= link_to '동아리 만들기', new_group_path, class: "btn btn-primary btn-block" %>
-          </div>
-        </div><!-- media -->
+      <div class="media align-items-center">
+        <div class="media-body content">
+          <%#= link_to '동아리 메뉴', '#', class: "btn btn-primary btn-block" %>
+
+          <% if !current_user.groups.include?(@group) %>
+            <%= link_to "동아리 가입 요청", apply_group_path(@group), class: 'btn btn-primary btn-block' %>
+          <% elsif current_user.groups.include?(@group) and current_user.user_groups.find_by_group_id(@group.id).state == "pending" %>
+            <%# elsif current_user.groups.include?(@group) and UserGroup.where(user_id: current_user.id, group_id: @group.id).first.state == "pending" %>
+
+            <%= form_tag cancel_apply_group_path(@group), method: "delete" do %>
+              <%= hidden_field_tag :apply_user_id, current_user.id %>
+              <button type="submit" class="btn btn-danger btn-block">동아리 가입 요청 취소</button>
+            <% end %>
+          <% elsif current_user.user_groups.find_by_group_id(@group.id).state == "active" %>
+            <%= link_to "동아리 나가기",  leave_group_path(@group), class: 'btn btn-danger btn-block', method: 'delete', data: { confirm: 'Are you sure?' } %>
+          <% end %>
+
+        </div><!-- media-body -->
+      </div><!-- media -->
     </div><!-- dt-info-list -->
   </div><!-- card-body -->
 </div><!-- card -->
 
+<% if current_user.has_role? :group_manager, @group %>
+  <div class="card my-4 text-center additional-information" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">활동중인 회원</h5>
+      <div class="dt-info-list">
+        <div class="media align-items-center">
+          <div class="media-body content">
+
+            <% @active_users.each do |u| %>
+              <div class="media align-items-center">
+                <div class="media-left">
+                  <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+                </div><!-- media-left -->
+                <div class="media-body content">
+                  <div class="row">
+                    <div class="col-8">
+                      <div>
+                        <strong><%= link_to u.name, u%></strong>
+                        <span class="small-font">
+                          <% u.roles.each do |r| %>
+                            <% if r.resource_id == @group.id %>
+                              <% if r.name == "group_manager" %>
+                                <%= "관리자" %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        </span>
+                      </div>
+                      <div>
+                        <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
+                        <% unless lastone.nil? %>
+                          <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
+                        <% else %>
+                          <span class="small-font">아직 등록한 글이 없음</span>
+                        <% end %>
+                      </div>
+                    </div><!-- col-8 -->
+                    <div class="col-4 my-auto">
+                      <% if current_user.has_role? :group_manager, @group and !u.has_role? :group_manager, @group %>
+                        <%= form_tag suspend_user_path(@group), method: "get" do %>
+                          <%= hidden_field_tag :suspend_user_id, u.id %>
+                          <button type="submit" class="btn btn-danger btn-sm">중지</button>
+                        <% end %>
+                      <% end %>
+                    </div><!-- col-4 -->
+                  </div><!-- row -->
+                </div><!-- media-body content -->
+              </div><!-- media -->
+            <% end %>
+
+          </div><!-- media-body -->
+        </div><!-- media -->
+      </div><!-- dt-info-list -->
+    </div><!-- card-body -->
+  </div><!-- card -->
+
+  <% unless @pending_users.size == 0 %>
+    <div class="card my-4 text-center additional-information" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">활동 중지 회원</h5>
+        <div class="dt-info-list">
+          <div class="media align-items-center">
+            <div class="media-body content">
+
+              <% @pending_users.each do |u| %>
+                <div class="media align-items-center">
+                  <div class="media-left">
+                    <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+                  </div><!-- media-left -->
+                  <div class="media-body content">
+                    <div class="row">
+
+                      <div class="col-8">
+                        <div>
+                          <strong><%= link_to u.name, u%></strong>
+                        </div>
+                        <div>
+                          <span class="small-font">가입한 동아리: 0</span>
+                        </div>
+                      </div><!-- col-8 -->
+                      <div class="col-4 my-auto">
+                        <% if current_user.has_role? :group_manager, @group %>
+                          <%= form_tag approve_user_path(@group), method: "get" do %>
+                            <%= hidden_field_tag :apply_user_id, u.id %>
+                            <button type="submit" class="btn btn-success btn-sm">승인</button>
+                          <% end %>
+                        <% end %>
+
+                      </div><!-- col-4 -->
+                    </div><!-- row -->
+                  </div><!-- media-body content -->
+                </div><!-- media -->
+              <% end %>
+
+            </div><!-- media-body -->
+          </div><!-- media -->
+        </div><!-- dt-info-list -->
+      </div><!-- card-body -->
+    </div><!-- card -->
+  <% end %>
+<% end %>
+
 <div class="card my-4 text-center additional-information" style="width: 18rem;">
   <div class="card-body">
-    <h5 class="card-title">가입한 동아리</h5>
+    <h5 class="card-title">동아리 회원</h5>
     <div class="dt-info-list">
-      <% @groups.each do |g| %>
-        <div class="media align-items-center">
-          <div class="media-left">
-            <%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", title: current_user.name), current_user %>
-          </div>
-          <div class="media-body content">
-            <div>
-              <strong><%= link_to g.name, g%></strong>
-            </div>
-            <div>
-              <span class="small-font">활동중: <%= g.user_groups.where.not(state: 'pending').count %>명</span>
-            </div>
-          </div>
-        </div><!-- media -->
-      <% end %>
+      <div class="media align-items-center">
+        <div class="media-body content">
+
+          <% @active_users.each do |u| %>
+            <div class="media align-items-center">
+              <div class="media-left">
+                <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+              </div><!-- media-left -->
+              <div class="media-body content">
+                <div class="row">
+                  <div class="col-8">
+                    <div>
+                      <strong><%= link_to u.name, u%></strong>
+                      <span class="small-font">
+                        <% u.roles.each do |r| %>
+                          <% if r.resource_id == @group.id %>
+                            <% if r.name == "group_manager" %>
+                              <%= "관리자" %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      </span>
+                    </div>
+                    <div>
+                      <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
+                      <% unless lastone.nil? %>
+                        <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
+                      <% else %>
+                        <span class="small-font">아직 등록한 글이 없음</span>
+                      <% end %>
+                    </div>
+                  </div><!-- col-8 -->
+                </div><!-- row -->
+              </div><!-- media-body content -->
+            </div><!-- media -->
+          <% end %>
+
+        </div><!-- media-body -->
+      </div><!-- media -->
     </div><!-- dt-info-list -->
   </div><!-- card-body -->
 </div><!-- card -->
