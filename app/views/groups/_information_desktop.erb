@@ -8,8 +8,6 @@
             <%= @group.description %>
           </div>
 
-          <%#= link_to '동아리 메뉴', '#', class: "btn btn-primary btn-block" %>
-
           <% if !current_user.groups.include?(@group) %>
             <%= link_to "동아리 가입 요청", apply_group_path(@group), class: 'btn btn-primary btn-block' %>
           <% elsif current_user.groups.include?(@group) and current_user.user_groups.find_by_group_id(@group.id).state == "pending" %>
@@ -23,6 +21,9 @@
             <%= link_to "동아리 나가기",  leave_group_path(@group), class: 'btn btn-danger btn-block', method: 'delete', data: { confirm: 'Are you sure?' } %>
           <% end %>
 
+          <% if current_user.has_role? :group_manager, @group %>
+            <%= link_to "동아리 정보 수정",  edit_group_path(@group), class: 'btn btn-warning btn-block' %>
+          <% end %>
         </div><!-- media-body -->
       </div><!-- media -->
     </div><!-- dt-info-list -->

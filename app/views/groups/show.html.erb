@@ -9,6 +9,26 @@
     <div class="card modal-buttons mt-4">
       <div class="card-body">
 
+        <!-- Button trigger modal -->
+        <div class="d-none d-md-block">
+          <div class="row">
+            <div class="col-4">
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                책짹<i class="fas fa-dove ml-2"></i>
+              </button>
+            </div>
+            <div class="col-4">
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+               글 남기기
+              </button>
+            </div>
+            <div class="col-4">
+              <button type="button" class="btn btn-primary btn-block " data-toggle="modal" data-target="#modalPhoto">
+               사진 올리기
+              </button>
+            </div>
+          </div><!-- row -->
+        </div>
 
       </div><!-- card-body -->
     </div><!-- card modal-buttons -->
@@ -18,13 +38,129 @@
     </div>
 
 
-
-
+    <div class="posts">
+      <% @posts.each do |post| %>
+        <!--style="width:40rem;"를 붙이면 card가 고정폭으로 변경됨-->
+        <div class="post-list card my-4">
+          <% if post.postable_type == "Book" %>
+            <%= render 'posts/books/item_group', post: post %>
+          <% elsif post.postable_type == "Message" %>
+            <%= render 'posts/messages/item_group', post: post %>
+          <% elsif post.postable_type == "Photo" %>
+            <%= render 'posts/photos/item_group', post: post %>
+          <% else %>
+            <!--다른 형태의 post에 대한 처리-->
+         <% end %>
+        </div><!-- post-list card -->
+      <% end %>
+    </div><!-- posts -->
 
   </div><!-- col-md-8 order-md-1 -->
 
 </div><!-- row py-2 -->
 
+<!-- Modal -->
+<div class="modal fade" id="modalBook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <%= form_tag book_search_path, method: :get do %>
+        <%= hidden_field_tag :receiverrr_type, "Group" %>
+        <%= hidden_field_tag :receiverrr_id, @group.id %>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">
+            <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+            <%= current_user.name %>님,
+          </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div class="modal-body">
+          <%= text_field_tag :keyword_book, params[:keyword_book], require: true, class: "form-control search-book-input", placeholder: "어떤 책을 읽었나요?" %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+          <%= submit_tag "책 찾기", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal fade -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <%= form_for(@message) do | f | %>
+
+        <%= hidden_field_tag :receiverrr_id, @group.id %>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">
+            <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+            <%= current_user.name %>님,
+          </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div class="modal-body">
+          <%= f.fields_for :posts do | p | %>
+            <%= p.hidden_field :post_recipient_type, value: "Group" %>
+            <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 이야기를 나눌까요?" %>
+          <% end %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+          <%= f.submit "글 남기기", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal fade -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalPhoto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <%= form_for(@photo) do | f | %>
+        <%= hidden_field_tag :receiverrr_id, @group.id %>
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">
+            <%= image_tag user_avatar(current_user, 30), class: "rounded-circle" %>
+            <%= current_user.name %>님,
+          </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+
+        <div class="modal-body">
+          <%= f.file_field :images, multiple: true %>
+
+          <%= f.fields_for :posts do | p | %>
+            <%= p.hidden_field :post_recipient_type, value: "Group" %>
+            <%= p.text_area :content, id: "textarea", class: "form-control counted", maxlength: '200', require: true, placeholder: "어떤 사진인가요?" %>
+          <% end %>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+          <%= f.submit "사진 올리기", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal fade -->
 
 
 
