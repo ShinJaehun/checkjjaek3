@@ -11,6 +11,33 @@
   </div><!-- card-body -->
 </div><!-- card -->
 
+<% if current_user.has_role? :admin %>
+  <div class="card my-4 text-center additional-information">
+    <div class="card-body">
+      <h5 class="card-title">활동중지 동아리</h5>
+      <div class="dt-info-list">
+        <% @groups.each do |g| %>
+          <% if g.state == "pending" %>
+            <div class="media align-items-center">
+              <div class="media-left">
+                <%= link_to image_tag(group_thumbnail(g), size: "50x50", style: "border-radius: 10%;", title: g.name), g %>
+              </div>
+              <div class="media-body content">
+                <div>
+                  <strong><%= link_to g.name, g%></strong>
+                </div>
+                <div>
+                  <span class="small-font">활동중: <%= g.user_groups.where.not(state: 'pending').count %>명</span>
+                </div>
+              </div><!-- media-body content -->
+            </div><!-- media -->
+          <% end %>
+        <% end %>
+      </div><!-- dt-info-list -->
+    </div><!-- card-body -->
+  </div><!-- card -->
+<% end %>
+
 <div class="card my-4 text-center additional-information">
   <div class="card-body">
     <h5 class="card-title">가입한 동아리</h5>
@@ -18,7 +45,7 @@
       <% @groups.each do |g| %>
         <div class="media align-items-center">
           <div class="media-left">
-            <%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", title: current_user.name), current_user %>
+            <%= link_to image_tag(group_thumbnail(g), size: "50x50", style: "border-radius: 10%;", title: g.name), g %>
           </div>
           <div class="media-body content">
             <div>
@@ -41,7 +68,7 @@
       <% @suggested_groups.each do |g| %>
         <div class="media align-items-center">
           <div class="media-left">
-            <%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", title: current_user.name), current_user %>
+            <%= link_to image_tag(group_thumbnail(g), size: "50x50", style: "border-radius: 10%;", title: g.name), g %>
           </div>
           <div class="media-body content">
             <div>

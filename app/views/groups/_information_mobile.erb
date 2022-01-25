@@ -1,13 +1,18 @@
 <div class="card my-4 text-center additional-information">
   <div class="card-body">
-    <h5 class="card-title"><%= @group.name %></h5>
     <div class="dt-info-list">
       <div class="media align-items-center">
         <div class="media-body content">
-          <div class="m-2 fs-5">
+
+          <div class="mb-2">
+            <%= image_tag(group_cover_image(@group), size: "200x200", style: "border-radius: 10%;") %>
+          </div>
+
+          <h5 class="card-title mb-1"><%= @group.name %></h5>
+
+          <div class="mb-2 fs-5">
             <%= @group.description %>
           </div>
-          <%#= link_to '동아리 메뉴', '#', class: "btn btn-primary btn-block" %>
 
           <% if !current_user.groups.include?(@group) %>
             <%= link_to "동아리 가입 요청", apply_group_path(@group), class: 'btn btn-primary btn-block' %>

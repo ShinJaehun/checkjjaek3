@@ -53,6 +53,12 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
 
+    if current_user.has_role? :admin
+      @group.state = "active"
+    else
+      @group.state = "pending"
+    end
+
     if Group.find_by(name: @group.name).present?
       flash.new[:danger] = "That group name has already been taken."
       render :new
@@ -110,11 +116,11 @@ class GroupsController < ApplicationController
         @group.destroy
         redirect_to groups_url, notice: "Group was successfully destroyed."
       else
-        redirect_to groups_url, alert: "group_manager를 제외하고 group_member가 존재하면 그룹 삭제 불가"
+        redirect_to group_url(@group), alert: "group_manager를 제외하고 group_member가 존재하면 그룹 삭제 불가"
       end
 
     else
-      redirect_to groups_url, alert: "group_manager가 아님"
+      redirect_to group_url(@group), alert: "group_manager가 아님"
     end
   end
 
@@ -224,6 +230,6 @@ class GroupsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def group_params
-      params.require(:group).permit(:name, :description)
+      params.require(:group).permit(:name, :description, :cover_image)
     end
 end

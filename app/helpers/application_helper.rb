@@ -78,4 +78,20 @@ module ApplicationHelper
   def thumbnail input
     return self.images[input].variant(resize: '300x300!').processed
   end
+
+  def group_cover_image(group)
+    if group.cover_image.attached?
+      group.cover_image.variant(resize: '300x300!')
+    else
+      'nia.jpg'
+    end
+  end
+
+  def group_thumbnail(group)
+    if group.cover_image.attached?
+      group.cover_image.variant(resize: '100x100!')
+    else
+      'nia.jpg'
+    end
+  end
 end
