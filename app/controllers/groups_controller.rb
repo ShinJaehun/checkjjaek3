@@ -3,41 +3,57 @@ class GroupsController < ApplicationController
   before_action :set_group, except: %i[ index new create ]
   before_action :authenticate_user!
   #devise 로그인 사용자만 메서드 사용 가능
-  load_and_authorize_resource except: %i[ new create join_group apply_group cancel_apply_group ]
+  load_and_authorize_resource except: %i[ new create join_group apply_group cancel_apply_group approve_group ]
   #cancancan
   #new create join leave를 제외하고 허가된 사용자만 메서드를 사용할 수 있음
   #근데 왜 index는 except하지 않아도 모든 그룹을 다 볼 수 있는거지?
 
   # GET /groups or /groups.json
   def index
-    @groups = Group.find(current_user.user_groups.where.not(state: 'pending').pluck(:group_id))
-    @suggested_groups = Group.all
+    #@groups = Group.find(current_user.user_groups.where.not(state: 'pending').pluck(:group_id))
+    @groups = Group.where(id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id), group_state: 'active')
+
+    if current_user.has_role? :admin
+      @pending_groups = Group.where(group_state: 'pending')
+#    puts '#########################################################'
+#    puts @pending_groups
+#    puts '#########################################################'
+    else
+      @pending_groups = Group.where(id: current_user.user_groups.pluck(:group_id), group_state: 'pending')
+    end
+
+    @suggested_groups = Group.where(group_state: 'active').order(created_at: :desc).first(10)
 
     #.where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.ids).pluck(:post_id))
     # pending 그룹은 제외해야하기 때문에...
     @posts = Post
       .where(id: PostRecipientGroup.where(recipient_group_id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id)).pluck(:post_id))
+      .where.not(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'pending').pluck(:group_id)).pluck(:post_id))
       .order(created_at: :desc)
   end
 
   # GET /groups/1 or /groups/1.json
   def show
-    #@posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
-    @posts = Post.where(id: @group.post_recipient_groups.pluck(:post_id))
-      .order(created_at: :desc)
+    if @group.group_state == "pending"
+      redirect_to groups_url, alert: "동아리 #{@group.name}은 승인 대기 상태입니다."
+    else
+      #@posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
+      @posts = Post.where(id: @group.post_recipient_groups.pluck(:post_id))
+        .order(created_at: :desc)
 
-    #@pending_users = User.includes(:user_groups).where("user_groups.state": "pending")
-    #이렇게 하면 사용자가 다른 그룹에서 pending하고 있어도 몽땅 pending_users에 포함됨
-    @pending_users = User.find(@group.user_groups.where(state: "pending").pluck(:user_id))
-    @active_users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
-    #구현할 수 있는 다양한 방법을 알아두는게 필요하긴 한데
-    #뭐가 더 나은 방법인가?
+      #@pending_users = User.includes(:user_groups).where("user_groups.state": "pending")
+      #이렇게 하면 사용자가 다른 그룹에서 pending하고 있어도 몽땅 pending_users에 포함됨
+      @pending_users = User.find(@group.user_groups.where(state: "pending").pluck(:user_id))
+      @active_users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+      #구현할 수 있는 다양한 방법을 알아두는게 필요하긴 한데
+      #뭐가 더 나은 방법인가?
 
-    @message = Message.new
-    @message.posts.new
+      @message = Message.new
+      @message.posts.new
 
-    @photo = Photo.new
-    @photo.posts.new
+      @photo = Photo.new
+      @photo.posts.new
+    end
   end
 
   # GET /groups/new
@@ -54,9 +70,9 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
 
     if current_user.has_role? :admin
-      @group.state = "active"
+      @group.group_state = "active"
     else
-      @group.state = "pending"
+      @group.group_state = "pending"
     end
 
     if Group.find_by(name: @group.name).present?
@@ -219,6 +235,20 @@ class GroupsController < ApplicationController
       end
     else
       redirect_to @group, alert: "group_manager는 탈퇴 불가!"
+    end
+  end
+
+  def approve_group
+    if current_user.has_role? :admin
+      if @group.group_state == "pending"
+        @group.group_state = "active"
+        @group.save
+        redirect_to groups_path, notice: "#{@group.name}'s been approved."
+      else
+        redirect_to groups_path, alert: "group 오류 또는 pending 상태가 아님"
+      end
+    else
+      redirect_to groups_path, alert: "admin이 아님"
     end
   end
 

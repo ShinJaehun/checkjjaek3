@@ -42,4 +42,5 @@ Rails.application.routes.draw do
   delete 'leave_group/:id', to: 'groups#leave_group', as: :leave_group
   delete 'cancel_apply_group/:id', to: 'groups#cancel_apply_group', as: :cancel_apply_group
 
+  get 'approve_group/:id', to: 'groups#approve_group', as: :approve_group
 end
