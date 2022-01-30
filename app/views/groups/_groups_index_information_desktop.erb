@@ -57,9 +57,12 @@
           <div class="media-body content">
             <div>
               <strong><%= link_to g.name, g%></strong>
+              <% if current_user.has_role? :group_manager, g %>
+                <span class="small-font"> (관리자)</span>
+              <% end %>
             </div>
             <div>
-              <span class="small-font">활동중: <%= g.user_groups.where.not(state: 'pending').count %>명</span>
+              <span class="small-font">활동중: <%= g.user_groups.where(state: 'active').count %>명</span>
             </div>
           </div><!-- media-body content -->
         </div><!-- media -->

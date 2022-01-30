@@ -179,12 +179,18 @@ class BooksController < ApplicationController
         redirect_to user_path(r_id), flash: { notice: "책짹!" }
       end
     elsif post.post_recipient_type == "Group"
-      post_recipient_group = PostRecipientGroup.new
-      post_recipient_group.post_id = post.id
-      post_recipient_group.recipient_group_id = r_id
-      post_recipient_group.save
+      if current_user.has_role? :group_member, Group.find(r_id)
+        post_recipient_group = PostRecipientGroup.new
+        post_recipient_group.post_id = post.id
+        post_recipient_group.recipient_group_id = r_id
+        post_recipient_group.save
 
-      redirect_to group_path(r_id), flash: { notice: "책짹!" }
+        redirect_to group_path(r_id), flash: { notice: "책짹!" }
+      else
+        post.postable.destroy
+        #이게 없으면 post 작성 실패할 때 message는 생성된 채로 남아 있음
+        redirect_to group_path(r_id), flash: { alert: "group_member가 아니라서 그룹에 책짹을 작성할 권한 없음!" }
+      end
     else
       redirect_to root_path, flash: { alert: "사용자에게 남기는 book 인데 prt이 User가 아님" }
     end

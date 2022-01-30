@@ -51,6 +51,8 @@ class MessagesController < ApplicationController
         post_recipient_group.save
         redirect_back(fallback_location: group_path(r_id), flash: {notice: "그룹에 message를 작성했습니다."})
       else
+        post.postable.destroy
+        #이게 없으면 post 작성 실패할 때 message는 생성된 채로 남아 있음
         redirect_back(fallback_location: groups_path, flash: {alert: "group_member가 아니라서 그룹에 message를 작성할 권한 없음"})
       end
 

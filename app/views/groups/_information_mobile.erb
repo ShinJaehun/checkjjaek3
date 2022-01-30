@@ -39,7 +39,7 @@
       <h5 class="card-title">활동중인 회원</h5>
       <div class="dt-info-list">
 
-            <% @active_users.each do |u| %>
+            <% @users.each do |u| %>
               <div class="media align-items-center">
                 <div class="media-left">
                   <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
@@ -85,82 +85,5 @@
     </div><!-- card-body -->
   </div><!-- card -->
 
-  <% unless @pending_users.size == 0 %>
-    <div class="card my-4 text-center additional-information">
-      <div class="card-body">
-        <h5 class="card-title">활동 중지 회원</h5>
-        <div class="dt-info-list">
-
-          <% @pending_users.each do |u| %>
-            <div class="media align-items-center">
-              <div class="media-left">
-                <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
-              </div><!-- media-left -->
-              <div class="media-body content">
-                <div class="row">
-
-                  <div class="col-7">
-                    <div>
-                      <strong><%= link_to u.name, u%></strong>
-                    </div>
-                    <div>
-                      <span class="small-font">가입한 동아리: 0</span>
-                    </div>
-                  </div><!-- col-7 -->
-                  <div class="col-5 my-auto text-center">
-                    <% if current_user.has_role? :group_manager, @group %>
-                      <%= form_tag approve_user_path(@group), method: "get" do %>
-                        <%= hidden_field_tag :apply_user_id, u.id %>
-                        <button type="submit" class="btn btn-success btn-sm">활동승인</button>
-                      <% end %>
-                    <% end %>
-
-                  </div><!-- col-5 -->
-                </div><!-- row -->
-              </div><!-- media-body content -->
-            </div><!-- media -->
-          <% end %>
-        </div><!-- dt-info-list -->
-      </div><!-- card-body -->
-    </div><!-- card -->
-  <% end %>
 <% end %>
 
-<div class="card my-4 text-center additional-information">
-  <div class="card-body">
-    <h5 class="card-title">동아리 회원</h5>
-    <div class="dt-info-list">
-
-      <% @active_users.each do |u| %>
-        <div class="media align-items-center">
-          <div class="media-left">
-            <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
-          </div><!-- media-left -->
-          <div class="media-body content">
-            <div>
-              <strong><%= link_to u.name, u%></strong>
-              <span class="small-font">
-                <% u.roles.each do |r| %>
-                  <% if r.resource_id == @group.id %>
-                    <% if r.name == "group_manager" %>
-                      <%= "관리자" %>
-                    <% end %>
-                  <% end %>
-                <% end %>
-              </span>
-            </div>
-            <div>
-              <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
-              <% unless lastone.nil? %>
-                <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
-              <% else %>
-                <span class="small-font">아직 등록한 글이 없음</span>
-              <% end %>
-            </div>
-          </div><!-- media-body content -->
-        </div><!-- media -->
-      <% end %>
-
-    </div><!-- dt-info-list -->
-  </div><!-- card-body -->
-</div><!-- card -->

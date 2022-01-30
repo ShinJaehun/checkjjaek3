@@ -5,6 +5,8 @@
 
   <div class="media-left">
     <%= link_to image_tag(user_avatar(post.user, 30), class: "rounded-circle", title: post.user.name), post.user %>
+    <span class="align-middle mx-1" style="padding-top: 4px"><i class="fas fa-angle-double-right"></i></span>
+    <%= link_to image_tag(group_thumbnail(group), size: "50x50", style: "border-radius: 10%;", title: group.name), group %>
   </div><!-- media-left -->
 
   <div class="media-body align-self-center">

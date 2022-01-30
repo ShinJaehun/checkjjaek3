@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get 'join_group/:id', to: 'groups#join_group', as: :join_group
   get 'apply_group/:id', to: 'groups#apply_group', as: :apply_group
   get 'approve_user/:id', to: 'groups#approve_user', as: :approve_user
+  get 'resume_user/:id', to: 'groups#resume_user', as: :resume_user
   get 'suspend_user/:id', to: 'groups#suspend_user', as: :suspend_user
   delete 'leave_group/:id', to: 'groups#leave_group', as: :leave_group
   delete 'cancel_apply_group/:id', to: 'groups#cancel_apply_group', as: :cancel_apply_group

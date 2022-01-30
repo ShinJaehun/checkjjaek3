@@ -11,7 +11,8 @@ class GroupsController < ApplicationController
   # GET /groups or /groups.json
   def index
     #@groups = Group.find(current_user.user_groups.where.not(state: 'pending').pluck(:group_id))
-    @groups = Group.where(id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id), group_state: 'active')
+    #@groups = Group.where(id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id), group_state: 'active')
+    @groups = Group.where(id: current_user.user_groups.where(state: 'active').pluck(:group_id), group_state: 'active')
 
     if current_user.has_role? :admin
       @pending_groups = Group.where(group_state: 'pending')
@@ -30,12 +31,14 @@ class GroupsController < ApplicationController
       .where(id: PostRecipientGroup.where(recipient_group_id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id)).pluck(:post_id))
       .where.not(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'pending').pluck(:group_id)).pluck(:post_id))
       .order(created_at: :desc)
+ #     .where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'active').pluck(:group_id)).pluck(:post_id))
+ #     두번째 줄 대신 이렇게 작성하는 건 어떤가?
   end
 
   # GET /groups/1 or /groups/1.json
   def show
     if @group.group_state == "pending"
-      redirect_to groups_url, alert: "동아리 #{@group.name}은 승인 대기 상태입니다."
+      redirect_to groups_url, alert: "#{@group.name} 동아리는 승인 대기 상태입니다."
     else
       #@posts = Post.find(@group.post_recipient_groups.pluck(:post_id))
       @posts = Post.where(id: @group.post_recipient_groups.pluck(:post_id))
@@ -43,10 +46,15 @@ class GroupsController < ApplicationController
 
       #@pending_users = User.includes(:user_groups).where("user_groups.state": "pending")
       #이렇게 하면 사용자가 다른 그룹에서 pending하고 있어도 몽땅 pending_users에 포함됨
-      @pending_users = User.find(@group.user_groups.where(state: "pending").pluck(:user_id))
-      @active_users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+      #@pending_users = User.find(@group.user_groups.where(state: "pending").pluck(:user_id))
       #구현할 수 있는 다양한 방법을 알아두는게 필요하긴 한데
       #뭐가 더 나은 방법인가?
+
+      if current_user.has_role? :group_manager, @group
+        @users = @group.users
+      else
+        @users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+      end
 
       @message = Message.new
       @message.posts.new
@@ -167,16 +175,35 @@ class GroupsController < ApplicationController
   end
 
   def approve_user
-    apply_user = User.find(params[:apply_user_id])
+    approve_user = User.find(params[:approve_user_id])
 
     if current_user.has_role? :group_manager, @group
-      usergroup = apply_user.user_groups.find_by_group_id(@group.id)
+      usergroup = approve_user.user_groups.find_by_group_id(@group.id)
 
-      if usergroup.state == "pending" && usergroup.user_id == apply_user.id && usergroup.group_id == @group.id
+      if usergroup.state == "pending" && usergroup.user_id == approve_user.id && usergroup.group_id == @group.id
         usergroup.state = "active"
         usergroup.save
-        apply_user.add_role :group_member, @group
-        redirect_to @group, notice: "#{apply_user.name}'s been approved."
+        approve_user.add_role :group_member, @group
+        redirect_to @group, notice: "#{approve_user.name}'s been approved."
+      else
+        redirect_to @group, alert: "user/group 오류 또는 pending 상태가 아님"
+      end
+    else
+      redirect_to @group, alert: "group_manager가 아님"
+    end
+  end
+
+  def resume_user
+    resume_user = User.find(params[:resume_user_id])
+
+    if current_user.has_role? :group_manager, @group
+      usergroup = resume_user.user_groups.find_by_group_id(@group.id)
+
+      if usergroup.state == "suspend" && usergroup.user_id == resume_user.id && usergroup.group_id == @group.id
+        usergroup.state = "active"
+        usergroup.save
+        resume_user.add_role :group_member, @group
+        redirect_to @group, notice: "#{resume_user.name}'s been resumed."
       else
         redirect_to @group, alert: "user/group 오류 또는 pending 상태가 아님"
       end
@@ -192,7 +219,7 @@ class GroupsController < ApplicationController
       usergroup = suspend_user.user_groups.find_by_group_id(@group.id)
 
       if usergroup.state == "active" && usergroup.user_id == suspend_user.id && usergroup.group_id == @group.id
-        usergroup.state = "pending"
+        usergroup.state = "suspend"
         usergroup.save
         suspend_user.remove_role :group_member, @group
         redirect_to @group, notice: "#{suspend_user.name}'s been suspended."
