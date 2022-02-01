@@ -10,42 +10,48 @@
         </ul>
 
         <% unless current_page?(groups_path) %>
+          <%# if current_page?(controller: 'groups') && current_page?(action: 'show') %>
+          <!-- 위에꺼 하고 완전히 동일한거 아냐? 왜 아래만 되는거지? -->
+          <% if params[:controller] == 'groups' && params[:action] == 'show' %>
+            <% if @group.present? and current_user.has_role? :group_member, @group %>
 
-          <ul class="d-none d-md-block navbar-nav mx-auto">
-            <li class="nav-item align-self-center">
-              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
-                책짹<i class="fas fa-dove ml-2"></i>
-              </button>
-            </li>
-            <li class="nav-item align-self-center">
-              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
-                글 남기기
-              </button>
-            </li>
-            <li class="nav-item align-self-center">
-              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
-                사진 올리기
-              </button>
-            </li>
-          </ul>
-          <ul class="d-block d-md-none navbar-nav mx-auto">
-            <li class="nav-item align-self-center">
-              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
-                <i class="fas fa-dove"></i>
-              </button>
-            </li>
-            <li class="nav-item align-self-center">
-              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
-                <i class="fas fa-pen"></i>
-              </button>
-            </li>
-            <li class="nav-item align-self-center">
-              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
-                <i class="fas fa-camera"></i>
-              </button>
-            </li>
-          </ul>
+              <ul class="d-none d-md-block navbar-nav mx-auto">
+                <li class="nav-item align-self-center">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                    책짹<i class="fas fa-dove ml-2"></i>
+                  </button>
+                </li>
+                <li class="nav-item align-self-center">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                    글 남기기
+                  </button>
+                </li>
+                <li class="nav-item align-self-center">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+                    사진 올리기
+                  </button>
+                </li>
+              </ul>
+              <ul class="d-block d-md-none navbar-nav mx-auto">
+                <li class="nav-item align-self-center">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                    <i class="fas fa-dove"></i>
+                  </button>
+                </li>
+                <li class="nav-item align-self-center">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                    <i class="fas fa-pen"></i>
+                  </button>
+                </li>
+                <li class="nav-item align-self-center">
+                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+                    <i class="fas fa-camera"></i>
+                  </button>
+                </li>
+              </ul>
 
+            <% end %>
+          <% end %>
         <% end %>
 
         <ul class="navbar-right d-none d-md-block navbar-nav mx-auto">

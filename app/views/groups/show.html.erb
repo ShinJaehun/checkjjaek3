@@ -9,26 +9,28 @@
     <div class="card modal-buttons mt-4">
       <div class="card-body">
 
-        <!-- Button trigger modal -->
-        <div class="d-none d-md-block">
-          <div class="row">
-            <div class="col-4">
-              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalBook">
-                책짹<i class="fas fa-dove ml-2"></i>
-              </button>
-            </div>
-            <div class="col-4">
-              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalMessage">
-               글 남기기
-              </button>
-            </div>
-            <div class="col-4">
-              <button type="button" class="btn btn-primary btn-block " data-toggle="modal" data-target="#modalPhoto">
-               사진 올리기
-              </button>
-            </div>
-          </div><!-- row -->
-        </div>
+        <% if current_user.has_role? :group_member, @group %>
+          <!-- Button trigger modal -->
+          <div class="d-none d-md-block">
+            <div class="row">
+              <div class="col-4">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                  책짹<i class="fas fa-dove ml-2"></i>
+                </button>
+              </div>
+              <div class="col-4">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                 글 남기기
+                </button>
+              </div>
+              <div class="col-4">
+                <button type="button" class="btn btn-primary btn-block " data-toggle="modal" data-target="#modalPhoto">
+                 사진 올리기
+                </button>
+              </div>
+            </div><!-- row -->
+          </div>
+        <% end %>
 
       </div><!-- card-body -->
     </div><!-- card modal-buttons -->
