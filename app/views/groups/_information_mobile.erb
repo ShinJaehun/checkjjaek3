@@ -1,4 +1,4 @@
-<div class="card my-4 text-center additional-information">
+<div class="card my-4 text-center">
   <div class="card-body">
     <div class="dt-info-list">
       <div class="media align-items-center">
@@ -8,9 +8,9 @@
             <%= image_tag(group_cover_image(@group), size: "200x200", style: "border-radius: 10%;") %>
           </div>
 
-          <h5 class="card-title mb-1"><%= @group.name %></h5>
+          <h5 class="card-title mb-2"><%= @group.name %></h5>
 
-          <div class="mb-2 fs-5">
+          <div class="mb-2 px-4 text-left small-font">
             <%= @group.description %>
           </div>
 
@@ -27,63 +27,74 @@
             <%= link_to "동아리 나가기",  leave_group_path(@group), class: 'btn btn-danger btn-block', method: 'delete', data: { confirm: 'Are you sure?' } %>
           <% end %>
 
+          <% if current_user.has_role? :group_manager, @group %>
+            <%= link_to "동아리 정보 수정",  edit_group_path(@group), class: 'btn btn-warning btn-block' %>
+            <%= link_to "동아리 삭제", group_path(@group), method: :delete, class: 'btn btn-danger btn-block', data: { confirm: '정말 그룹을 삭제하시겠습니까? 그룹 멤버가 단 한명이고, 그게 관리자인 당신이라면 삭제할 수 있습니다.' } %>
+          <% end %>
+
         </div><!-- media-body -->
       </div><!-- media -->
     </div><!-- dt-info-list -->
   </div><!-- card-body -->
 </div><!-- card -->
 
-<% if current_user.has_role? :group_manager, @group %>
-  <div class="card my-4 text-center additional-information">
-    <div class="card-body">
-      <h5 class="card-title">활동중인 회원</h5>
-      <div class="dt-info-list">
+<div class="card my-4 text-center additional-information">
+  <div class="card-body">
+    <h5 class="card-title">동아리 회원</h5>
+    <div class="dt-info-list">
 
-            <% @users.each do |u| %>
-              <div class="media align-items-center">
-                <div class="media-left">
-                  <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
-                </div><!-- media-left -->
-                <div class="media-body content">
-                  <div class="row">
-                    <div class="col-7">
-                      <div>
-                        <strong><%= link_to u.name, u%></strong>
-                        <span class="small-font">
-                          <% u.roles.each do |r| %>
-                            <% if r.resource_id == @group.id %>
-                              <% if r.name == "group_manager" %>
-                                <%= "관리자" %>
-                              <% end %>
-                            <% end %>
-                          <% end %>
-                        </span>
-                      </div>
-                      <div>
-                        <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
-                        <% unless lastone.nil? %>
-                          <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
-                        <% else %>
-                          <span class="small-font">아직 등록한 글이 없음</span>
-                        <% end %>
-                      </div>
-                    </div><!-- col-7 -->
-                    <div class="col-5 my-auto text-center">
-                      <% if current_user.has_role? :group_manager, @group and !u.has_role? :group_manager, @group %>
-                        <%= form_tag suspend_user_path(@group), method: "get" do %>
-                          <%= hidden_field_tag :suspend_user_id, u.id %>
-                          <button type="submit" class="btn btn-danger btn-sm">활동중지</button>
-                        <% end %>
-                      <% end %>
-                    </div><!-- col-5 -->
-                  </div><!-- row -->
-                </div><!-- media-body content -->
-              </div><!-- media -->
-            <% end %>
+      <% @users.each do |u| %>
+        <div class="media align-items-center">
+          <div class="media-left">
+            <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+          </div><!-- media-left -->
+          <div class="media-body content">
+            <div class="row">
+              <div class="col-7">
+                <div>
+                  <strong><%= link_to u.name, u%></strong>
+                  <span class="small-font">
+                    <% if u.has_role? :group_manager, @group %>
+                      <%= "관리자" %>
+                    <% end %>
+                  </span>
+                </div>
+                <div>
+                  <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
+                  <% unless lastone.nil? %>
+                    <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
+                  <% else %>
+                    <span class="small-font">아직 등록한 글이 없음</span>
+                  <% end %>
+                </div>
+              </div><!-- col-7 -->
+              <div class="col-5 my-auto text-center">
+                <% if current_user.has_role? :group_manager, @group and !u.has_role? :group_manager, @group %>
+                  <% if u.user_groups.where(state: 'active').pluck(:group_id).include?(@group.id) %>
+                    <%= form_tag suspend_user_path(@group), method: "get" do %>
+                      <%= hidden_field_tag :suspend_user_id, u.id %>
+                      <button type="submit" class="btn btn-danger btn-sm">활동중지</button>
+                    <% end %>
+                  <% end %>
+                  <% if u.user_groups.where(state: 'suspend').pluck(:group_id).include?(@group.id) %>
+                    <%= form_tag resume_user_path(@group), method: "get" do %>
+                      <%= hidden_field_tag :resume_user_id, u.id %>
+                      <button type="submit" class="btn btn-success btn-sm">활동재개</button>
+                    <% end %>
+                  <% end %>
+                  <% if u.user_groups.where(state: 'pending').pluck(:group_id).include?(@group.id) %>
+                    <%= form_tag approve_user_path(@group), method: "get" do %>
+                      <%= hidden_field_tag :approve_user_id, u.id %>
+                      <button type="submit" class="btn btn-primary btn-sm">요청승인</button>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div><!-- col-5 -->
+            </div><!-- row -->
+          </div><!-- media-body content -->
+        </div><!-- media -->
+      <% end %>
 
-      </div><!-- dt-info-list -->
-    </div><!-- card-body -->
-  </div><!-- card -->
-
-<% end %>
-
+    </div><!-- dt-info-list -->
+  </div><!-- card-body -->
+</div><!-- card -->
