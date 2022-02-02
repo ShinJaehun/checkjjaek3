@@ -74,17 +74,46 @@
               </div>
 
               <div class="modal-body">
-                <div class="book-image">
-                  <!--book image-->
-                  <%= image_tag extract_thumbnail250_url(item['thumbnail']), class: "border mx-3", width: "250px" %>
-                </div>
+                <div class="book-info">
+                  <div class="book-image text-center">
+                    <!--book image-->
+                    <%= image_tag extract_thumbnail250_url(item['thumbnail']), class: "border mx-3", width: "250px" %>
+                  </div>
 
-                <%= item['title'] %>
-                <%= item['authors'] %>
-                <%= item['translators'] %>
-                <%= item['publisher'] %>
-                <%= item['datetime'] %>
-                <%= item['contents'] %>
+                  <div class="book-detail">
+                    <h6 class="mb-2">
+                      <%= item['title'] %>
+                    </h6>
+
+                    <div class="my-3 ml-2">
+                      <% if item['authors'].present? %>
+                        <div>
+                          <strong class="text-muted">저자</strong>&nbsp;&nbsp;<% item['authors'].each do |a| %><%= a %> <% end %>
+                        </div>
+                      <% end %>
+
+                      <% if item['translators'].present? %>
+                        <div>
+                          <strong class="text-muted">역자</strong>&nbsp;&nbsp;<% item['translators'].each do |t| %><%= t %> <% end %>
+                        </div>
+                      <% end %>
+
+                      <% if item['publisher'].present? %>
+                        <div>
+                          <strong class="text-muted">출판사</strong>&nbsp;&nbsp;<%= item['publisher'] %>
+                        </div>
+                      <% end %>
+
+                      <% if item['datetime'].present? %>
+                        <div>
+                          <strong class="text-muted">출판일</strong>&nbsp;&nbsp;<%= item['datetime'][0..9] %>
+                        </div>
+                      <% end %>
+
+                      <%#= item['contents'] %>
+                    </div>
+                  </div>
+                </div>
 
                 <%= form_for(@book) do |form| %>
 
@@ -100,10 +129,12 @@
                   <%= form.hidden_field :publisher, value: item['publisher'].html_safe %>
                   <%= form.hidden_field :thumbnail, value: item['thumbnail'].html_safe %>
 
-                  <%= form.fields_for :posts do |posts_field| %>
-                    <%= posts_field.hidden_field :post_recipient_type, value: params[:receiverrr_type].html_safe %>
-                    <%= posts_field.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: '이 책을 읽고 무엇을 느꼈나요?' %>
-                  <% end %>
+                  <div class="d-flex justify-content-center">
+                    <%= form.fields_for :posts do |posts_field| %>
+                      <%= posts_field.hidden_field :post_recipient_type, value: params[:receiverrr_type].html_safe %>
+                      <%= posts_field.text_area :content, id: "textarea", class: 'form-control counted', style: 'margin-bottom:10px;', maxlength: '200', require: true, placeholder: '이 책을 읽고 무엇을 느꼈나요?' %>
+                    <% end %>
+                  </div>
 
                   <%= form.submit '책짹', class: 'btn btn-info' %>
 

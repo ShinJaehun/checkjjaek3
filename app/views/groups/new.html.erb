@@ -1,5 +1,8 @@
-<h1>New Group</h1>
-
-<%= render 'form', group: @group %>
-
-<%= link_to 'Back', groups_path %>
+<div class="new-group container mt-5 mb-5 d-flex justify-content-center">
+  <div class="card px-1 py-4">
+    <div class="card-body">
+      <h3 class="card-title mb-3">새로운 동아리</h3>
+      <%= render 'form', group: @group %>
+    </div>
+  </div>
+</div>
