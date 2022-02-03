@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :set_user
+    before_action :set_user, except: %i[ admin ]
 
     load_and_authorize_resource
 
@@ -27,6 +27,13 @@ class UsersController < ApplicationController
 
       @photo = Photo.new
       @photo.posts.new
+    end
+
+    def admin
+
+      @pending_groups = Group.where(group_state: 'pending')
+      @groups = Group.where(id: UserGroup.where(state: 'active').pluck(:group_id), group_state: 'active')
+
     end
 
     def follow

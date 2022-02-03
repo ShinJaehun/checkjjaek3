@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   before_action :set_group, except: %i[ index new create ]
   before_action :authenticate_user!
   #devise 로그인 사용자만 메서드 사용 가능
-  load_and_authorize_resource except: %i[ new create join_group apply_group cancel_apply_group approve_group ]
+  load_and_authorize_resource except: %i[ new create join_group apply_group cancel_apply_group approve_group suspend_group ]
   #cancancan
   #new create join leave를 제외하고 허가된 사용자만 메서드를 사용할 수 있음
   #근데 왜 index는 except하지 않아도 모든 그룹을 다 볼 수 있는거지?
@@ -27,12 +27,17 @@ class GroupsController < ApplicationController
 
     #.where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.ids).pluck(:post_id))
     # pending 그룹은 제외해야하기 때문에...
+
+#    @posts = Post
+#      .where(id: PostRecipientGroup.where(recipient_group_id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id)).pluck(:post_id))
+#      .where.not(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'pending').pluck(:group_id)).pluck(:post_id))
+#      .order(created_at: :desc)
+
+    # 두번째 줄 대신 이렇게 작성하는 건 어떤가?
     @posts = Post
-      .where(id: PostRecipientGroup.where(recipient_group_id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id)).pluck(:post_id))
-      .where.not(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'pending').pluck(:group_id)).pluck(:post_id))
+      .where(id: PostRecipientGroup.where(recipient_group_id: current_user.user_groups.where(state: 'active').pluck(:group_id)).pluck(:post_id))
+      .where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'active').pluck(:group_id)).pluck(:post_id))
       .order(created_at: :desc)
- #     .where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.where(group_state: 'active').pluck(:group_id)).pluck(:post_id))
- #     두번째 줄 대신 이렇게 작성하는 건 어떤가?
   end
 
   # GET /groups/1 or /groups/1.json
@@ -277,6 +282,24 @@ class GroupsController < ApplicationController
     else
       redirect_to groups_path, alert: "admin이 아님"
     end
+  end
+
+  def suspend_group
+    if current_user.has_role? :admin
+      if @group.group_state == "active"
+        @group.group_state = "suspend"
+        @group.save
+        redirect_to groups_path, notice: "#{@group.name}'s been approved."
+      else
+        redirect_to groups_path, alert: "group 오류 또는 active 상태가 아님"
+      end
+    else
+      redirect_to groups_path, alert: "admin이 아님"
+    end
+  end
+
+  def group_manager
+
   end
 
   private

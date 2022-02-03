@@ -44,4 +44,8 @@ Rails.application.routes.draw do
   delete 'cancel_apply_group/:id', to: 'groups#cancel_apply_group', as: :cancel_apply_group
 
   get 'approve_group/:id', to: 'groups#approve_group', as: :approve_group
+
+  get 'group_manager/:id', to: 'groups#group_manager', as: :group_manager
+  get 'admin', to: 'users#admin', as: :admin
+
 end

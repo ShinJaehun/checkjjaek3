@@ -1,0 +1,85 @@
+<div class="row py-2">
+  <div class="d-none d-md-block col-md-4 order-md-2 md-4 text-center">
+
+    <div class="card my-4 text-center additional-information">
+      <div class="card-body">
+        <h5 class="card-title">관리자 페이지</h5>
+        <div class="dt-info-list">
+          <div class="media align-items-center">
+            <div class="media-body content">
+              <%= link_to '동아리 만들기', new_group_path, class: "btn btn-primary btn-block" %>
+            </div><!-- media-body content -->
+          </div><!-- media -->
+        </div><!-- dt-info-list -->
+      </div><!-- card-body -->
+    </div><!-- card -->
+
+    <% if @pending_groups.present? %>
+      <div class="card my-4 text-center additional-information">
+        <div class="card-body">
+          <h5 class="card-title">동아리 승인 요청</h5>
+          <div class="dt-info-list">
+            <% @pending_groups.each do |g| %>
+              <div class="media align-items-center">
+                <div class="media-left">
+                  <%= link_to image_tag(group_thumbnail(g), size: "50x50", style: "border-radius: 10%;", title: g.name), g %>
+                </div>
+                <div class="media-body content">
+                  <div class="row">
+                    <div class="col-7">
+                      <div>
+                        <strong><%= link_to g.name, g%></strong>
+                      </div>
+                      <div>
+                        <span class="small-font"><%= g.description %></span>
+                      </div>
+                    </div>
+                    <% if current_user.has_role? :admin %>
+                      <div class="col-5 my-auto text-center">
+                        <%= link_to '활동승인', approve_group_path(g), class: "btn btn-success btn-sm" %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div><!-- media-body content -->
+              </div><!-- media -->
+            <% end %>
+          </div><!-- dt-info-list -->
+        </div><!-- card-body -->
+      </div><!-- card -->
+    <% end %>
+
+    <div class="card my-4 text-center additional-information">
+      <div class="card-body">
+        <h5 class="card-title">전체 동아리</h5>
+        <div class="dt-info-list">
+          <% @groups.each do |g| %>
+            <div class="media align-items-center">
+              <div class="media-left">
+                <%= link_to image_tag(group_thumbnail(g), size: "50x50", style: "border-radius: 10%;", title: g.name), g %>
+              </div>
+              <div class="media-body content">
+                <div>
+                  <strong><%= link_to g.name, g%></strong>
+                </div>
+                <div>
+                  <span class="small-font">활동중: <%= g.user_groups.where.not(state: 'pending').count %>명</span>
+                </div>
+              </div><!-- media-body content -->
+            </div><!-- media -->
+          <% end %>
+        </div><!-- dt-info-list -->
+      </div><!-- card-body -->
+    </div><!-- card -->
+  </div><!-- col-md-4 order-md-2 md-4 text-center -->
+
+  <div class="col-md-8 order-md-1">
+
+    <div class="card modal-buttons mt-4">
+      <div class="card-body">
+
+
+      </div><!-- card-body -->
+    </div><!-- card modal-buttons -->
+
+  </div><!-- col-md-8 order-md-1 -->
+</div><!-- row py-2 -->
