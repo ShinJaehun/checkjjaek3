@@ -1,201 +1,162 @@
-<section class="group_admin padding-lg">
-  <div class="container">
-    <div class="main-body">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 gutters-sm">
+<div class="row" py-2>
+  <div class="d-none d-md-block col-md-4 order-md-2 md-4 text-center">
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/FFB6C1/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
+    <div class="card my-4 text-center">
+      <div class="card-body">
+        <div class="my-2">
+          <%= link_to image_tag(group_cover_image(@group), size: "200x200", style: "border-radius: 10%;"), @group %>
         </div>
-
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/87CEFA/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
+        <h5 class="card-title mb-2"><%= link_to @group.name, @group %></h5>
+        <div class="mb-2 px-4 text-left small-font">
+          <%= @group.description %>
         </div>
+      </div><!-- card-body -->
+      <% if current_user.has_role? :group_manager, @group %>
+        <div class="list-group list-group-flush">
+          <li class="list-group-item">
+            <%= link_to "동아리 정보 수정", edit_group_path(@group), class: 'btn btn-info btn-block' %>
+            <%= link_to "동아리 삭제", group_path(@group), method: :delete, class: 'btn btn-danger btn-block', data: { confirm: '정말 그룹을 삭제하시겠습니까? 그룹 멤버가 단 한명이고, 그게 관리자인 당신이라면 삭제할 수 있습니다.' } %>
+          </li>
+        </div><!-- card-body -->
+      <% end %>
+    </div><!-- card -->
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/20B2AA/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar2.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+    <%# @users.each do |u| %>
+      <%# if u.user_groups.where(state: 'active').pluck(:group_id).include?(@group.id) %>
+      <!-- users를 순회하면서 active/suspend/pending user를 골라내기 -->
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/FFA07A/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar3.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+    <% if @active_users.present? %>
+      <div class="card my-4 text-center additional-information">
+        <div class="card-body">
+          <h5 class="card-title">활동중인 회원</h5>
+          <% @active_users.each do |u| %>
+            <div class="media align-items-center">
+              <div class="media-left">
+                <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+              </div><!-- media-left -->
+              <div class="media-body content">
+                <div class="row">
+                  <div class="col-7">
+                    <div>
+                      <strong><%= link_to u.name, u%></strong>
+                      <% if u.has_role? :group_manager, @group %>
+                        <span class="small-font">
+                          <%= "관리자" %>
+                        </span>
+                      <% end %>
+                    </div>
+                    <div>
+                      <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
+                      <% unless lastone.nil? %>
+                        <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
+                      <% else %>
+                        <span class="small-font">아직 등록한 글이 없음</span>
+                      <% end %>
+                    </div>
+                  </div><!-- col-7 -->
+                  <div class="col-5 my-auto text-center">
+                    <% if !u.has_role? :group_manager, @group %>
+                      <%= form_tag suspend_user_path(@group), method: "get" do %>
+                        <%= hidden_field_tag :suspend_user_id, u.id %>
+                        <button type="submit" class="btn btn-danger btn-sm">활동중지</button>
+                      <% end %>
+                    <% end %>
+                  </div><!-- col-5 -->
+                </div><!-- row -->
+              </div><!-- media-body -->
+            </div><!-- media -->
+          <% end %>
+        </div><!-- card-body -->
+      </div><!-- card -->
+    <% end %>
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/7B68EE/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar4.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+    <% if @suspend_users.present? %>
+      <div class="card my-4 text-center additional-information">
+        <div class="card-body">
+          <h5 class="card-title">활동정지 회원</h5>
+          <% @suspend_users.each do |u| %>
+            <div class="media align-items-center">
+              <div class="media-left">
+                <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+              </div><!-- media-left -->
+              <div class="media-body content">
+                <div class="row">
+                  <div class="col-7">
+                    <div>
+                      <strong><%= link_to u.name, u%></strong>
+                      <% if u.has_role? :group_manager, @group %>
+                        <span class="small-font">
+                          <%= "관리자" %>
+                        </span>
+                      <% end %>
+                    </div>
+                    <div>
+                      <% lastone = (u.posts.where(post_recipient_type: "Group").pluck(:id) & PostRecipientGroup.where(recipient_group_id: @group.id).pluck(:post_id)).last %>
+                      <% unless lastone.nil? %>
+                        <span class="small-font">마지막 활동: <%= time_ago_in_words(Post.find(lastone).created_at) %> 전</span>
+                      <% else %>
+                        <span class="small-font">아직 등록한 글이 없음</span>
+                      <% end %>
+                    </div>
+                  </div><!-- col-7 -->
+                  <div class="col-5 my-auto text-center">
+                    <% if !u.has_role? :group_manager, @group %>
+                      <%= form_tag resume_user_path(@group), method: "get" do %>
+                        <%= hidden_field_tag :resume_user_id, u.id %>
+                        <button type="submit" class="btn btn-success btn-sm">활동재개</button>
+                      <% end %>
+                    <% end %>
+                  </div><!-- col-5 -->
+                </div><!-- row -->
+              </div><!-- media-body -->
+            </div><!-- media -->
+          <% end %>
+        </div><!-- card-body -->
+      </div><!-- card -->
+    <% end %>
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/BA55D3/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar5.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+    <% if @pending_users.present? %>
+      <div class="card my-4 text-center additional-information">
+        <div class="card-body">
+          <h5 class="card-title">동아리 가입 요청</h5>
+          <% @pending_users.each do |u| %>
+            <div class="media align-items-center">
+              <div class="media-left">
+                <%= link_to image_tag(user_avatar(u, 30), class: "rounded-circle", title: u.name), u %>
+              </div><!-- media-left -->
+              <div class="media-body content">
+                <div class="row">
+                  <div class="col-7">
+                    <div>
+                      <strong><%= link_to u.name, u%></strong>
+                    </div>
+                  </div><!-- col-7 -->
+                  <div class="col-5 my-auto text-center">
+                    <% if !u.has_role? :group_manager, @group %>
+                      <%= form_tag approve_user_path(@group), method: "get" do %>
+                        <%= hidden_field_tag :approve_user_id, u.id %>
+                        <button type="submit" class="btn btn-primary btn-sm">요청승인</button>
+                      <% end %>
+                    <% end %>
+                  </div><!-- col-5 -->
+                </div><!-- row -->
+              </div><!-- media-body -->
+            </div><!-- media -->
+          <% end %>
+        </div><!-- card-body -->
+      </div><!-- card -->
+    <% end %>
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/FF4500/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+  </div><!-- d-none d-md-block col-md-4 order-md-2 md-4 text-center -->
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/191970/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar2.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+  <div class="col-md-8 order-md-1">
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/DDA0DD/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar3.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+    <div class="card modal-buttons mt-4">
+      <div class="card-body">
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/DB7093/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar4.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/663399/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar5.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
+      </div><!-- card-body -->
+    </div><!-- card modal-buttons -->
 
-        <div class="col mb-3">
-          <div class="card">
-            <img src="https://via.placeholder.com/340x120/FF8C00/000000" alt="Cover" class="card-img-top">
-            <div class="card-body text-center">
-              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" style="width:100px;margin-top:-65px" alt="User" class="img-fluid img-thumbnail rounded-circle border-0 mb-3">
-              <h5 class="card-title">John Doe</h5>
-              <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-light btn-sm bg-white has-icon btn-block" type="button"><i class="material-icons">add</i>Follow</button>
-              <button class="btn btn-light btn-sm bg-white has-icon ml-2" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- row -->
-    </div><!-- main-body -->
-  </div><!-- container -->
-</section>
+  </div><!-- col-md-8 order-md-1 -->
+</div><!-- row py-2 -->

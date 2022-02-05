@@ -318,12 +318,12 @@ footer {
     font-size: 1rem;
     padding-bottom: 10px;
   }
-
+/*
   .dt-info-list{
     font-size: 14px;
     text-align: left;
   }
-
+*/
   .mb-info-list{
     font-size: 14px;
     text-align: left;
@@ -334,6 +334,10 @@ footer {
     margin-bottom: .5rem;
     .media-left {
       margin-right: .5rem;
+    }
+    .media-body {
+      font-size: 14px;
+      text-align: left;
     }
   }
 

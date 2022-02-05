@@ -299,7 +299,13 @@ class GroupsController < ApplicationController
   end
 
   def group_manager
-
+    unless current_user.has_role? :group_manager, @group
+      redirect_to groups_url, alert: "#{@group.name} 동아리의 관리자가 아닙니다."
+    else
+      @active_users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+      @suspend_users = User.find(@group.user_groups.where(state: "suspend").pluck(:user_id))
+      @pending_users = User.find(@group.user_groups.where(state: "pending").pluck(:user_id))
+    end
   end
 
   private
