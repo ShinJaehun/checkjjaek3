@@ -2,87 +2,125 @@
   <div class="container">
     <%= link_to image_tag('logo/logo_mini.png'), root_path, class: "navbar-brand" %>
 
-      <!-- Links -->
-      <% if user_signed_in? %>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item align-self-center"><%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", style: "background-color: white;"), current_user %></li>
-          <li class="nav-item align-self-center"><%= link_to '로그아웃', destroy_user_session_path, method: :delete, class: "nav-link" %></li>
-        </ul>
+    <!-- Links -->
+    <% if user_signed_in? %>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item align-self-center"><%= link_to image_tag(user_avatar(current_user, 30), class: "rounded-circle", style: "background-color: white;"), current_user %></li>
+        <li class="nav-item align-self-center"><%= link_to '로그아웃', destroy_user_session_path, method: :delete, class: "nav-link" %></li>
+      </ul>
 
-        <% unless current_page?(groups_path) %>
-          <%# if current_page?(controller: 'groups') && current_page?(action: 'show') %>
-          <!-- 위에꺼 하고 완전히 동일한거 아냐? 왜 아래만 되는거지? -->
-          <% if params[:controller] == 'groups' && params[:action] == 'show' %>
-            <% if @group.present? and current_user.has_role? :group_member, @group and @group.group_state == 'active' %>
+      <%# unless current_page?(groups_path) %>
+        <%# if current_page?(controller: 'groups') && current_page?(action: 'show') %>
+        <!-- 위에꺼 하고 완전히 동일한거 아냐? 왜 아래만 되는거지? -->
+      <% if params[:controller] == 'groups' && params[:action] == 'show' %>
+        <% if @group.present? and current_user.has_role? :group_member, @group and @group.group_state == 'active' %>
 
-              <ul class="d-none d-md-block navbar-nav mx-auto">
-                <li class="nav-item align-self-center">
-                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
-                    책짹<i class="fas fa-dove ml-2"></i>
-                  </button>
-                </li>
-                <li class="nav-item align-self-center">
-                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
-                    글 남기기
-                  </button>
-                </li>
-                <li class="nav-item align-self-center">
-                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
-                    사진 올리기
-                  </button>
-                </li>
-              </ul>
-              <ul class="d-block d-md-none navbar-nav mx-auto">
-                <li class="nav-item align-self-center">
-                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
-                    <i class="fas fa-dove"></i>
-                  </button>
-                </li>
-                <li class="nav-item align-self-center">
-                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
-                    <i class="fas fa-pen"></i>
-                  </button>
-                </li>
-                <li class="nav-item align-self-center">
-                  <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
-                    <i class="fas fa-camera"></i>
-                  </button>
-                </li>
-              </ul>
+          <ul class="d-none d-md-block navbar-nav mx-auto">
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                책짹<i class="fas fa-dove ml-2"></i>
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                글 남기기
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+                사진 올리기
+              </button>
+            </li>
+          </ul>
+          <ul class="d-block d-md-none navbar-nav mx-auto">
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+                <i class="fas fa-dove"></i>
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+                <i class="fas fa-pen"></i>
+              </button>
+            </li>
+            <li class="nav-item align-self-center">
+              <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+                <i class="fas fa-camera"></i>
+              </button>
+            </li>
+          </ul>
 
-            <% end %>
-          <% end %>
         <% end %>
 
-        <ul class="navbar-right d-none d-md-block navbar-nav mx-auto">
+      <% elsif params[:controller] == 'posts' && params[:action] == 'index' or params[:controller] == 'users' && params[:action] == 'show' %>
+
+        <ul class="d-none d-md-block navbar-nav mx-auto">
           <li class="nav-item align-self-center">
-            <%= link_to "동아리 <i class='fas fa-users'></i>".html_safe, groups_path, class: 'btn btn-outline-info' %>
+            <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+              책짹<i class="fas fa-dove ml-2"></i>
+            </button>
           </li>
           <li class="nav-item align-self-center">
-            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalSearch">
-              검색 <i class="fas fa-search"></i>
+            <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+              글 남기기
+            </button>
+          </li>
+          <li class="nav-item align-self-center">
+            <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+              사진 올리기
+            </button>
+          </li>
+        </ul>
+        <ul class="d-block d-md-none navbar-nav mx-auto">
+          <li class="nav-item align-self-center">
+            <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalBook">
+              <i class="fas fa-dove"></i>
+            </button>
+          </li>
+          <li class="nav-item align-self-center">
+            <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalMessage">
+              <i class="fas fa-pen"></i>
+            </button>
+          </li>
+          <li class="nav-item align-self-center">
+            <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modalPhoto">
+              <i class="fas fa-camera"></i>
             </button>
           </li>
         </ul>
 
-        <ul class="navbar-right d-block d-md-none navbar-nav mx-auto">
-          <li class="nav-item align-self-center">
-            <%= link_to "<i class='fas fa-users'></i>".html_safe, groups_path, class: 'btn btn-outline-info' %>
-          </li>
-          <li class="nav-item align-self-center">
-            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalSearch">
-              <i class="fas fa-search"></i>
-            </button>
-          </li>
-        </ul>
-
-      <% else %>
-
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item"><%= link_to '로그인', new_user_session_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to '회원가입', new_user_registration_path, class: "nav-link" %></li>
-        </ul>
       <% end %>
+
+      <ul class="navbar-right d-none d-md-block navbar-nav mx-auto">
+        <li class="nav-item align-self-center">
+          <%= link_to "동아리 <i class='fas fa-users'></i>".html_safe, groups_path, class: 'btn btn-outline-info' %>
+        </li>
+        <li class="nav-item align-self-center">
+          <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalSearch">
+            검색 <i class="fas fa-search"></i>
+          </button>
+        </li>
+      </ul>
+
+      <ul class="navbar-right d-block d-md-none navbar-nav mx-auto">
+        <li class="nav-item align-self-center">
+          <%= link_to "<i class='fas fa-users'></i>".html_safe, groups_path, class: 'btn btn-outline-info' %>
+        </li>
+        <li class="nav-item align-self-center">
+          <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalSearch">
+            <i class="fas fa-search"></i>
+          </button>
+        </li>
+      </ul>
+
+    <% else %>
+      <!-- 아마 이게 표시가 안 될꺼야... -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><%= link_to '로그인', new_user_session_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to '회원가입', new_user_registration_path, class: "nav-link" %></li>
+      </ul>
+
+    <% end %>
   </div>
 </nav>
 
@@ -90,7 +128,6 @@
 <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-
       <%= form_tag search_path, method: :get, class: "my-2 my-lg-0" do %>
         <div class="modal-body">
           <%= text_field_tag :keyword, params[:keyword], class: "form-control mr-sm-2", placeholder: "검색어를 입력하세요." %>
