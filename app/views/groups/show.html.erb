@@ -9,7 +9,7 @@
     <div class="card modal-buttons mt-4">
       <div class="card-body">
 
-        <% if current_user.has_role? :group_member, @group %>
+        <% if current_user.has_role? :group_member, @group and @group.group_state == 'active' %>
           <!-- Button trigger modal -->
           <div class="d-none d-md-block">
             <div class="row">

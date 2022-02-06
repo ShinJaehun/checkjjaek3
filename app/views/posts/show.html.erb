@@ -27,12 +27,18 @@
 
   <div class="col-md-8 order-md-1">
     <div class="post-list card my-4">
-      <% if @post.postable_type == "Book" %>
+      <% if @post.postable_type == "Book" and @post.post_recipient_type == "User" %>
         <%= render 'posts/books/item', post: @post %>
-      <% elsif @post.postable_type == "Message" %>
+      <% elsif @post.postable_type == "Message" and @post.post_recipient_type == "User" %>
         <%= render 'posts/messages/item', post: @post %>
-      <% elsif @post.postable_type == "Photo" %>
+      <% elsif @post.postable_type == "Photo" and @post.post_recipient_type == "User" %>
         <%= render 'posts/photos/item', post: @post %>
+      <% elsif @post.postable_type == "Book" and @post.post_recipient_type == "Group" %>
+        <%= render 'posts/books/item_group', post: @post %>
+      <% elsif @post.postable_type == "Message" and @post.post_recipient_type == "Group" %>
+        <%= render 'posts/messages/item_group', post: @post %>
+      <% elsif @post.postable_type == "Photo" and @post.post_recipient_type == "Group" %>
+        <%= render 'posts/photos/item_group', post: @post %>
       <% else %>
       <% end %>
     </div>

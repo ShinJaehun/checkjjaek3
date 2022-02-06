@@ -10,7 +10,19 @@
   </div><!-- card-body -->
   <div class="list-group list-group-flush">
     <li class="list-group-item">
-       동아리 회원: 10명
+      <div>
+        동아리 상태:
+          <% if @group.group_state == 'active' %>
+            활동중
+          <% elsif @group.group_state == 'suspend' %>
+            활동정지
+          <% elsif @group.group_state == 'pending' %>
+            승인대기
+          <% end %>
+      </div>
+      <div>
+        동아리 회원: <%= @group.user_groups.where(state: 'active').count %>명
+      </div>
     </li>
     <li class="list-group-item">
       <% if !current_user.groups.include?(@group) %>
@@ -61,28 +73,7 @@
                   <% end %>
                 </div>
               </div><!-- col-7 -->
-              <div class="col-5 my-auto text-center">
-                <% if current_user.has_role? :group_manager, @group and !u.has_role? :group_manager, @group %>
-                  <% if u.user_groups.where(state: 'active').pluck(:group_id).include?(@group.id) %>
-                    <%= form_tag suspend_user_path(@group), method: "get" do %>
-                      <%= hidden_field_tag :suspend_user_id, u.id %>
-                      <button type="submit" class="btn btn-danger btn-sm">활동중지</button>
-                    <% end %>
-                  <% end %>
-                  <% if u.user_groups.where(state: 'suspend').pluck(:group_id).include?(@group.id) %>
-                    <%= form_tag resume_user_path(@group), method: "get" do %>
-                      <%= hidden_field_tag :resume_user_id, u.id %>
-                      <button type="submit" class="btn btn-success btn-sm">활동재개</button>
-                    <% end %>
-                  <% end %>
-                  <% if u.user_groups.where(state: 'pending').pluck(:group_id).include?(@group.id) %>
-                    <%= form_tag approve_user_path(@group), method: "get" do %>
-                      <%= hidden_field_tag :approve_user_id, u.id %>
-                      <button type="submit" class="btn btn-primary btn-sm">요청승인</button>
-                    <% end %>
-                  <% end %>
-                <% end %>
-              </div><!-- col-5 -->
+
             </div><!-- row -->
           </div><!-- media-body content -->
         </div><!-- media -->

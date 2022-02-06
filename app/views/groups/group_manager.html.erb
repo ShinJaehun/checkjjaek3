@@ -135,7 +135,7 @@
                     <% if !u.has_role? :group_manager, @group %>
                       <%= form_tag approve_user_path(@group), method: "get" do %>
                         <%= hidden_field_tag :approve_user_id, u.id %>
-                        <button type="submit" class="btn btn-primary btn-sm">요청승인</button>
+                        <button type="submit" class="btn btn-primary btn-sm">승인</button>
                       <% end %>
                     <% end %>
                   </div><!-- col-5 -->

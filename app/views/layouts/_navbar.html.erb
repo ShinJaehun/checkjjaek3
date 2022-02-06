@@ -13,7 +13,7 @@
           <%# if current_page?(controller: 'groups') && current_page?(action: 'show') %>
           <!-- 위에꺼 하고 완전히 동일한거 아냐? 왜 아래만 되는거지? -->
           <% if params[:controller] == 'groups' && params[:action] == 'show' %>
-            <% if @group.present? and current_user.has_role? :group_member, @group %>
+            <% if @group.present? and current_user.has_role? :group_member, @group and @group.group_state == 'active' %>
 
               <ul class="d-none d-md-block navbar-nav mx-auto">
                 <li class="nav-item align-self-center">

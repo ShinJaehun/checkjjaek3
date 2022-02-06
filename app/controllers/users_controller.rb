@@ -30,9 +30,9 @@ class UsersController < ApplicationController
     end
 
     def admin
-
+      @active_groups = Group.where(group_state: 'active')
+      @suspend_groups = Group.where(group_state: 'suspend')
       @pending_groups = Group.where(group_state: 'pending')
-      @groups = Group.where(id: UserGroup.where(state: 'active').pluck(:group_id), group_state: 'active')
 
     end
 

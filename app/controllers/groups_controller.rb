@@ -12,17 +12,21 @@ class GroupsController < ApplicationController
   def index
     #@groups = Group.find(current_user.user_groups.where.not(state: 'pending').pluck(:group_id))
     #@groups = Group.where(id: current_user.user_groups.where.not(state: 'pending').pluck(:group_id), group_state: 'active')
-    @groups = Group.where(id: current_user.user_groups.where(state: 'active').pluck(:group_id), group_state: 'active')
+    #@groups = Group.where(id: current_user.user_groups.where(state: 'active').pluck(:group_id), group_state: 'active')
 
-    if current_user.has_role? :admin
-      @pending_groups = Group.where(group_state: 'pending')
-#    puts '#########################################################'
-#    puts @pending_groups
-#    puts '#########################################################'
-    else
-      @pending_groups = Group.where(id: current_user.user_groups.pluck(:group_id), group_state: 'pending')
-    end
+    # admin 페이지에서 관리하기로...
+#    if current_user.has_role? :admin
+#      @pending_groups = Group.where(group_state: 'pending')
+##    puts '#########################################################'
+##    puts @pending_groups
+##    puts '#########################################################'
+#    else
+#      @pending_groups = Group.where(id: current_user.user_groups.pluck(:group_id), group_state: 'pending')
+#    end
 
+    @active_groups = Group.where(id: current_user.user_groups.pluck(:group_id), group_state: 'active')
+    @suspend_groups = Group.where(id: current_user.user_groups.pluck(:group_id), group_state: 'suspend')
+    @pending_groups = Group.where(id: current_user.user_groups.pluck(:group_id), group_state: 'pending')
     @suggested_groups = Group.where(group_state: 'active').order(created_at: :desc).first(10)
 
     #.where(id: PostRecipientGroup.where(recipient_group_id: current_user.groups.ids).pluck(:post_id))
@@ -55,11 +59,13 @@ class GroupsController < ApplicationController
       #구현할 수 있는 다양한 방법을 알아두는게 필요하긴 한데
       #뭐가 더 나은 방법인가?
 
-      if current_user.has_role? :group_manager, @group
-        @users = @group.users
-      else
-        @users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
-      end
+      # 사용자 관리는 group_manager 페이지에서 처리하기로...
+      @users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+#      if current_user.has_role? :group_manager, @group
+#        @users = @group.users
+#      else
+#        @users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))
+#      end
 
       @message = Message.new
       @message.posts.new
@@ -275,12 +281,12 @@ class GroupsController < ApplicationController
       if @group.group_state == "pending"
         @group.group_state = "active"
         @group.save
-        redirect_to groups_path, notice: "#{@group.name}'s been approved."
+        redirect_to admin_path, notice: "#{@group.name}'s been approved."
       else
-        redirect_to groups_path, alert: "group 오류 또는 pending 상태가 아님"
+        redirect_to admin_path, alert: "group 오류 또는 pending 상태가 아님"
       end
     else
-      redirect_to groups_path, alert: "admin이 아님"
+      redirect_to admin_path, alert: "admin이 아님"
     end
   end
 
@@ -289,12 +295,26 @@ class GroupsController < ApplicationController
       if @group.group_state == "active"
         @group.group_state = "suspend"
         @group.save
-        redirect_to groups_path, notice: "#{@group.name}'s been approved."
+        redirect_to admin_path, notice: "#{@group.name}'s been suspended."
       else
-        redirect_to groups_path, alert: "group 오류 또는 active 상태가 아님"
+        redirect_to admin_path, alert: "group 오류 또는 active 상태가 아님"
       end
     else
-      redirect_to groups_path, alert: "admin이 아님"
+      redirect_to admin_path, alert: "admin이 아님"
+    end
+  end
+
+  def resume_group
+    if current_user.has_role? :admin
+      if @group.group_state == "suspend"
+        @group.group_state = "active"
+        @group.save
+        redirect_to admin_path, notice: "#{@group.name}'s been activated."
+      else
+        redirect_to admin_path, alert: "group 오류 또는 suspend 상태가 아님"
+      end
+    else
+      redirect_to admin_path, alert: "admin이 아님"
     end
   end
 
