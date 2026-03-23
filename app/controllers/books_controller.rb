@@ -28,64 +28,88 @@ class BooksController < ApplicationController
 
         end
 
-        # url = "https://dapi.kakao.com/v2/search/book?query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s 
-        # url = "https://dapi.kakao.com/v2/search/book?target=title&query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s 
-        url = "https://dapi.kakao.com/v3/search/book?target=title&query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s
+        begin
+          # url = "https://dapi.kakao.com/v2/search/book?query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s
+          # url = "https://dapi.kakao.com/v2/search/book?target=title&query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s
+          # url = "https://dapi.kakao.com/v3/search/book?target=title&query=" + @keyword_book + "&size=" + @size.to_s + "&page=" + @current_page.to_s
 
-        uri = URI.encode(url)
-        res = RestClient.get(uri, headers={
-          'Authorization' => Rails.application.credentials.kakao[:authorization_key]})
-        unitokor = eval(res)
-        json_g = JSON.generate(unitokor)
-        hash = JSON.parse(json_g)
+          # uri = URI.encode(url)
+          # res = RestClient.get(uri, headers={
+          # 'Authorization' => Rails.application.credentials.kakao[:authorization_key]})
+          # unitokor = eval(res)
+          # json_g = JSON.generate(unitokor)
+          # hash = JSON.parse(json_g)
+          
+          rest_api_key = Rails.application.credentials.dig(:kakao, :rest_api_key).to_s.strip
 
-        # API의 total_count 값은 믿을 수 없음
-        # 대신 pageable_count를 사용함(근데 이 값도 자꾸 변함)
-        # @total_count = hash['meta']['total_count']
-        @total_count = hash['meta']['pageable_count']
+          params_hash = {
+            target: "title",
+            query: @keyword_book,
+            size: @size,
+            page: @current_page
+          }
 
-        # 마지막 페이지임을 알려주기 위해서 필요
-        @is_end = hash['meta']['is_end'].to_s
+          uri = "https://dapi.kakao.com/v3/search/book?#{URI.encode_www_form(params_hash)}"
 
-#        puts "############################################################"
-#        puts "total_count : " + @total_count.to_s
+          res = RestClient.get(
+            uri,
+            Authorization: "KakaoAK #{rest_api_key}"
+          )
+          
+          hash = JSON.parse(res.body)
 
-#        puts hash['meta']['pageable_count']
-#        puts "마지막 페이지인가요: " + hash['meta']['is_end'].to_s
-#        puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s
+          # API의 total_count 값은 믿을 수 없음
+          # 대신 pageable_count를 사용함(근데 이 값도 자꾸 변함)
+          # @total_count = hash['meta']['total_count']
+          @total_count = hash['meta']['pageable_count']
 
-        # 마지막 페이지
-        @max_index = @total_count / @size + 1
+          # 마지막 페이지임을 알려주기 위해서 필요
+          @is_end = hash['meta']['is_end'].to_s
 
-        # 삼국지처럼 처음 검색했을 때는 pageable_count가 970에서
-        # 마지막 페이지를 클릭하면 갑자기 483이 되는 경우
-        if @max_index < @current_page
-          @current_page = @max_index
-        end
+  #        puts "############################################################"
+  #        puts "total_count : " + @total_count.to_s
 
-        # start_index와 end_index 값 지정하기
-        if @current_page > 2
-          @start_index = @current_page - 2
-          if @current_page < @max_index - 2
-            @end_index = @current_page + 2
-          else
-            @end_index = @max_index
+  #        puts hash['meta']['pageable_count']
+  #        puts "마지막 페이지인가요: " + hash['meta']['is_end'].to_s
+  #        puts "현재 페이지 : " + @current_page.to_s + " 출력 건수 : " + @size.to_s + "  page * size : " + (@current_page * @size).to_s
+
+          # 마지막 페이지
+          @max_index = @total_count / @size + 1
+
+          # 삼국지처럼 처음 검색했을 때는 pageable_count가 970에서
+          # 마지막 페이지를 클릭하면 갑자기 483이 되는 경우
+          if @max_index < @current_page
+            @current_page = @max_index
           end
-        else
-          @start_index = 1
-          if @max_index <= 5
-            @end_index = @max_index
+
+          # start_index와 end_index 값 지정하기
+          if @current_page > 2
+            @start_index = @current_page - 2
+            if @current_page < @max_index - 2
+              @end_index = @current_page + 2
+            else
+              @end_index = @max_index
+            end
           else
-            @end_index = 5
+            @start_index = 1
+            if @max_index <= 5
+              @end_index = @max_index
+            else
+              @end_index = 5
+            end
           end
+
+  #        puts "current_page : " + @current_page.to_s + " max_index : " + @max_index.to_s
+  #        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s
+  #        puts "############################################################"
+
+          @items = hash['documents']
+
+        rescue JSON::ParserError, RestClient::ExceptionWithResponse => e
+          Rails.logger.error("[Kakao Book Search] #{e.class}: #{e.message}")
+          flash.now[:alert] = "책 검색 중 오류가 발생했습니다."
+          @items = []
         end
-
-#        puts "current_page : " + @current_page.to_s + " max_index : " + @max_index.to_s
-#        puts "start_index : " + @start_index.to_s + " end_index : " + @end_index.to_s 
-#        puts "############################################################"
-
-        @items = hash['documents']
-
       end
     end
 
