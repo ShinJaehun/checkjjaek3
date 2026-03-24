@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:14
+    container_name: checkjjaek3_db
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      TZ: Asia/Seoul
+    volumes:
+      - checkjjaek3_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: checkjjaek3_web
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    command: >
+      bash -lc "
+        bundle exec rails assets:precompile &&
+        bundle exec puma -C config/puma.rb
+      "
+
+volumes:
+  checkjjaek3_db_data:
