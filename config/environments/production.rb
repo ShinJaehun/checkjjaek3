@@ -37,7 +37,8 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   # 야 이 바보 멍청아 deployment.rb에만 이 설정을 해 놨으니... 당연히 s3로 파일이 안 가지 으휴
-  config.active_storage.service = :amazon
+  #config.active_storage.service = :amazon
+  config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil

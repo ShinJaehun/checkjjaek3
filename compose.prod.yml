@@ -29,6 +29,8 @@ services:
       PORT: 3000
     ports:
       - "3000:3000"
+    volumes:
+      - checkjjaek3_storage:/app/storage
     command: >
       bash -lc "
         bundle exec rails assets:precompile &&
@@ -37,3 +39,4 @@ services:
 
 volumes:
   checkjjaek3_db_data:
+  checkjjaek3_storage:
