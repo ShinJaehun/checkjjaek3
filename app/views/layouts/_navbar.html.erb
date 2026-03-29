@@ -100,6 +100,11 @@
             검색 <i class="fas fa-search"></i>
           </button>
         </li>
+        <% if current_user.has_role? :admin %>
+          <li class="nav-item align-self-center">
+            <%= link_to "관리", admin_path, class: 'btn btn-outline-warning' %>
+          </li>
+        <% end %>
       </ul>
 
       <ul class="navbar-right d-block d-md-none navbar-nav mx-auto">
@@ -111,6 +116,11 @@
             <i class="fas fa-search"></i>
           </button>
         </li>
+        <% if current_user.has_role? :admin %>
+          <li class="nav-item align-self-center">
+            <%= link_to "<i class='fas fa-tools'></i>".html_safe, admin_path, class: 'btn btn-outline-warning' %>
+          </li>
+        <% end %>
       </ul>
 
     <% else %>

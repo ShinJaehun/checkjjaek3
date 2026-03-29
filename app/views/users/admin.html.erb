@@ -36,6 +36,9 @@
                   <div class="col-5 my-auto text-center">
                     <% if current_user.has_role? :admin %>
                       <%= link_to '활동정지', suspend_group_path(g), class: "btn btn-danger btn-sm" %>
+                      <div class="mt-1">
+                        <%= link_to '관리', group_manager_path(g), class: "btn btn-warning btn-sm" %>
+                      </div>
                     <% end %>
                   </div><!-- col-5 -->
                 </div><!-- row -->
@@ -68,6 +71,9 @@
                   <div class="col-5 my-auto text-center">
                     <% if current_user.has_role? :admin %>
                       <%= link_to '활동재개', resume_group_path(g), class: "btn btn-success btn-sm" %>
+                      <div class="mt-1">
+                        <%= link_to '관리', group_manager_path(g), class: "btn btn-warning btn-sm" %>
+                      </div>
                     <% end %>
                   </div><!-- col-5 -->
                 </div><!-- row -->
@@ -100,6 +106,9 @@
                   <div class="col-5 my-auto text-center">
                     <% if current_user.has_role? :admin %>
                       <%= link_to '승인', approve_group_path(g), class: "btn btn-primary btn-sm" %>
+                      <div class="mt-1">
+                        <%= link_to '관리', group_manager_path(g), class: "btn btn-warning btn-sm" %>
+                      </div>
                     <% end %>
                   </div><!-- col-5 -->
                 </div><!-- row -->

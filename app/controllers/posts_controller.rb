@@ -41,22 +41,35 @@ class PostsController < ApplicationController
 #      .where(post_recipient_users: { recipient_user_id: current_user.id }))
 #      .order(created_at: :desc)
 
-    @posts = Post
-      .where(user_id: current_user.followees.ids.push(current_user.id))
-      .where.not(postable_type: "Book")
-      .or(Post.where(postable_type: "Book")
-      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
-      .where.not(postable_type: "Message")
-      .or(Post.where(postable_type: "Message")
-      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
-      .where.not(postable_type: "Photo")
-      .or(Post.where(postable_type: "Photo")
-      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
-      .order(created_at: :desc)
+#    @posts = Post
+#      .where(user_id: current_user.followees.ids.push(current_user.id))
+#      .where.not(postable_type: "Book")
+#      .or(Post.where(postable_type: "Book")
+#      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
+#      .where.not(postable_type: "Message")
+#      .or(Post.where(postable_type: "Message")
+#      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
+#      .where.not(postable_type: "Photo")
+#      .or(Post.where(postable_type: "Photo")
+#      .where(id: PostRecipientUser.where(recipient_user_id: current_user.id).pluck(:post_id)))
+#      .order(created_at: :desc)
     #좀 더 간결하게 쿼리를 작성해야 함....
 
     #이게 더 자연스럽지 않니?
     #@posts = Post.find(current_user.post_recipient_users.pluck(:post_id))
+
+    # 내가 쓴 글
+    # 내가 follow한 사용자의 글
+    # 누군가가 나를 recipient로 지정해서 내게 남긴 글
+    followee_and_mine_ids = current_user.followees.ids + [current_user.id]
+    recipient_post_ids = PostRecipientUser
+      .where(recipient_user_id: current_user.id).select(:post_id)
+
+    @posts = Post
+      .where(user_id: followee_and_mine_ids, post_recipient_type: "User")
+      .or(Post.where(id: recipient_post_ids))
+      .order(created_at: :desc)
+      .distinct
 
     @message = Message.new
     @message.posts.new

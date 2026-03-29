@@ -36,7 +36,7 @@
       <% elsif current_user.user_groups.find_by_group_id(@group.id).state == "active" %>
         <%= link_to "동아리 나가기",  leave_group_path(@group), class: 'btn btn-danger btn-block', method: 'delete', data: { confirm: 'Are you sure?' } %>
       <% end %>
-      <% if current_user.has_role? :group_manager, @group %>
+      <% if current_user.has_role?(:group_manager, @group) || current_user.has_role?(:admin) %>
         <%= link_to "동아리 관리",  group_manager_path(@group), class: 'btn btn-warning btn-block' %>
       <% end %>
     </li>

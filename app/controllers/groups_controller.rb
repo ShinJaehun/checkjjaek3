@@ -133,7 +133,7 @@ class GroupsController < ApplicationController
   # DELETE /groups/1 or /groups/1.json
   def destroy
     if current_user.has_role? :group_manager, @group
-      if User.find(@group.user_groups.where(state: "active").pluck(:user_id)).count == 1 and 
+      if User.find(@group.user_groups.where(state: "active").pluck(:user_id)).count == 1 and
           @group.user_groups.where(state: "active").pluck(:user_id).first == current_user.id
         # group_member가 단 한명이고 그게 나라면 삭제 가능
 
@@ -319,7 +319,7 @@ class GroupsController < ApplicationController
   end
 
   def group_manager
-    unless current_user.has_role? :group_manager, @group
+    unless current_user.has_role?(:group_manager, @group) || current_user.has_role?(:admin)
       redirect_to groups_url, alert: "#{@group.name} 동아리의 관리자가 아닙니다."
     else
       @active_users = User.find(@group.user_groups.where(state: "active").pluck(:user_id))

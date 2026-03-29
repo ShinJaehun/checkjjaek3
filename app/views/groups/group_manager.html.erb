@@ -11,7 +11,7 @@
           <%= @group.description %>
         </div>
       </div><!-- card-body -->
-      <% if current_user.has_role? :group_manager, @group %>
+      <% if current_user.has_role?(:group_manager, @group) || current_user.has_role?(:admin) %>
         <div class="list-group list-group-flush">
           <li class="list-group-item">
             <%= link_to "동아리 정보 수정", edit_group_path(@group), class: 'btn btn-info btn-block' %>
